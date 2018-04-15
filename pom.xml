@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>sonar-plugin</packaging>
     <name>Sonar-Clojure</name>
-    <description>Scans clojure code using Kibit and Eastwood</description>
+    <description>Scans clojure code using Eastwood</description>
 
     <dependencies>
         <dependency>
