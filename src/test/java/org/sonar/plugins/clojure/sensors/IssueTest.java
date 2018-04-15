@@ -11,7 +11,7 @@ public class IssueTest {
     private Issue issue;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         issue = new Issue(
                 "some-rule-id",
                 "This is a message!",
