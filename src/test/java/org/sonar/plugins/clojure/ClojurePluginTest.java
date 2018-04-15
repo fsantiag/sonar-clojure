@@ -10,7 +10,7 @@ import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.utils.Version;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
-import org.sonar.plugins.clojure.language.ClojureQualityProfile;
+import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.EastwoodSensor;
 
@@ -39,7 +39,7 @@ public class ClojurePluginTest {
 
     @Test
     public void testClojureQualityProfileIsAPluginExtension() {
-        assertTrue(context.getExtensions().contains(ClojureQualityProfile.class));
+        assertTrue(context.getExtensions().contains(ClojureSonarWayProfile.class));
     }
 
     @Test
