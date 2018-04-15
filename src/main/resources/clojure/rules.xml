@@ -1,9 +1,318 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rules>
+
+    <rule>
+        <key>bad-arglists</key>
+        <name>bad-arglists</name>
+        <internalKey>bad-arglists</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>constant-test</key>
+        <name>constant-test</name>
+        <internalKey>constant-test</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>def-in-def</key>
+        <name>def-in-def</name>
+        <internalKey>def-in-def</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>deprecations</key>
+        <name>deprecations</name>
+        <internalKey>deprecations</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>keyword-typos</key>
+        <name>keyword-typos</name>
+        <internalKey>keyword-typos</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>local-shadows-var</key>
+        <name>local-shadows-var</name>
+        <internalKey>local-shadows-var</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>misplaced-docstrings</key>
+        <name>misplaced-docstrings</name>
+        <internalKey>misplaced-docstrings</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>no-ns-form-found</key>
+        <name>no-ns-form-found</name>
+        <internalKey>no-ns-form-found</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>non-clojure-file</key>
+        <name>non-clojure-file</name>
+        <internalKey>non-clojure-file</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>redefd-vars</key>
+        <name>redefd-vars</name>
+        <internalKey>redefd-vars</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>suspicious-expression</key>
+        <name>suspicious-expression</name>
+        <internalKey>suspicious-expression</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>suspicious-test</key>
+        <name>suspicious-test</name>
+        <internalKey>suspicious-test</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unlimited-use</key>
+        <name>unlimited-use</name>
+        <internalKey>unlimited-use</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-fn-args</key>
+        <name>unused-fn-args</name>
+        <internalKey>unused-fn-args</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-locals</key>
+        <name>unused-locals</name>
+        <internalKey>unused-locals</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-meta-on-macro</key>
+        <name>unused-meta-on-macro</name>
+        <internalKey>unused-meta-on-macro</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-namespaces</key>
+        <name>unused-namespaces</name>
+        <internalKey>unused-namespaces</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-private-vars</key>
+        <name>unused-private-vars</name>
+        <internalKey>unused-private-vars</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
     <rule>
         <key>unused-ret-vals</key>
-        <name>Example Rule 1</name>
+        <name>unused-ret-vals</name>
         <internalKey>unused-ret-vals</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>wrong-arity</key>
+        <name>wrong-arity</name>
+        <internalKey>wrong-arity</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>wrong-ns-form</key>
+        <name>wrong-ns-form</name>
+        <internalKey>wrong-ns-form</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>wrong-pre-post</key>
+        <name>wrong-pre-post</name>
+        <internalKey>wrong-pre-post</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>wrong-tag</key>
+        <name>wrong-tag</name>
+        <internalKey>wrong-tag</internalKey>
         <description>This is an example of rule defined thru the XML.
         </description>
         <severity>BLOCKER</severity>
