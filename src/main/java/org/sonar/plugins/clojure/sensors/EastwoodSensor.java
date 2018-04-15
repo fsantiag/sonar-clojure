@@ -67,7 +67,7 @@ public class EastwoodSensor implements Sensor {
                         fileSystem.predicates().hasType(InputFile.Type.MAIN)));
 
         if (inputFile != null) {
-            saveIssue(inputFile, issues.getLine(), issues.getType(), issues.getDescription(), sensorContext);
+            saveIssue(inputFile, issues.getLine(), issues.getExternalRuleId(), issues.getDescription(), sensorContext);
         } else {
             LOG.error("Not able to find a InputFile with " + issues.getFilePath());
         }

@@ -7,14 +7,14 @@ public class Issue {
     private final String filePath;
     private final int line;
 
-    public Issue(final String externalRuleId, final String issueMessage, final String filePath, final int line) {
+    public Issue(String externalRuleId, String description, String filePath, int line) {
         this.externalRuleId = externalRuleId;
-        this.issueMessage = issueMessage;
+        this.issueMessage = description;
         this.filePath = filePath;
         this.line = line;
     }
 
-    public String getType() {
+    public String getExternalRuleId() {
         return externalRuleId;
     }
 
