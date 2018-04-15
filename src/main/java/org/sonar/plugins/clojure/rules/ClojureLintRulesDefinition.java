@@ -11,10 +11,9 @@ import java.nio.charset.StandardCharsets;
 public final class ClojureLintRulesDefinition implements RulesDefinition {
 
     private static final String RULES_PATH = "/clojure/rules.xml";
-    private static final Logger LOG = Loggers.get(ClojureLintRulesDefinition.class);
-
     public static final String REPOSITORY_NAME = "ClojureLint";
     public static final String REPOSITORY_KEY = REPOSITORY_NAME;
+
     private final RulesDefinitionXmlLoader xmlLoader;
 
     public ClojureLintRulesDefinition(RulesDefinitionXmlLoader xmlLoader) {
