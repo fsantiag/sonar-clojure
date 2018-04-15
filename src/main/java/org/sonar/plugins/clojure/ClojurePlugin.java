@@ -15,6 +15,6 @@ public class ClojurePlugin implements Plugin {
         context.addExtension(ClojureQualityProfile.class);
         context.addExtension(ClojureLintRulesDefinition.class);
         context.addExtension(EastwoodSensor.class);
-        context.addExtension(ClojureProperties.getFileSuffixProperty());
+        context.addExtension(ClojureProperties.getProperties());
     }
 }
