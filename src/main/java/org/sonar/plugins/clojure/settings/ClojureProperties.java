@@ -15,7 +15,7 @@ public class ClojureProperties {
         // only statics
     }
 
-    public static List<PropertyDefinition> getProperties() {
+    public static List<PropertyDefinition> getFileSuffixProperty() {
         return asList(PropertyDefinition.builder(FILE_SUFFIXES_KEY)
                 .defaultValue(FILE_SUFFIXES_DEFAULT_VALUE)
                 .category("ClojureLanguage")
