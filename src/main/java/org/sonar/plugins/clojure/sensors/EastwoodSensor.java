@@ -9,15 +9,13 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.api.utils.command.Command;
+import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,112 +25,76 @@ public class EastwoodSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
-    private FileSystem fileSystem;
+    private static final long EASTWOOD_TIMEOUT = 600_00;
+    private static final Pattern EASTWOOD_PATTERN = Pattern.compile("([^:]+):(\\d+):(\\d+):(.*)");
+    private static final String EASTWOOD_COMMAND = "eastwood";
+    private static final String LEIN_COMMAND = "lein";
 
-    private ArrayList<Issue> issues;
+    private FileSystem fileSystem;
 
     public EastwoodSensor(FileSystem fileSystem) {
         this.fileSystem = fileSystem;
     }
 
-    private static String runCommand(String dir, String leinCmd) {
+    private void saveIssue(Issue issue, SensorContext context) {
+        InputFile file = getFile(issue);
 
-        String cmdStr = "cd " + dir + "\n" + leinCmd;
-        String[] cmd = {"/bin/sh", "-c", cmdStr};
-        String result = null;
-        try {
-            Process p = Runtime.getRuntime().exec(cmd);
-            BufferedReader in =
-                    new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                LOG.info(inputLine);
-                result += inputLine + "\n";
-            }
-            in.close();
-
-        } catch (IOException e) {
-            LOG.error("Parsing exception", e);
-
-        } catch (Exception e) {
-            LOG.error("Parsing exception", e);
+        if (file == null) {
+            LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
+            return;
         }
-        return result;
-    }
 
-    private void getResourceAndSaveIssue(final Issue issues, SensorContext sensorContext) {
-        InputFile inputFile = fileSystem.inputFile(
-                fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(issues.getFilePath()),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
+        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
 
-        if (inputFile != null) {
-            saveIssue(inputFile, issues.getLine(), issues.getExternalRuleId(), issues.getDescription(), sensorContext);
-        } else {
-            LOG.error("Not able to find a InputFile with " + issues.getFilePath());
-        }
-    }
+        NewIssue newIssue = context.newIssue().forRule(ruleKey);
 
-    private void saveIssue(final InputFile inputFile, int line, final String externalRuleKey, final String message, SensorContext sensorContext) {
-        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, externalRuleKey.trim());
+        NewIssueLocation primaryLocation = newIssue
+                .newLocation()
+                .on(file)
+                .message(issue.getDescription().trim());
 
-        NewIssue newIssue = sensorContext.newIssue()
-                .forRule(ruleKey);
+        primaryLocation.at(file.selectLine(issue.getLine()));
 
-        NewIssueLocation primaryLocation = newIssue.newLocation()
-                .on(inputFile)
-                .message(message.trim());
-        if (line > 0) {
-            primaryLocation.at(inputFile.selectLine(line));
-        }
         newIssue.at(primaryLocation);
 
         newIssue.save();
     }
 
-    public void analyse(SensorContext sensorContext) {
-        LOG.info("Clojure project detected, running sonar-clojure");
-        LOG.info("Running Eastwood");
-
-        buildEastwoodLintProperties();
-
-        LOG.info("Saving measures");
-
-        for (Issue issue : issues) {
-
-            getResourceAndSaveIssue(issue, sensorContext);
-        }
-
+    private InputFile getFile(Issue issue) {
+        return fileSystem.inputFile(
+                fileSystem.predicates().and(
+                        fileSystem.predicates().hasRelativePath(issue.getFilePath()),
+                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
     }
 
-    private void buildEastwoodLintProperties() {
-        String baseDirectory = fileSystem.baseDir().toString();
-        String output = "";
-        issues = new ArrayList<>();
+    private List<Issue> executeEastwood() {
+        CommandStreamConsumer stdOut = new CommandStreamConsumer();
+        CommandStreamConsumer stdErr = new CommandStreamConsumer();
 
-        try {
-                Pattern p = Pattern.compile("[^:]+:\\d+:\\d+:.*");
-            output = runCommand(baseDirectory, "lein eastwood");
-            BufferedReader buffer = new BufferedReader(new StringReader(output));
-            List<String> lines = new ArrayList<>();
-            String line;
-            while ((line = buffer.readLine()) != null) {
-                Matcher m = p.matcher(line);
-                while (m.find()) {
-                    lines.add(m.group());
-                }
+        Command command = Command.create(LEIN_COMMAND).addArgument(EASTWOOD_COMMAND);
+
+        CommandExecutor.create().execute(command, stdOut, stdErr, EASTWOOD_TIMEOUT);
+
+        return parseCommandOutputIntoIssues(stdOut);
+    }
+
+    private List<Issue> parseCommandOutputIntoIssues(CommandStreamConsumer commandOutput) {
+        List<Issue> issues = new ArrayList<>();
+
+        for (String line : commandOutput.getData()) {
+            Matcher matcher = EASTWOOD_PATTERN.matcher(line);
+
+            if (matcher.matches()) {
+                String externalRuleId = matcher.group(3);
+                String description = matcher.group(4);
+                String filePath = matcher.group(0);
+                int lineNumber = Integer.parseInt(matcher.group(1));
+
+                issues.add(new Issue(externalRuleId, description, filePath, lineNumber));
             }
-            for (String temp : lines) {
-                String[] tokens = temp.split(":");
-
-                issues.add(new Issue(tokens[3], tokens[4], tokens[0], Integer.valueOf(tokens[1])));
-            }
-        } catch (IOException e) {
-            LOG.error("EASTWOOD IO EXCEPTION", e);
-        } catch (Exception e) {
-            LOG.error("EASTWOOD EXCEPTION", e);
-
         }
+
+        return issues;
     }
 
     @Override
@@ -143,8 +105,16 @@ public class EastwoodSensor implements Sensor {
     }
 
     @Override
-    public void execute(SensorContext sensorContext) {
-        this.analyse(sensorContext);
+    public void execute(SensorContext context) {
+        LOG.info("Clojure project detected, running SonarClojure");
+
+        LOG.info("Running Eastwood");
+        List<Issue> issues = executeEastwood();
+
+        LOG.info("Saving issues");
+        for (Issue issue : issues) {
+            saveIssue(issue, context);
+        }
     }
 
 }
