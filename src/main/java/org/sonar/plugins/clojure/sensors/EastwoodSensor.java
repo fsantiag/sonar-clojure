@@ -26,7 +26,7 @@ public class EastwoodSensor implements Sensor {
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
     private static final long EASTWOOD_TIMEOUT = 600_00;
-    private static final Pattern EASTWOOD_PATTERN = Pattern.compile("([^:]+):(\\d+):(\\d+):(.*)");
+    private static final Pattern EASTWOOD_PATTERN = Pattern.compile("([^:]+):(\\d+):(\\d+):([\\s\\w-]+):(.*)");
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String LEIN_COMMAND = "lein";
 
@@ -84,11 +84,11 @@ public class EastwoodSensor implements Sensor {
         for (String line : commandOutput.getData()) {
             Matcher matcher = EASTWOOD_PATTERN.matcher(line);
 
-            if (matcher.matches()) {
-                String externalRuleId = matcher.group(3);
-                String description = matcher.group(4);
-                String filePath = matcher.group(0);
-                int lineNumber = Integer.parseInt(matcher.group(1));
+            if (matcher.find()) {
+                String externalRuleId = matcher.group(4);
+                String description = matcher.group(5);
+                String filePath = matcher.group(1);
+                int lineNumber = Integer.parseInt(matcher.group(2));
 
                 issues.add(new Issue(externalRuleId, description, filePath, lineNumber));
             }
