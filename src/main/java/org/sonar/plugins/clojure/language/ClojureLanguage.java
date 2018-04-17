@@ -19,7 +19,7 @@ public class ClojureLanguage extends AbstractLanguage {
     public String[] getFileSuffixes() {
         String[] suffixes = config.getStringArray(ClojureProperties.FILE_SUFFIXES_KEY);
         if (suffixes.length == 0) {
-            suffixes = new String[]{ClojureProperties.FILE_SUFFIXES_DEFAULT_VALUE};
+            suffixes = ClojureProperties.FILE_SUFFIXES_DEFAULT_VALUE.split(",");
         }
         return suffixes;
     }

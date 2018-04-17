@@ -21,13 +21,13 @@ public class ClojureLanguageTest {
 
     @Test
     public void testClojureLanguageFileSuffixesWhenKeyIsDefault() {
-        assertThat(language.getFileSuffixes(), is(new String[]{".clj"}));
+        assertThat(language.getFileSuffixes(), is(new String[]{"clj","cljs","cljc"}));
     }
 
     @Test
     public void testClojureLanguageFileSuffixesWhenEmptyKeyIsSet() {
         settings.setProperty(ClojureProperties.FILE_SUFFIXES_KEY, "");
-        assertThat(language.getFileSuffixes(), is(new String[]{".clj"}));
+        assertThat(language.getFileSuffixes(), is(new String[]{"clj","cljs","cljc"}));
     }
 
     @Test

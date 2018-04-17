@@ -16,7 +16,7 @@ public class ClojurePropertiesTest {
         assertThat(fileSuffixProperty.key(), is("sonar.clojure.file.suffixes"));
         assertThat(fileSuffixProperty.name(), is("File Suffixes"));
         assertThat(fileSuffixProperty.category(), is("ClojureLanguage"));
-        assertThat(fileSuffixProperty.defaultValue(), is(".clj"));
+        assertThat(fileSuffixProperty.defaultValue(), is("clj,cljs,cljc"));
         assertThat(fileSuffixProperty.description(), is("Comma-separated list of suffixes for files to analyze."));
     }
 

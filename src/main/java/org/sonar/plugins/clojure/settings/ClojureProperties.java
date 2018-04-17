@@ -9,7 +9,7 @@ import static java.util.Arrays.asList;
 public class ClojureProperties {
 
     public static final String FILE_SUFFIXES_KEY = "sonar.clojure.file.suffixes";
-    public static final String FILE_SUFFIXES_DEFAULT_VALUE = ".clj";
+    public static final String FILE_SUFFIXES_DEFAULT_VALUE = "clj,cljs,cljc";
 
     private ClojureProperties() {}
 
