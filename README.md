@@ -1,4 +1,4 @@
-# SonarQube Clojure Plugin
+# SonarQube Clojure Plugin [![Build Status](https://travis-ci.org/fsantiag/sonar-clojure.svg?branch=master)](https://travis-ci.org/fsantiag/sonar-clojure)
 
 This is a [SonarQube](https://www.sonarqube.org/) [plugin](https://docs.sonarqube.org/display/PLUG/Plugin+Library) 
 that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Clojure code.
