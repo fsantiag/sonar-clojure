@@ -1,4 +1,11 @@
 language: java
+
+cache:
+  directories:
+  - "$HOME/.gradle"
+  - '$HOME/.m2/repository'
+  - '$HOME/.sonar/cache'
+  
 jobs:
   include:
   - stage: Build
