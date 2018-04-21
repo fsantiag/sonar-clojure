@@ -30,17 +30,4 @@ public class Issue {
         return line;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append(externalRuleId);
-        s.append("|");
-        s.append(issueMessage);
-        s.append("|");
-        s.append(filePath);
-        s.append("(");
-        s.append(line);
-        s.append(")");
-        return s.toString();
-    }
 }
