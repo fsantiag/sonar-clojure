@@ -15,7 +15,6 @@ jobs:
       file: target/sonar-clojure-plugin-1.0.0-SNAPSHOT.jar
       skip_cleanup: true
       on:
-        repo: fsantiag/sonar-clojure
         tags: true
 env:
   global:
