@@ -1,6 +1,10 @@
-# SonarQube Clojure Plugin [![Build Status](https://travis-ci.org/fsantiag/sonar-clojure.svg?branch=master)](https://travis-ci.org/fsantiag/sonar-clojure)
+# SonarClojure 
+[![Build Status](https://travis-ci.org/fsantiag/sonar-clojure.svg?branch=master)](https://travis-ci.org/fsantiag/sonar-clojure)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.sonar.plugins.clojure:sonar-clojure-plugin)](https://sonarcloud.io/dashboard?id=org.sonar.plugins.clojure%3Asonar-clojure-plugin)
+[![Coverage](https://sonarcloud.io/api/badges/measure?key=org.sonar.plugins.clojure:sonar-clojure-plugin&metric=coverage&template=FLAT)](https://sonarcloud.io/dashboard?id=org.sonar.plugins.clojure%3Asonar-clojure-plugin)
 
-This is a [SonarQube](https://www.sonarqube.org/) [plugin](https://docs.sonarqube.org/display/PLUG/Plugin+Library) 
+
+SonarClojure is is a [SonarQube](https://www.sonarqube.org/) [plugin](https://docs.sonarqube.org/display/PLUG/Plugin+Library) 
 that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Clojure code.
 
 ## Current State
