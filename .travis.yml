@@ -12,7 +12,7 @@ jobs:
       provider: releases
       api_key:
         secure: KzOcINDHQC441MGeOPU63zNELwy7jOcPCx69zE6SPovIImsFbjOpDhCpg6al52JWd5sKOyZJvgwUrcEsvxxFSpBlp0zn9DQwTcANfyuajqiOYrf1DsTPSnPj1uknG6gPvmcTwOKRgjyn9p32F+lUmTUJqGUwSSdE3RYUgaLVoUCFK3Xu2e2ncKYR6o3SdK4pmzazhAIG2VPhqG6+8TOMBr/NS9/S/BSHCkp7H3SCzwVKUv2UGgg6art6KTx3Xy7/JOtWEpZaaSAOYYbrvBUy4rm8wxxc37CioP9sqjOvgsMSqyNQ5lpckYBw12tQEJ8Q/1z4aIeb0bsBaGfBEdLyFZywNF+rbbqzRQoglAE2Fm12Mvk3woBcBG0Z+M4uDnb2lZff8iJ3bsXlty7+WTd6QDpSoxDAWU+Qo7gipEyuON5SWkzMmkWK8ARr+js56rGH2tFDmBd91qfzETEf7HXvzv/6WY+dpAG5pgedPOkHaPjdjC4eX6Sl0Axa3ps0m5LVcGg1oYe6V8Tkfx61ehV0kT2I+VNwnD2OixgfzN74UkzS3QZvOwZ6uCGT+082kA2PtmRtARuDROrlyEighFeUKUfA7qMZsO3lqN5spvs7NvZRL8jiwn6bW0IvFBFmVzesTVPA3ObOFdf1VnEu2iTDYSSKNMkdnRuuRN4thuZErxM=
-      file: sonar-clojure-plugin-1.0-SNAPSHOT.jar
+      file: sonar-clojure-plugin-1.0.0-SNAPSHOT.jar
       skip_cleanup: true
       on:
         repo: fsantiag/sonar-clojure
