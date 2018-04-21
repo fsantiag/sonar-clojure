@@ -5,7 +5,7 @@ jobs:
     - stage: Build
       script: mvn package
     - stage: SonarQube
-      script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=sonar-clojure -Dsonar.login=$SONAR_TOKEN
+      script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fsantiag -Dsonar.login=$SONAR_TOKEN
 env:
   global:
     secure: SclOuSipO+/x21fADxux17AqdHNk+v/Fw4MDKWUBRO+OxJa0qHkMdUlwTDBYAADanraHtebUQz54gQdtm+Ovi9Yev7KCJ3Y+wWVhXrk4VJtLmyIsT8FMO10kF7IO8lpnm3EkM5kP1/KG7Q4knUUlDthyRZAvjWCJrwS+L3udrYovciypRNgWSkJTtsDMYRX2KA+e2+k/mwNpu59oFockEN7KJM8ArknOpkWqoop7xk9KQdapHkKcFA0nYAgPd3F7SWScdbk65+KjNZnaJh9tIijaQycDmvcFOsUCh/+GIT5VWsWOwoTnBHhxhyO8of9+YbsX480tI0OR4p+/JdN6xP+v+xNVkagiJoIddpVHWF4CoId1PILOayszJciUy+8iA6dv0tYkAehxSvNhJ1s7bkbTKGW/oyvJfvCJS7rwjamVASpSKux7dCy1D5+OxkkfSohZ3tUlqlRrQiE7oJgCtuKUBdyU7efMyLJT65zABumXZER9ABgdqmk7476UlQqMhVFCa7lZMzB0A5aY2ikFhg+NsWJJ8qvb9xR9TPmypVUlwaCPeE6nZkjQ7y/GSqs7gja6RJ7HX5TX8ucaTB6jmZpwJzNENTy47pJ58HAdGVgIH6Gdvu+4SFZNq2jh2DfDYgKI1+5K6Y46CzAtmmwKcOSqvZhflKy1lTOhUeEHAT8=
