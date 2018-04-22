@@ -16,28 +16,19 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EastwoodSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
     private static final long EASTWOOD_TIMEOUT = 600_00;
-    private static final Pattern EASTWOOD_PATTERN = Pattern.compile("([^:]+):(\\d+):(\\d+):([\\s\\w-]+):(.*)");
+
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String LEIN_COMMAND = "lein";
 
-    private FileSystem fileSystem;
-
-    public EastwoodSensor(FileSystem fileSystem) {
-        this.fileSystem = fileSystem;
-    }
-
     private void saveIssue(Issue issue, SensorContext context) {
-        InputFile file = getFile(issue);
+        InputFile file = getFile(issue, context.fileSystem());
 
         if (file == null) {
             LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
@@ -60,7 +51,7 @@ public class EastwoodSensor implements Sensor {
         newIssue.save();
     }
 
-    private InputFile getFile(Issue issue) {
+    private InputFile getFile(Issue issue, FileSystem fileSystem) {
         return fileSystem.inputFile(
                 fileSystem.predicates().and(
                         fileSystem.predicates().hasRelativePath(issue.getFilePath()),
@@ -75,26 +66,7 @@ public class EastwoodSensor implements Sensor {
 
         CommandExecutor.create().execute(command, stdOut, stdErr, EASTWOOD_TIMEOUT);
 
-        return parseCommandOutputIntoIssues(stdOut);
-    }
-
-    private List<Issue> parseCommandOutputIntoIssues(CommandStreamConsumer commandOutput) {
-        List<Issue> issues = new ArrayList<>();
-
-        for (String line : commandOutput.getData()) {
-            Matcher matcher = EASTWOOD_PATTERN.matcher(line);
-
-            if (matcher.find()) {
-                String externalRuleId = matcher.group(4);
-                String description = matcher.group(5);
-                String filePath = matcher.group(1);
-                int lineNumber = Integer.parseInt(matcher.group(2));
-
-                issues.add(new Issue(externalRuleId, description, filePath, lineNumber));
-            }
-        }
-
-        return issues;
+        return EastwoodIssueParser.parse(stdOut);
     }
 
     @Override

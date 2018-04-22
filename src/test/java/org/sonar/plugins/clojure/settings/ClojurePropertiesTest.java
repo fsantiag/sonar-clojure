@@ -22,7 +22,7 @@ public class ClojurePropertiesTest {
 
     @Test
     public void testGetProperties() {
-        List<PropertyDefinition> propertyDefinitions = (List<PropertyDefinition>) ClojureProperties.getProperties();
+        List<PropertyDefinition> propertyDefinitions = ClojureProperties.getProperties();
         assertThat(propertyDefinitions.size(), is(1));
         assertThat(propertyDefinitions.get(0).key(), is("sonar.clojure.file.suffixes"));
 
