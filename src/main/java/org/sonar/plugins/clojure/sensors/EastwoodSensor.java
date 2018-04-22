@@ -9,8 +9,6 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.command.Command;
-import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
@@ -22,10 +20,16 @@ public class EastwoodSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
-    private static final long EASTWOOD_TIMEOUT = 600_00;
+    private static final long EASTWOOD_COMMAND_TIMEOUT = 600_00;
 
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String LEIN_COMMAND = "lein";
+
+    private GenericCommandExecutor commandExecutor;
+
+    public EastwoodSensor(GenericCommandExecutor eastwoodExecutor) {
+        this.commandExecutor = eastwoodExecutor;
+    }
 
     private void saveIssue(Issue issue, SensorContext context) {
         InputFile file = getFile(issue, context.fileSystem());
@@ -58,16 +62,6 @@ public class EastwoodSensor implements Sensor {
                         fileSystem.predicates().hasType(InputFile.Type.MAIN)));
     }
 
-    private List<Issue> executeEastwood() {
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        CommandStreamConsumer stdErr = new CommandStreamConsumer();
-
-        Command command = Command.create(LEIN_COMMAND).addArgument(EASTWOOD_COMMAND);
-
-        CommandExecutor.create().execute(command, stdOut, stdErr, EASTWOOD_TIMEOUT);
-
-        return EastwoodIssueParser.parse(stdOut);
-    }
 
     @Override
     public void describe(SensorDescriptor descriptor) {
@@ -81,7 +75,14 @@ public class EastwoodSensor implements Sensor {
         LOG.info("Clojure project detected, running SonarClojure");
 
         LOG.info("Running Eastwood");
-        List<Issue> issues = executeEastwood();
+        if (this.commandExecutor == null) {
+            this.commandExecutor = new GenericCommandExecutor();
+        }
+
+        CommandStreamConsumer stdOut = this.commandExecutor
+                .execute(LEIN_COMMAND, EASTWOOD_COMMAND_TIMEOUT, EASTWOOD_COMMAND);
+
+        List<Issue> issues = EastwoodIssueParser.parse(stdOut);
 
         LOG.info("Saving issues");
         for (Issue issue : issues) {
