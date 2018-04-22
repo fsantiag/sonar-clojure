@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
 
 import org.sonar.api.batch.fs.FileSystem;
@@ -13,6 +13,9 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.GenericCommandExecutor;
+import org.sonar.plugins.clojure.sensors.Issue;
 
 import java.util.List;
 

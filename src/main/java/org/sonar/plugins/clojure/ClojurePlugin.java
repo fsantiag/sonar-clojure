@@ -5,7 +5,7 @@ import org.sonar.api.Plugin;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
-import org.sonar.plugins.clojure.sensors.EastwoodSensor;
+import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 import org.sonar.plugins.clojure.sensors.GenericCommandExecutor;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
 

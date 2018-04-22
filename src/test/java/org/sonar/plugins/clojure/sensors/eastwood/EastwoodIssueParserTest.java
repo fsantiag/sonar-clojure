@@ -1,6 +1,9 @@
-package org.sonar.plugins.clojure.sensors;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Test;
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.Issue;
+
 
 import java.util.List;
 

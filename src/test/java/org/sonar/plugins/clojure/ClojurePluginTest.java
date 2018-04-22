@@ -12,7 +12,7 @@ import org.sonar.api.utils.Version;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
-import org.sonar.plugins.clojure.sensors.EastwoodSensor;
+import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 
 import java.util.List;
 

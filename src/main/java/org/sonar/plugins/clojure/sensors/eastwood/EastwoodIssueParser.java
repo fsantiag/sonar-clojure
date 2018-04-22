@@ -1,4 +1,7 @@
-package org.sonar.plugins.clojure.sensors;
+package org.sonar.plugins.clojure.sensors.eastwood;
+
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.Issue;
 
 import java.util.ArrayList;
 import java.util.List;

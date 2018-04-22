@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +13,9 @@ import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.GenericCommandExecutor;
+import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 
 import java.io.File;
 import java.io.IOException;
