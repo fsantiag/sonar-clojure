@@ -3,13 +3,11 @@ package org.sonar.plugins.clojure.sensors;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class EastwoodIssueParserTest {
-    private EastwoodIssueParser outputToIssueParser;
 
     @Test
     public void testNoIssuesGeneratedForInvalidStreamConsumer() {

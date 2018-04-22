@@ -75,10 +75,6 @@ public class EastwoodSensor implements Sensor {
         LOG.info("Clojure project detected, running SonarClojure");
 
         LOG.info("Running Eastwood");
-        if (this.commandExecutor == null) {
-            this.commandExecutor = new GenericCommandExecutor();
-        }
-
         CommandStreamConsumer stdOut = this.commandExecutor
                 .execute(LEIN_COMMAND, EASTWOOD_COMMAND_TIMEOUT, EASTWOOD_COMMAND);
 

@@ -11,6 +11,7 @@ public final class ClojureSonarWayProfile implements BuiltInQualityProfilesDefin
         NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Sonar way", ClojureLanguage.KEY);
         profile.setDefault(true);
 
+        //TODO Read the rules from the file instead of adding one by one
         profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "bad-arglists");
         profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "constant-test");
         profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "def-in-def");

@@ -1,8 +1,10 @@
 package org.sonar.plugins.clojure.sensors;
 
+import org.sonar.api.batch.ScannerSide;
 import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
 
+@ScannerSide
 public class GenericCommandExecutor {
 
     public CommandStreamConsumer execute(String mainCommand, long timeout, String... arguments) {
