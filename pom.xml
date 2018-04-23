@@ -46,7 +46,7 @@
                     <pluginClass>org.sonar.plugins.clojure.ClojurePlugin</pluginClass>
                     <pluginName>SonarClojure</pluginName>
                     <sonarLintSupported>true</sonarLintSupported>
-                    <sonarQubeMinVersion>6.7.1</sonarQubeMinVersion>
+                    <sonarQubeMinVersion>6.7</sonarQubeMinVersion>
                 </configuration>
             </plugin>
             <plugin>
