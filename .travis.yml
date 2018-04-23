@@ -10,8 +10,8 @@ jobs:
   include:
   - stage: Build
     script: mvn clean package -DskipTests
-    script: mvn surefire:test
-    script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - script: mvn surefire:test
+  - script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
           -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fsantiag -Dsonar.login=$SONAR_TOKEN
   - stage: Deploy
     deploy:
