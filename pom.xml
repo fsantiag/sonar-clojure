@@ -9,7 +9,7 @@
     <version>1.0.1-SNAPSHOT</version>
     <packaging>sonar-plugin</packaging>
     <name>Sonar-Clojure</name>
-    <description>Scans clojure code using Eastwood</description>
+    <description>SonarClojure is a plugin for SonarQube to analyze Clojure source.</description>
 
     <dependencies>
         <dependency>
