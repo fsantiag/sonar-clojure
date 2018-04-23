@@ -9,17 +9,16 @@ cache:
 jobs:
   include:
   - stage: Build
-    script: mvn package
-  - stage: SonarQube
+    script: mvn clean package -DskipTests
+    script: mvn surefire:test
     script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
-      -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fsantiag -Dsonar.login=$SONAR_TOKEN
-  - stage: Release
-    script: echo "Releasing to Github..."
+          -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fsantiag -Dsonar.login=$SONAR_TOKEN
+  - stage: Deploy
     deploy:
       provider: releases
       api_key:
         secure: IoGF1AEE/6jkNMgpYHPmEghfMgFcy/sZWjO62lqkkpFImFdSIijrGR3rjNCWkBfkRVdXHfNpCpQNXBhKuE8NA0K8qZXy+ay8xFjCIGBdUxLNGIA2/CLqrAgteUH9b+PrwvOiAyR8xCz4KnjfV9m6XeXSPmPpTz+fYjhW7Tt5m2fMY2simppuCHI4yn0x2H4bWFNR5YNzUQTIvKfduiO7+i+k5LV8GgKIYaEweBRx4xxP7kX7CXXTRgvyyCMXNSCAqbE07Y4puBDg6lNSxn4NhcBD8bhxmW9VNBkT76NL543GsY+LVZlmzi+MyeV/k8Uke3v95bfRKpDmfGFxFNMFERNyPXNPPwUjobu66tYioXjeuzUY4tbY4suDL9+0d6B49nWjOnavMPSGMFf2Z43TOYLb4lmQQZkvEWUQX/5TDvgPbCYjlPhnZanb7+LDt44VMXb8GeVxT3j+ommUgk0ES6jLd41NHYqFl9LjxdWfMg4He378RyCZBjUGq3J+UAGtQqaPIzRhMwPoCVuscWKCQw7Jd2xjP7LQxaxSuaJTM5hRnS/yIGmJR/gw96V3mRUIOcokBYtfV/CDdk3yYjdtCLk78jbtWyr5Wxz6bhAjomrAdq2dsMHFHDwgNOvpT7on2S/ObNcUhg8odkyCvdreCg258vBWOUZosvUfCGG6ZiQ=
-      file: target/sonar-clojure-plugin-1.0.0-SNAPSHOT.jar
+      file: target/sonar-clojure-plugin-1.0.1-SNAPSHOT.jar
       skip_cleanup: true
       on:
         tags: true
