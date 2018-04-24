@@ -7,16 +7,12 @@ cache:
   directories:
   - '$HOME/.m2/repository'
   - '$HOME/.sonar/cache'
-  
+
 jobs:
   include:
-  - stage: Build
-    script: mvn clean package -DskipTests
-  - script: mvn surefire:test
-  - script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - stage: Build, SonarQube and Deploy
+    script: mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
           -Dsonar.host.url=https://sonarcloud.io -Dsonar.organization=fsantiag -Dsonar.login=$SONAR_TOKEN
-  - stage: Deploy
-    script: mvn clean package
     deploy:
       provider: releases
       api_key:
