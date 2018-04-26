@@ -2,10 +2,10 @@ package org.sonar.plugins.clojure.sensors;
 
 public class Issue {
 
-    private final String externalRuleId;
-    private final String issueMessage;
-    private final String filePath;
-    private final int line;
+    private String externalRuleId;
+    private String issueMessage;
+    private String filePath;
+    private int line;
 
     public Issue(String externalRuleId, String description, String filePath, int line) {
         this.externalRuleId = externalRuleId;
