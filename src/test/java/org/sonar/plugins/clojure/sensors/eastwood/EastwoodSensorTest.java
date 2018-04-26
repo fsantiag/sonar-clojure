@@ -14,8 +14,7 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.sensors.GenericCommandExecutor;
-import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
+import org.sonar.plugins.clojure.sensors.CommandRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +31,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class EastwoodSensorTest {
 
     @Mock
-    private GenericCommandExecutor eastwoodExecutor;
+    private CommandRunner eastwoodExecutor;
 
     @Before
     public void setUp() {
@@ -74,7 +73,7 @@ public class EastwoodSensorTest {
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
         stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
-        Mockito.when(eastwoodExecutor.execute("lein", 600_00, "eastwood")).thenReturn(stdOut);
+        Mockito.when(eastwoodExecutor.run("lein", 600_00, "eastwood")).thenReturn(stdOut);
 
         EastwoodSensor eastwoodSensor = new EastwoodSensor(eastwoodExecutor);
         eastwoodSensor.execute(context);

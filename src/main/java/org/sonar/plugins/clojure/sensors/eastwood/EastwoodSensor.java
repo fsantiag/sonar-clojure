@@ -14,7 +14,7 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.sensors.GenericCommandExecutor;
+import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.Issue;
 
 import java.util.List;
@@ -28,10 +28,10 @@ public class EastwoodSensor implements Sensor {
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String LEIN_COMMAND = "lein";
 
-    private GenericCommandExecutor commandExecutor;
+    private CommandRunner commandRunner;
 
-    public EastwoodSensor(GenericCommandExecutor eastwoodExecutor) {
-        this.commandExecutor = eastwoodExecutor;
+    public EastwoodSensor(CommandRunner commandRunner) {
+        this.commandRunner = commandRunner;
     }
 
     private void saveIssue(Issue issue, SensorContext context) {
@@ -78,8 +78,8 @@ public class EastwoodSensor implements Sensor {
         LOG.info("Clojure project detected, running SonarClojure");
 
         LOG.info("Running Eastwood");
-        CommandStreamConsumer stdOut = this.commandExecutor
-                .execute(LEIN_COMMAND, EASTWOOD_COMMAND_TIMEOUT, EASTWOOD_COMMAND);
+        CommandStreamConsumer stdOut = this.commandRunner
+                .run(LEIN_COMMAND, EASTWOOD_COMMAND_TIMEOUT, EASTWOOD_COMMAND);
 
         List<Issue> issues = EastwoodIssueParser.parse(stdOut);
 
