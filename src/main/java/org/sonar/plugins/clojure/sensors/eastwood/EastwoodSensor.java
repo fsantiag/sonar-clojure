@@ -23,8 +23,6 @@ public class EastwoodSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
-    private static final long EASTWOOD_COMMAND_TIMEOUT = 600_00;
-
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String LEIN_COMMAND = "lein";
 
@@ -78,8 +76,7 @@ public class EastwoodSensor implements Sensor {
         LOG.info("Clojure project detected, running SonarClojure");
 
         LOG.info("Running Eastwood");
-        CommandStreamConsumer stdOut = this.commandRunner
-                .run(LEIN_COMMAND, EASTWOOD_COMMAND_TIMEOUT, EASTWOOD_COMMAND);
+        CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
 
         List<Issue> issues = EastwoodIssueParser.parse(stdOut);
 

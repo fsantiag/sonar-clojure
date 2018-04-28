@@ -7,15 +7,16 @@ import org.sonar.api.utils.command.CommandExecutor;
 @ScannerSide
 public class CommandRunner {
 
-    public CommandStreamConsumer run(String mainCommand, long timeout, String... arguments) {
+    private static long TIMEOUT = 300_000;
+
+    public CommandStreamConsumer run(String command, String... arguments) {
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         CommandStreamConsumer stdErr = new CommandStreamConsumer();
-        Command command = Command.create(mainCommand);
+        Command cmd = Command.create(command);
         for (String arg: arguments) {
-            command.addArgument(arg);
+            cmd.addArgument(arg);
         }
-        CommandExecutor.create().execute(command, stdOut, stdErr, timeout);
-
+        CommandExecutor.create().execute(cmd, stdOut, stdErr, TIMEOUT);
         return stdOut;
     }
 }

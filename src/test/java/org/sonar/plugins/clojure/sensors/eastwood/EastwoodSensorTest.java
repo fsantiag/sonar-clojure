@@ -31,7 +31,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class EastwoodSensorTest {
 
     @Mock
-    private CommandRunner eastwoodExecutor;
+    private CommandRunner commandRunner;
 
     @Before
     public void setUp() {
@@ -41,7 +41,7 @@ public class EastwoodSensorTest {
     @Test
     public void testSensorDescriptor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
-        new EastwoodSensor(eastwoodExecutor).describe(descriptor);
+        new EastwoodSensor(commandRunner).describe(descriptor);
         assertThat(descriptor.name(), is("SonarClojure"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
@@ -73,9 +73,9 @@ public class EastwoodSensorTest {
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
         stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
-        Mockito.when(eastwoodExecutor.run("lein", 600_00, "eastwood")).thenReturn(stdOut);
+        Mockito.when(commandRunner.run("lein", "eastwood")).thenReturn(stdOut);
 
-        EastwoodSensor eastwoodSensor = new EastwoodSensor(eastwoodExecutor);
+        EastwoodSensor eastwoodSensor = new EastwoodSensor(commandRunner);
         eastwoodSensor.execute(context);
 
         assertThat(context.allIssues().size(), is(2));
