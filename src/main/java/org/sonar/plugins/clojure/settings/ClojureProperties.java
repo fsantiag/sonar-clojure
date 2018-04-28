@@ -1,8 +1,8 @@
 package org.sonar.plugins.clojure.settings;
 
-import java.util.List;
 import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.resources.Qualifiers;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
