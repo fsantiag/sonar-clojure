@@ -53,6 +53,7 @@ public class EastwoodSensorTest {
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("src/test/resources/"));
 
+        // Adding file to Sonar Contex
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "file.clj");
         DefaultInputFile inputFile = TestInputFileBuilder.create("", "file.clj")
@@ -61,12 +62,11 @@ public class EastwoodSensorTest {
                 .build();
         context.fileSystem().add(inputFile);
 
+        // Creating fake rules to the Sonar Context
         context.setActiveRules((new ActiveRulesBuilder())
                 .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-1"))
-                .setName("Invalid name")
                 .activate()
                 .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-2"))
-                .setName("Missing docstring")
                 .activate()
                 .build());
 
@@ -78,8 +78,8 @@ public class EastwoodSensorTest {
         EastwoodSensor eastwoodSensor = new EastwoodSensor(commandRunner);
         eastwoodSensor.execute(context);
 
-        assertThat(context.allIssues().size(), is(2));
         List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
+        assertThat(issuesList.size(), is(2));
         assertThat(issuesList.get(0).ruleKey().rule(), is("issue-1"));
         assertThat(issuesList.get(1).ruleKey().rule(), is("issue-2"));
     }
