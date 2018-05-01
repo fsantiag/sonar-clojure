@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 public class EastwoodIssueParser {
     private static final Pattern EASTWOOD_PATTERN = Pattern.compile("([^:]+):(\\d+):(\\d+):([\\s\\w-]+):(.*)");
 
+    private EastwoodIssueParser() {}
+
     public static List<Issue> parse(CommandStreamConsumer output) {
         List<Issue> issues = new ArrayList<>();
 

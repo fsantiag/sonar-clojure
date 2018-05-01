@@ -7,7 +7,7 @@ import org.sonar.api.utils.command.CommandExecutor;
 @ScannerSide
 public class CommandRunner {
 
-    private static long TIMEOUT = 300_000;
+    private static final long TIMEOUT = 300_000;
 
     public CommandStreamConsumer run(String command, String... arguments) {
         CommandStreamConsumer stdOut = new CommandStreamConsumer();

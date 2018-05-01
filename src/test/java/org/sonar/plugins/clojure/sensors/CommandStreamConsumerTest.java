@@ -20,7 +20,7 @@ public class CommandStreamConsumerTest {
 
         commandStreamConsumer.consumeLine(line);
 
-        assertEquals(commandStreamConsumer.getData().size(), 1);
-        assertEquals(commandStreamConsumer.getData().get(0), line);
+        assertEquals(1, commandStreamConsumer.getData().size());
+        assertEquals(line, commandStreamConsumer.getData().get(0));
     }
 }
