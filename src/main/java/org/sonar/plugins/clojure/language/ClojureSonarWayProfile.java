@@ -3,6 +3,8 @@ package org.sonar.plugins.clojure.language;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.io.FileReader;
 public final class ClojureSonarWayProfile implements BuiltInQualityProfilesDefinition {
 
     public static final String CLOJURE_SONAR_WAY_PATH = "src/main/resources/clojure/sonar_way.json";
+    private static final Logger LOG = Loggers.get(ClojureSonarWayProfile.class);
 
     @Override
     public void define(Context context) {
@@ -23,7 +26,7 @@ public final class ClojureSonarWayProfile implements BuiltInQualityProfilesDefin
         try {
             jsonProfile = readProfile();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOG.error("Error while loading SonarWay profile file: ", e);
         }
 
         jsonProfile.getRuleKeys().stream()
