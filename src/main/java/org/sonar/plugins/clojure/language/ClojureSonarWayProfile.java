@@ -1,42 +1,40 @@
 package org.sonar.plugins.clojure.language;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 
 public final class ClojureSonarWayProfile implements BuiltInQualityProfilesDefinition {
+
+    public static final String CLOJURE_SONAR_WAY_PATH = "src/main/resources/clojure/sonar_way.json";
 
     @Override
     public void define(Context context) {
         NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Sonar way", ClojureLanguage.KEY);
         profile.setDefault(true);
 
-        //TODO Read the rules from the file instead of adding one by one
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "bad-arglists");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "constant-test");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "def-in-def");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "deprecations");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "keyword-typos");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "local-shadows-var");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "misplaced-docstrings");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "no-ns-form-found");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "non-clojure-file");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "redefd-vars");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "suspicious-expression");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "suspicious-test");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unlimited-use");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-fn-args");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-locals");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-meta-on-macro");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-namespaces");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-private-vars");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "unused-ret-vals");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "wrong-arity");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "wrong-ns-form");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "wrong-pre-post");
-        profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, "wrong-tag");
+        JsonProfile jsonProfile = new JsonProfile();
+
+        try {
+            jsonProfile = readProfile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        jsonProfile.getRuleKeys().stream()
+                .forEach(key -> profile.activateRule(ClojureLintRulesDefinition.REPOSITORY_KEY, key));
 
         profile.done();
+    }
+
+    private JsonProfile readProfile() throws FileNotFoundException {
+        JsonReader reader = new JsonReader(new FileReader(CLOJURE_SONAR_WAY_PATH));
+        return new Gson().fromJson(reader, JsonProfile.class);
     }
 
 }
