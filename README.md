@@ -22,22 +22,26 @@ the old plugin were very extensive, I decided to start from scratch and use the 
 ## Installation
 
 In order to install SonarClojure:
-1. Download the [latest version](https://github.com/fsantiag/sonar-clojure/releases) of the plugin.
-2. Place it in the SonarQube server plugins directory, usually located under: `/opt/sonarqube/extensions/plugins/`
+1. Download the [latest](https://github.com/fsantiag/sonar-clojure/releases) jar of the plugin.
+2. Place the jar in the SonarQube server plugins directory, usually located under: `/opt/sonarqube/extensions/plugins/`
 3. Restart the SonarQube server.
 
 ## Usage
-1. Change your project.clj file and add Eastwood to the list of plugins:
+1. Change your ***project.clj*** file and add Eastwood to the list of plugins:
+
     ```clojure
     :plugins [[jonase/eastwood "0.2.5"]]
     ```
-2. Create a sonar-project.properties file in the root folder of your app:
+    
+2. Create a ***sonar-project.properties*** file in the root folder of your app:
+
     ```properties
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
     sonar.sources=src/
     ```
+    
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
@@ -48,7 +52,7 @@ mvn clean package
 
 Maven will generate an SNAPSHOT under the folder ***target***.
 
-### Compatibility
+## Compatibility
 
 At the moment, SonarClojure was tested only on SonarQube 6.7.
 
