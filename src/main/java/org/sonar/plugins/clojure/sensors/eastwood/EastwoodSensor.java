@@ -78,8 +78,14 @@ public class EastwoodSensor implements Sensor {
         LOG.info("Running Eastwood");
         CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
 
-        List<Issue> issues = EastwoodIssueParser.parse(stdOut);
+        String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
+        if (info != null) {
+            LOG.info("Ran " + info);
+        } else {
+            LOG.warn("Eastwood resulted in empty output");
+        }
 
+        List<Issue> issues = EastwoodIssueParser.parse(stdOut);
         LOG.info("Saving issues");
         for (Issue issue : issues) {
             saveIssue(issue, context);

@@ -13,6 +13,17 @@ public class EastwoodIssueParser {
 
     private EastwoodIssueParser() {}
 
+    public static String parseRuntimeInfo(CommandStreamConsumer output) {
+        if (output != null) {
+            List<String> lines = output.getData();
+            if (lines.size() > 0) {
+                // Remove the "== " prefix in eastwood's output
+                return lines.get(0).substring(3);
+            }
+        }
+        return null;
+    }
+
     public static List<Issue> parse(CommandStreamConsumer output) {
         List<Issue> issues = new ArrayList<>();
 
