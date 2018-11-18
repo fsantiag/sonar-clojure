@@ -3,6 +3,10 @@ sudo: false
 install: true
 jdk: oraclejdk8
 
+# Disable shallow clone to prevent SonarCloud warning
+git:
+  depth: false
+
 cache:
   directories:
   - '$HOME/.m2/repository'
