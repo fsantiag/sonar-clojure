@@ -43,6 +43,19 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+                <artifactId>sonar-packaging-maven-plugin</artifactId>
+                <version>1.18.0.372</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginKey>clojure</pluginKey>
+                    <pluginClass>org.sonar.plugins.clojure.ClojurePlugin</pluginClass>
+                    <pluginName>SonarClojure</pluginName>
+                    <sonarLintSupported>true</sonarLintSupported>
+                    <sonarQubeMinVersion>6.7</sonarQubeMinVersion>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
