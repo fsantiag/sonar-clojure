@@ -43,6 +43,11 @@ public class ClojurePluginTest {
     }
 
     @Test
+    public void testClojureQualityProfileIsAPluginExtension() {
+        assertTrue(context.getExtensions().contains(ClojureSonarWayProfile.class));
+    }
+
+    @Test
     public void testClojureLintRulesDefinitionIsAPluginExtension() {
         assertTrue(context.getExtensions().contains(ClojureLintRulesDefinition.class));
     }
