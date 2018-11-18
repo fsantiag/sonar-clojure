@@ -10,6 +10,7 @@
     <packaging>sonar-plugin</packaging>
     <name>Sonar-Clojure</name>
     <description>SonarClojure is a plugin for SonarQube to analyze Clojure source.</description>
+    <url>https://github.com/fsantiag/sonar-clojure</url>
 
     <dependencies>
         <dependency>
