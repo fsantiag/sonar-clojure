@@ -323,4 +323,32 @@
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
+    <rule>
+        <key>implicit-dependencies</key>
+        <name>implicit-dependencies</name>
+        <internalKey>implicit-dependencies</internalKey>
+        <description> Var foo refers to namespace bar that isn't explicitly required.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>kibit</key>
+        <name>kibit</name>
+        <internalKey>kibit</internalKey>
+        <description> Suggestion from kibit
+        </description>
+        <severity>MINOR</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
 </rules>

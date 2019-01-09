@@ -54,7 +54,7 @@ public class ClojurePluginTest {
 
     @Test
     public void testFileSuffixesPropertyIsInExtensions() {
-        List<PropertyDefinition> propertyDefinitions = (List<PropertyDefinition>) context.getExtensions().get(5);
+        List<PropertyDefinition> propertyDefinitions = (List<PropertyDefinition>) context.getExtensions().get(6);
         PropertyDefinition suffixProperty = propertyDefinitions.get(0);
         assertThat(suffixProperty.key(), is("sonar.clojure.file.suffixes"));
 
@@ -62,6 +62,6 @@ public class ClojurePluginTest {
 
     @Test
     public void testOnlyFiveExtensionsAreIncluded() {
-        assertThat(context.getExtensions().size(), is(6));
+        assertThat(context.getExtensions().size(), is(7));
     }
 }

@@ -1,6 +1,8 @@
 {
   "name": "Sonar way",
   "ruleKeys": [
+    "implicit-dependencies",
+    "kibit",
     "bad-arglists",
     "constant-test",
     "def-in-def",
