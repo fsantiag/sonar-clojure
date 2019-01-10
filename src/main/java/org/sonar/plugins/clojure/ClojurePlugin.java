@@ -12,22 +12,27 @@ import org.sonar.plugins.clojure.sensors.kibit.KibitSensor;
 import org.sonar.plugins.clojure.sensors.leinNvd.LeinNvdSensor;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class ClojurePlugin implements Plugin {
 
     public void define(Context context) {
+        SonarProjectProperties props = new SonarProjectProperties();
         context.addExtension(ClojureLanguage.class);
         context.addExtension(ClojureSonarWayProfile.class);
         context.addExtension(ClojureLintRulesDefinition.class);
         context.addExtension(CommandRunner.class);
-        context.addExtension(EastwoodSensor.class);
-        context.addExtension(KibitSensor.class);
-        context.addExtension(CloverageSensor.class);
-        context.addExtension(LeinNvdSensor.class);
+
+        if (!props.isEastwoodDisabled()){
+            context.addExtension(EastwoodSensor.class);
+        }
+        if (!props.isKibitDisabled()){
+            context.addExtension(KibitSensor.class);
+        }
+        if (!props.isCloverageDisabled()){
+            context.addExtension(CloverageSensor.class);
+        }
+        if (!props.isLeinNVDDisabled()){
+            context.addExtension(LeinNvdSensor.class);
+        }
         context.addExtension(ClojureProperties.getProperties());
     }
 }
