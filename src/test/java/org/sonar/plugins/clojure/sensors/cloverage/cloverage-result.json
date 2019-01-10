@@ -1,0 +1,13 @@
+{
+  "coverage": {
+    "sok_register_api/config.clj": [
+      null,
+      1,
+      null,
+      1,
+      null,
+      0,
+      true
+    ]
+  }
+}
