@@ -32,12 +32,12 @@ public class CloverageMetricParserTest {
         List<LineAnalysis> entries = e.getEntries();
         List<LineAnalysis> expected = new ArrayList<>();
         expected.addAll(asList(new LineAnalysis().setLineNumber(1).setHits(1),
-                new LineAnalysis().setLineNumber(2).setHits(0),
+
                 new LineAnalysis().setLineNumber(3).setHits(1),
-                new LineAnalysis().setLineNumber(4).setHits(0),
+
                 new LineAnalysis().setLineNumber(5).setHits(0),
                 new LineAnalysis().setLineNumber(6).setHits(1)));
-        System.out.println(entries.toString());
+
         entries.stream().forEach(entry -> assertTrue(expected.contains(entry)));
     }
 

@@ -29,15 +29,12 @@ public class CloverageMetricParser {
             int lineNumber = 0;
             for(JsonElement i: e.getValue().getAsJsonArray()){
                 if (lineNumber > 0){
-                    if (i.isJsonNull()){
-                        entry.addLine(lineNumber, 0);
-                    } else {
+                    if (!i.isJsonNull()){
                         try {
                             entry.addLine(lineNumber, i.getAsInt());
                         } catch (java.lang.NumberFormatException n) {
                             entry.addLine(lineNumber, 1);
                         }
-
                     };
                 }
                 lineNumber++;
