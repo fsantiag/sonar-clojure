@@ -5,6 +5,7 @@ import org.sonar.api.Plugin;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.ancient.AncientSensor;
 import org.sonar.plugins.clojure.sensors.cloverage.CloverageSensor;
 import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
@@ -32,6 +33,10 @@ public class ClojurePlugin implements Plugin {
         }
         if (!props.isLeinNVDDisabled()){
             context.addExtension(LeinNvdSensor.class);
+        }
+
+        if (!props.isAncientDisabled()){
+            context.addExtension(AncientSensor.class);
         }
         context.addExtension(ClojureProperties.getProperties());
     }

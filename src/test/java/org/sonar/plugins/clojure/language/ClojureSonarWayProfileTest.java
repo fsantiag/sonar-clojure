@@ -28,9 +28,10 @@ public class ClojureSonarWayProfileTest {
     public void testIfSonarwayProfileIsCreatedWithAllRules() {
         BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
         List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
-        assertThat(rules.size(), is(27));
+        assertThat(rules.size(), is(28));
         List<String> ruleKeys = new ArrayList<>();
         ruleKeys.addAll(asList(
+                "ancient-dependency",
                 "nvd-medium",
                 "nvd-high",
                 "implicit-dependencies",

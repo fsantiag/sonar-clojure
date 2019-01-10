@@ -2,12 +2,8 @@ package org.sonar.plugins.clojure;
 
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
-import org.sonar.plugins.clojure.sensors.leinNvd.LeinNvdParser;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class SonarProjectProperties {
@@ -18,6 +14,7 @@ public class SonarProjectProperties {
     private boolean isEastwoodDisabled = false;
     private boolean isCloverageDisabled = false;
     private boolean isLeinNVDDisabled = false;
+    private boolean isAncientDisabled = false;
 
     public boolean isKibitDisabled() {
         return isKibitDisabled;
@@ -35,6 +32,10 @@ public class SonarProjectProperties {
         return isLeinNVDDisabled;
     }
 
+    public boolean isAncientDisabled() {
+        return isAncientDisabled;
+    }
+
     public SonarProjectProperties() {
         try (FileInputStream input = new FileInputStream("sonar-project.properties")) {
             // load a properties file
@@ -43,6 +44,7 @@ public class SonarProjectProperties {
             isEastwoodDisabled = Boolean.parseBoolean(prop.getProperty("clojure.disable.eastwood"));
             isCloverageDisabled = Boolean.parseBoolean(prop.getProperty("clojure.disable.cloverage"));
             isLeinNVDDisabled = Boolean.parseBoolean(prop.getProperty("clojure.disable.leinnvd"));
+            isAncientDisabled = Boolean.parseBoolean(prop.getProperty("clojure.disable.ancient"));
         } catch (IOException e) {
             LOG.warn("Properties read failed");
         }
