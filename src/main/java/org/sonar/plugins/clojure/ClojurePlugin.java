@@ -9,6 +9,7 @@ import org.sonar.plugins.clojure.sensors.cloverage.CloverageSensor;
 import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.kibit.KibitSensor;
+import org.sonar.plugins.clojure.sensors.leinNvd.LeinNvdSensor;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.io.FileInputStream;
@@ -26,6 +27,7 @@ public class ClojurePlugin implements Plugin {
         context.addExtension(EastwoodSensor.class);
         context.addExtension(KibitSensor.class);
         context.addExtension(CloverageSensor.class);
+        context.addExtension(LeinNvdSensor.class);
         context.addExtension(ClojureProperties.getProperties());
     }
 }

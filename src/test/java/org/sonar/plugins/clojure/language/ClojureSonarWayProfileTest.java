@@ -25,12 +25,14 @@ public class ClojureSonarWayProfileTest {
     }
 
     @Test
-    public void testIfSonarwayProfileIsCreatedWithAllEastwoodRules() {
+    public void testIfSonarwayProfileIsCreatedWithAllRules() {
         BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
         List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
-        assertThat(rules.size(), is(25));
+        assertThat(rules.size(), is(27));
         List<String> ruleKeys = new ArrayList<>();
         ruleKeys.addAll(asList(
+                "nvd-medium",
+                "nvd-high",
                 "implicit-dependencies",
                 "kibit",
                 "bad-arglists",

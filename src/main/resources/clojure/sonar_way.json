@@ -1,6 +1,8 @@
 {
   "name": "Sonar way",
   "ruleKeys": [
+    "nvd-medium",
+    "nvd-high",
     "implicit-dependencies",
     "kibit",
     "bad-arglists",
