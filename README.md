@@ -13,8 +13,10 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 
 ## Current State
 
-At the moment, SonarClojure is only capable of checking for lint rules that Eastwood can detect.
-
+### Eastwood
+[Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
+ , def in defs and tests which always returns true.
+ 
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
