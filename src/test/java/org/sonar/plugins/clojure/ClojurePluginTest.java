@@ -59,9 +59,4 @@ public class ClojurePluginTest {
         assertThat(suffixProperty.key(), is("sonar.clojure.file.suffixes"));
 
     }
-
-    @Test
-    public void testOnlyFiveExtensionsAreIncluded() {
-        assertThat(context.getExtensions().size(), is(6));
-    }
 }
