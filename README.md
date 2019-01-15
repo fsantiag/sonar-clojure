@@ -16,10 +16,22 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 ### Eastwood
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
- 
+
+### Kibit
+[Kibit](https://github.com/jonase/eastwood) is a static code analyzer which detects code that could be rewritten with a more idiomatic 
+function or macro. For example: 
+```clojure 
+(> x 0) 
+; more idiomatically
+(pos? x)
+```
+
+Kibit is most useful for beginning Clojure programmers. Kibit supports also Clojurescript.
+
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
+
 
 ## Installation
 
