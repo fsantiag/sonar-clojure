@@ -16,6 +16,14 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 ### Eastwood
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
+
+### Lein-nvd
+
+[Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
+the [National Vulnerability Database](https://nvd.nist.gov/). The Sonarcube plugin currently marks all the found vulnerabilites to 
+the first line of project.clj because the lein-nvd only returns JAR name not the dependency which pulls it directly or transitively.
+
+Remember to add target/nvd/dependency-check-report.json to sonar.sources-property or the plugin cannot read the generated report.
  
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
@@ -41,7 +49,7 @@ In order to install SonarClojure:
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-    sonar.sources=src/
+    sonar.sources=src,test,resources,project.clj,target/nvd/dependency-check-report.json
     ```
     
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.

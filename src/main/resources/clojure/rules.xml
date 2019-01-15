@@ -323,4 +323,60 @@
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
+    <rule>
+        <key>nvd-critical</key>
+        <name>nvd-critical</name>
+        <internalKey>nvd-critical</internalKey>
+        <description>Critical severity security problem
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>VULNERABILITY</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>nvd-high</key>
+        <name>nvd-high</name>
+        <internalKey>nvd-high</internalKey>
+        <description> High severity security problem
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>VULNERABILITY</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>nvd-medium</key>
+        <name>nvd-medium</name>
+        <internalKey>nvd-medium</internalKey>
+        <description> High severity security problem
+        </description>
+        <severity>MAJOR</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>VULNERABILITY</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>nvd-low</key>
+        <name>nvd-low</name>
+        <internalKey>nvd-low</internalKey>
+        <description>Low severity security problem
+        </description>
+        <severity>MINOR</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>VULNERABILITY</type>
+        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
+    </rule>
 </rules>
