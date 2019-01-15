@@ -16,7 +16,15 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 ### Eastwood
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
- 
+
+### Cloverage
+
+[Cloverage](https://github.com/cloverage/cloverage) is a code coverage tool for Clojure which runs the tests ot a program 
+and calculates line and form coverage for namespaces. Only line coverage is supported by Sonarcube and calculation seems to be
+be somehow different compared to Cloverage itself by few percents.
+
+Remember to add target/coverage/codecov.json to SonarQube properties or the sensor cannot read Cloverage output.
+
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
@@ -41,7 +49,7 @@ In order to install SonarClojure:
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-    sonar.sources=src/
+    sonar.sources=src,target/coverage/codecov.json
     ```
     
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
