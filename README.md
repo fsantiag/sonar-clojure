@@ -16,6 +16,11 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 ### Eastwood
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
+
+### Ancient
+
+[Ancient] is a plugin to check your project for outdated dependencies and plugins and  suggest updates. The Sonarqube plugin
+marks these as minor vulnerabilities to project.clj file.
  
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
