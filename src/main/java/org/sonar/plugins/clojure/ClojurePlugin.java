@@ -12,11 +12,12 @@ import org.sonar.plugins.clojure.settings.ClojureProperties;
 public class ClojurePlugin implements Plugin {
 
     public void define(Context context) {
+        context.addExtension(ClojureProperties.getProperties());
         context.addExtension(ClojureLanguage.class);
         context.addExtension(ClojureSonarWayProfile.class);
         context.addExtension(ClojureLintRulesDefinition.class);
         context.addExtension(CommandRunner.class);
         context.addExtension(EastwoodSensor.class);
-        context.addExtension(ClojureProperties.getProperties());
+
     }
 }
