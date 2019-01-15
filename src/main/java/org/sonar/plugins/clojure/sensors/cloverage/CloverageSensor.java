@@ -70,10 +70,13 @@ public class CloverageSensor implements Sensor {
             CoverageReport report = null;
             try {
                 report = CloverageMetricParser.parse(file.contents());
+                saveCoverageForFile(report, context);
             } catch (IOException e) {
                 LOG.warn("Cloverage report cannot be read");
+            } catch (Exception e){
+                LOG.warn("Running parser or saving caused exception");
+                e.printStackTrace();
             }
-            saveCoverageForFile(report, context);
         } else {
             LOG.warn("Cloverage report does not exists. Have you added Cloverage to plugin and also added target/coverage/codecov.json to SonarQube source? ");
         }
