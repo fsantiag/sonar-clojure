@@ -47,7 +47,7 @@ In order to install SonarClojure:
 ## Building from source
 
 ```sh
-mvn clean package
+./mvnw clean package
 ```
 
 Maven will generate an SNAPSHOT under the folder ***target***.
