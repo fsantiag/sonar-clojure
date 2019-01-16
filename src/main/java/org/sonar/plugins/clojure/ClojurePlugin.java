@@ -16,28 +16,13 @@ import java.io.FileNotFoundException;
 
 public class ClojurePlugin implements Plugin {
 
-    private static final Logger LOG = Loggers.get(SonarProjectProperties.class);
-    private final SonarProjectProperties props = new SonarProjectProperties();
-
-    private void addExtensionIfNotDisabled(Class extension, Context context){
-        if (!props.isSensorDisabled(extension)) {
-            context.addExtension(extension);
-        }
-    }
-
     public void define(Context context) {
-
-        try {
-            props.initialize(new FileInputStream("sonar-project.properties"));
-        } catch (FileNotFoundException e) {
-            LOG.info("sonar-project.properties does not seems to exist");
-        }
 
         context.addExtension(ClojureProperties.getProperties());
         context.addExtension(ClojureLanguage.class);
         context.addExtension(ClojureSonarWayProfile.class);
         context.addExtension(ClojureLintRulesDefinition.class);
         context.addExtension(CommandRunner.class);
-        addExtensionIfNotDisabled(EastwoodSensor.class, context);
+        context.addExtension(EastwoodSensor.class);
     }
 }
