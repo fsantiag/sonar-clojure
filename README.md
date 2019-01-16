@@ -58,7 +58,7 @@ Maven will generate an SNAPSHOT under the folder ***target***.
 
 ```sh
 mvn clean package
-start-sonarcube.sh
+start-sonarqube.sh
 ```
 
 Create sonar-project.properties file. Run ```sonar-scanner``` on Clojure applications root directory which you like to analyze.
@@ -66,7 +66,7 @@ Open http://localhost:9000/dashboard?id=your-project-key and check for issues.
 
 ## Compatibility
 
-At the moment, SonarClojure was tested on SonarQube 6.7 and 7.4 Community Edition.
+At the moment, SonarClojure was tested on SonarQube 7.4 Community Edition.
 
 ## License
 
