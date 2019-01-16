@@ -34,7 +34,7 @@ In order to install SonarClojure:
     ```clojure
     :plugins [[jonase/eastwood "0.2.5"]]
     ```
-    
+
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
     ```properties
@@ -43,13 +43,13 @@ In order to install SonarClojure:
     sonar.projectVersion=1.0
     sonar.sources=src/
     ```
-    
+
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
 
 ```sh
-mvn clean package
+./mvnw clean package
 ```
 
 Maven will generate an SNAPSHOT under the folder ***target***.
