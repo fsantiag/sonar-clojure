@@ -1,6 +1,7 @@
 package org.sonar.plugins.clojure.settings;
 
 import org.sonar.api.config.PropertyDefinition;
+import org.sonar.api.resources.Qualifiers;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ public class ClojureProperties {
     private ClojureProperties() {}
 
     public static List<PropertyDefinition> getProperties() {
-        return asList(getFileSuffixProperty());
+        return asList(getFileSuffixProperty(),
+                getEastwoodDisabledProperty());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -23,6 +25,16 @@ public class ClojureProperties {
                 .category("ClojureLanguage")
                 .name("File Suffixes")
                 .description("Comma-separated list of suffixes for files to analyze.")
+                .build();
+    }
+
+    public static PropertyDefinition getEastwoodDisabledProperty() {
+        return PropertyDefinition.builder("sonar.clojure.eastwood.disabled")
+                .category("ClojureLanguage")
+                .subCategory("Eastwood")
+                .defaultValue("false")
+                .name("Eastwood sensor disabling")
+                .description("Set true to disable Eastwood sensor.")
                 .build();
     }
 }

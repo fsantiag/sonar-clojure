@@ -1,6 +1,8 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 
+import org.sonar.api.Properties;
+import org.sonar.api.Property;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
@@ -71,25 +73,40 @@ public class EastwoodSensor implements Sensor {
                 .global();
     }
 
+    public boolean checkIfPluginIsDisabled(SensorContext context){
+
+        if (context.config().getBoolean("sonar.clojure.eastwood.disabled").isPresent()) {
+            return  context.config().getBoolean("sonar.clojure.eastwood.disabled").get();
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void execute(SensorContext context) {
-        LOG.info("Clojure project detected, running SonarClojure");
 
-        LOG.info("Running Eastwood");
-        CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
+        if (!checkIfPluginIsDisabled(context)) {
+            LOG.info("Clojure project detected");
 
-        String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
-        if (info != null) {
-            LOG.info("Ran " + info);
+            LOG.info("Running Eastwood");
+            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
+
+            String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
+            if (info != null) {
+                LOG.info("Ran " + info);
+            } else {
+                LOG.warn("Eastwood resulted in empty output");
+            }
+
+            List<Issue> issues = EastwoodIssueParser.parse(stdOut);
+            LOG.info("Saving issues");
+            for (Issue issue : issues) {
+                saveIssue(issue, context);
+            }
         } else {
-            LOG.warn("Eastwood resulted in empty output");
+            LOG.info ("Eastwood plugin is disabled");
         }
 
-        List<Issue> issues = EastwoodIssueParser.parse(stdOut);
-        LOG.info("Saving issues");
-        for (Issue issue : issues) {
-            saveIssue(issue, context);
-        }
     }
 
 }

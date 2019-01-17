@@ -13,8 +13,10 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 
 ## Current State
 
-At the moment, SonarClojure is only capable of checking for lint rules that Eastwood can detect.
-
+### Eastwood
+[Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
+ , def in defs and tests which always returns true.
+ 
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
@@ -42,6 +44,10 @@ In order to install SonarClojure:
     sonar.sources=src/
     ```
 
+Plugin can be disabled by setting property ```sonar.clojure.eastwood.disabled=true``` in sonar-project.properties file or
+by using command line switch ```-Dsonar.clojure.eastwood.disabled``` with when running ```sonar-scanner```.
+
+
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
@@ -52,9 +58,22 @@ In order to install SonarClojure:
 
 Maven will generate an SNAPSHOT under the folder ***target***.
 
+## Testing the plugin with locally running dockerized Sonarqube 
+
+```sh
+mvn clean package
+start-sonarqube.sh
+```
+
+Create sonar-project.properties file. Run ```sonar-scanner``` on Clojure applications root directory which you like to analyze.
+Open http://localhost:9000/dashboard?id=your-project-key and check for issues.
+
 ## Compatibility
 
-At the moment, SonarClojure was tested only on SonarQube 6.7.
+At the moment, SonarClojure was tested on SonarQube 7.1 Community Edition.
+
+If using later versions than SonarQube 7.1 then the project overview might be empty. This can be fixed by adding a xml file or other SonarQube analyzable
+file to scanned files for example to resources folder. Remember to check that the folder is also in sonar.sources property.
 
 ## License
 
