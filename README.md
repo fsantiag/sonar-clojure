@@ -44,6 +44,10 @@ In order to install SonarClojure:
     sonar.sources=src/
     ```
 
+Plugin can be disabled by setting property ```sonar.clojure.eastwood.disabled=true``` in sonar-project.properties file or
+by using command line switch ```-Dsonar.clojure.eastwood.disabled``` with when running ```sonar-scanner```.
+
+
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
@@ -66,7 +70,10 @@ Open http://localhost:9000/dashboard?id=your-project-key and check for issues.
 
 ## Compatibility
 
-At the moment, SonarClojure was tested on SonarQube 7.4 Community Edition.
+At the moment, SonarClojure was tested on SonarQube 7.1 Community Edition.
+
+If using later versions than SonarQube 7.1 then the project overview might be empty. This can be fixed by adding a xml file or other SonarQube analyzable
+file to scanned files for example to resources folder. Remember to check that the folder is also in sonar.sources property.
 
 ## License
 
