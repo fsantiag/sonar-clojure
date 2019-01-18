@@ -26,12 +26,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class AncientSensorTest {
@@ -52,6 +54,24 @@ public class AncientSensorTest {
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
+
+    @Test
+    public void testIfLeinAndPluginIsinstalled(){
+        List<String> osxOutputIfAncientIsNotFound =  new ArrayList<String>();
+        osxOutputIfAncientIsNotFound.add("'ancient' is not a task. See 'lein help'.");
+        List<String> normalOutput =  new ArrayList<String>();
+        normalOutput.add("Contains something else");
+        List<String> osxBashOutputILeinIsNotFound =  new ArrayList<String>();
+        osxBashOutputILeinIsNotFound.add("-bash: lein: command not found");
+
+        AncientSensor sensor = new AncientSensor(commandRunner);
+        assertFalse(sensor.isAncientInstalled(osxOutputIfAncientIsNotFound));
+        assertFalse(sensor.isLeinInstalled(osxBashOutputILeinIsNotFound));
+        assertTrue(sensor.isAncientInstalled(normalOutput));
+        assertTrue(sensor.isLeinInstalled(normalOutput));
+
+    }
+
 
     @Test
     public void testExecuteSensor() throws IOException {

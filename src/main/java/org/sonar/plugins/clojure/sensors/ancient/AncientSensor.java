@@ -48,52 +48,83 @@ public class AncientSensor implements Sensor {
                 .global();
     }
 
+    public boolean isLeinInstalled(List<String> output) {
+        String leinNotInstalled = "lein: command not found";
+        if (!output.toString().contains(leinNotInstalled)) {
+            return true;
+        } else {
+            LOG.error("Leiningen is propably not installed!");
+            LOG.error(output.toString());
+            return false;
+        }
+    }
+
+    public boolean isAncientInstalled(List<String> output) {
+        String ancientNotInstalled = "'ancient' is not a task";
+        if (!output.toString().contains(ancientNotInstalled)) {
+            return true;
+        } else {
+            LOG.error("Ancient is propably not installed!");
+            LOG.error(output.toString());
+            return false;
+        }
+    }
+
     @Override
     public void execute(SensorContext context) {
         LOG.info("Running Lein Ancient");
 
         CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, "ancient");
-        List<OutdatedDependency> outdated = AncientOutputParser.parse(stdOut.getData());
-        LOG.debug("Parsed " + outdated.size() + " dependencies");
-        saveOutdated(outdated, context);
+        if (isLeinInstalled(stdOut.getData()) && isAncientInstalled(stdOut.getData())) {
+            List<OutdatedDependency> outdated = AncientOutputParser.parse(stdOut.getData());
+            LOG.debug("Parsed " + outdated.size() + " dependencies");
+            saveOutdated(outdated, context);
+        } else {
+            LOG.warn("Parsing skipped because Leiningen or Ancient is not installed");
+        }
     }
 
+    public boolean checkIfPluginIsDisabled(SensorContext context) {
+
+        if (context.config().getBoolean("sonar.clojure.eastwood.disabled").isPresent()) {
+            return context.config().getBoolean("sonar.clojure.eastwood.disabled").get();
+        } else {
+            return false;
+        }
+    }
 
 
     private void saveOutdated(List<OutdatedDependency> outdated, SensorContext context) {
-        InputFile project = getFile("project.clj", context.fileSystem());
-        if (project != null){
-            try {
-                for (OutdatedDependency o :
-                        outdated) {
+        if (!checkIfPluginIsDisabled(context)) {
+            InputFile project = getFile("project.clj", context.fileSystem());
+            if (project != null) {
+                try {
+                    for (OutdatedDependency o :
+                            outdated) {
 
 
-                    ProjectFile pr = new ProjectFile(project.contents());
-                    LOG.debug("Processing outdated dependencies");
+                        ProjectFile pr = new ProjectFile(project.contents());
+                        LOG.debug("Processing outdated dependencies");
 
-                    RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-clj-dependency");
-                    NewIssue newIssue = context.newIssue().forRule(ruleKey);
-                    int lineLocation = pr.findLineNumber(o.getName() +" \"" + o.getCurrentVersion() + "\"");
+                        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-clj-dependency");
+                        NewIssue newIssue = context.newIssue().forRule(ruleKey);
+                        int lineLocation = pr.findLineNumber(o.getName() + " \"" + o.getCurrentVersion() + "\"");
 
-                    NewIssueLocation primaryLocation = newIssue
-                            .newLocation()
-                            .on(project)
-                            .message(o.toString())
-                            .at(project.selectLine(lineLocation));
-                    newIssue.at(primaryLocation);
-                    newIssue.save();
+                        NewIssueLocation primaryLocation = newIssue
+                                .newLocation()
+                                .on(project)
+                                .message(o.toString())
+                                .at(project.selectLine(lineLocation));
+                        newIssue.at(primaryLocation);
+                        newIssue.save();
+                    }
+
+                } catch (IOException e) {
+                    LOG.warn("project.clj could not be read");
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                LOG.warn("project.clj could not be read");
+            } else {
+                LOG.warn("project.clj does not exists in the filesystem");
             }
-        } else {
-            LOG.warn("project.clj does not exists in the filesystem");
         }
-
-
-
     }
-
 }
