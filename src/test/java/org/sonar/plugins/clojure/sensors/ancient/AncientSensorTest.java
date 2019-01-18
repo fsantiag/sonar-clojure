@@ -83,8 +83,8 @@ public class AncientSensorTest {
 
         List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
         assertThat(issuesList.size(), is(2));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("ancient-dependency"));
-        assertThat(issuesList.get(1).ruleKey().rule(), is("ancient-dependency"));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("ancient-clj-dependency"));
+        assertThat(issuesList.get(1).ruleKey().rule(), is("ancient-clj-dependency"));
     }
     @Test
     public void testExecuteSensorWithNonExistingProject() throws IOException {

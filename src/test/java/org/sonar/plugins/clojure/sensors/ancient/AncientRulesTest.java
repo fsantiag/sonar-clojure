@@ -24,14 +24,5 @@ public class AncientRulesTest {
     }
 
 
-    @Test
-    public void testIfSonarwayProfileIsCreatedWithAllEastwoodRules() {
-        BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
-        List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
-        //assertThat(rules.size(), is(23));
-        List<String> ruleKeys = new ArrayList<>();
-        ruleKeys.addAll(asList("ancient-dependency"));
 
-        ruleKeys.stream().forEach(eastwoodRule -> assertTrue(ruleKeys.contains(eastwoodRule)));
-    }
 }

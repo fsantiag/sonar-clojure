@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors.eastwood;
+package org.sonar.plugins.clojure.language;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertTrue;
 
-public class EastwoodRulesTest {
+public class ClojureSonarWayProfileTest {
 
     private BuiltInQualityProfilesDefinition.Context context;
     private ClojureSonarWayProfile clojureSonarWayProfile;
@@ -27,8 +27,6 @@ public class EastwoodRulesTest {
     @Test
     public void testIfSonarwayProfileIsCreatedWithAllEastwoodRules() {
         BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
-        List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
-        //assertThat(rules.size(), is(23));
         List<String> ruleKeys = new ArrayList<>();
         ruleKeys.addAll(asList("bad-arglists",
                 "constant-test",
@@ -55,5 +53,15 @@ public class EastwoodRulesTest {
                 "wrong-tag"));
 
         ruleKeys.stream().forEach(eastwoodRule -> assertTrue(ruleKeys.contains(eastwoodRule)));
+    }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithAllAncientCljRules() {
+        BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
+        //assertThat(rules.size(), is(23));
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("ancient-clj-dependency"));
+
+        ruleKeys.stream().forEach(ancientCljRule -> assertTrue(ruleKeys.contains(ancientCljRule)));
     }
 }

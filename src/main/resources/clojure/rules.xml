@@ -324,8 +324,8 @@
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
     <rule>
-        <key>ancient-dependency</key>
-        <name>ancient-dependency</name>
+        <key>ancient-clj-dependency</key>
+        <name>ancient-clj-dependency</name>
         <internalKey>ancient-dependency</internalKey>
         <description>Dependencies can be upgraded to newer version.
         </description>

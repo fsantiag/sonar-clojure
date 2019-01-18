@@ -71,7 +71,7 @@ public class AncientSensor implements Sensor {
                     ProjectFile pr = new ProjectFile(project.contents());
                     LOG.debug("Processing outdated dependencies");
 
-                    RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-dependency");
+                    RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-clj-dependency");
                     NewIssue newIssue = context.newIssue().forRule(ruleKey);
                     int lineLocation = pr.findLineNumber(o.getName() +" \"" + o.getCurrentVersion() + "\"");
 
