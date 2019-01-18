@@ -16,7 +16,8 @@ public class ClojureProperties {
 
     public static List<PropertyDefinition> getProperties() {
         return asList(getFileSuffixProperty(),
-                getEastwoodDisabledProperty());
+                getEastwoodDisabledProperty(),
+                getAncientCljDisabledProperty());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -31,7 +32,7 @@ public class ClojureProperties {
     public static PropertyDefinition getEastwoodDisabledProperty() {
         return PropertyDefinition.builder("sonar.clojure.eastwood.disabled")
                 .category("ClojureLanguage")
-                .subCategory("Eastwood")
+                .subCategory("Sensors")
                 .defaultValue("false")
                 .name("Eastwood sensor disabling")
                 .description("Set true to disable Eastwood sensor.")
@@ -41,7 +42,7 @@ public class ClojureProperties {
     public static PropertyDefinition getAncientCljDisabledProperty() {
         return PropertyDefinition.builder("sonar.clojure.ancient-clj.disabled")
                 .category("ClojureLanguage")
-                .subCategory("ancient-clj")
+                .subCategory("Sensors")
                 .defaultValue("false")
                 .name("ancient-clj sensor disabling")
                 .description("Set true to disable ancient-clj sensor.")

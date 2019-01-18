@@ -56,24 +56,6 @@ public class AncientSensorTest {
     }
 
     @Test
-    public void testIfLeinAndPluginIsinstalled(){
-        List<String> osxOutputIfAncientIsNotFound =  new ArrayList<String>();
-        osxOutputIfAncientIsNotFound.add("'ancient' is not a task. See 'lein help'.");
-        List<String> normalOutput =  new ArrayList<String>();
-        normalOutput.add("Contains something else");
-        List<String> osxBashOutputILeinIsNotFound =  new ArrayList<String>();
-        osxBashOutputILeinIsNotFound.add("-bash: lein: command not found");
-
-        AncientSensor sensor = new AncientSensor(commandRunner);
-        assertFalse(sensor.isAncientInstalled(osxOutputIfAncientIsNotFound));
-        assertFalse(sensor.isLeinInstalled(osxBashOutputILeinIsNotFound));
-        assertTrue(sensor.isAncientInstalled(normalOutput));
-        assertTrue(sensor.isLeinInstalled(normalOutput));
-
-    }
-
-
-    @Test
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
         // Adding file to Sonar Contex
