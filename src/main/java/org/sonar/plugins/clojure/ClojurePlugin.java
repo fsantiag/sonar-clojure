@@ -7,6 +7,7 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.ancient.AncientSensor;
 import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
@@ -24,5 +25,6 @@ public class ClojurePlugin implements Plugin {
         context.addExtension(ClojureLintRulesDefinition.class);
         context.addExtension(CommandRunner.class);
         context.addExtension(EastwoodSensor.class);
+        context.addExtension(AncientSensor.class);
     }
 }

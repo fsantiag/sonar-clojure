@@ -15,13 +15,14 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.Issue;
 
 import java.util.List;
 
-public class EastwoodSensor implements Sensor {
+public class EastwoodSensor extends AbstractSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
@@ -73,35 +74,26 @@ public class EastwoodSensor implements Sensor {
                 .global();
     }
 
-    public boolean checkIfPluginIsDisabled(SensorContext context){
-
-        if (context.config().getBoolean("sonar.clojure.eastwood.disabled").isPresent()) {
-            return  context.config().getBoolean("sonar.clojure.eastwood.disabled").get();
-        } else {
-            return false;
-        }
-    }
-
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context)) {
+        if (!checkIfPluginIsDisabled(context, "sonar.clojure.eastwood.disabled")) {
             LOG.info("Clojure project detected");
-
             LOG.info("Running Eastwood");
             CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
+            if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), EASTWOOD_COMMAND)){
+                String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
+                if (info != null) {
+                    LOG.info("Ran " + info);
+                } else {
+                    LOG.warn("Eastwood resulted in empty output");
+                }
 
-            String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
-            if (info != null) {
-                LOG.info("Ran " + info);
-            } else {
-                LOG.warn("Eastwood resulted in empty output");
-            }
-
-            List<Issue> issues = EastwoodIssueParser.parse(stdOut);
-            LOG.info("Saving issues");
-            for (Issue issue : issues) {
-                saveIssue(issue, context);
+                List<Issue> issues = EastwoodIssueParser.parse(stdOut);
+                LOG.info("Saving issues");
+                for (Issue issue : issues) {
+                    saveIssue(issue, context);
+                }
             }
         } else {
             LOG.info ("Eastwood plugin is disabled");

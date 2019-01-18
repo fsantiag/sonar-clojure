@@ -54,4 +54,14 @@ public class ClojureSonarWayProfileTest {
 
         ruleKeys.stream().forEach(eastwoodRule -> assertTrue(ruleKeys.contains(eastwoodRule)));
     }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithAllAncientCljRules() {
+        BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
+        //assertThat(rules.size(), is(23));
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("ancient-clj-dependency"));
+
+        ruleKeys.stream().forEach(ancientCljRule -> assertTrue(ruleKeys.contains(ancientCljRule)));
+    }
 }

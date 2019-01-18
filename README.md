@@ -16,6 +16,13 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 ### Eastwood
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
+
+### ancient-clj
+
+[ancient-clj](https://github.com/xsc/lein-ancient) is a Clojure library with Leiningen plugin which checks your project for outdated dependencies and plugins and  suggest updates. The Sonarqube plugin
+marks these as minor vulnerabilities to project.clj file.
+
+ancient-clj sensor requires project.clj to be included in sonar.sources property.
  
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
@@ -32,7 +39,8 @@ In order to install SonarClojure:
 1. Change your ***project.clj*** file and add Eastwood to the list of plugins:
 
     ```clojure
-    :plugins [[jonase/eastwood "0.2.5"]]
+    :plugins [[jonase/eastwood "0.2.5"]
+              [lein-ancient "0.6.15"]]
     ```
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
@@ -41,12 +49,15 @@ In order to install SonarClojure:
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-    sonar.sources=src/
+    sonar.sources=src,project.clj
     ```
 
-Plugin can be disabled by setting property ```sonar.clojure.eastwood.disabled=true``` in sonar-project.properties file or
-by using command line switch ```-Dsonar.clojure.eastwood.disabled``` with when running ```sonar-scanner```.
+## Disabling sensors
 
+Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
+by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
+
+Sensor names are ```eastwood``` and ```ancient-clj```.
 
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
