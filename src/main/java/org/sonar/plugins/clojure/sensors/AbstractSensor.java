@@ -5,6 +5,7 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class AbstractSensor {
 
@@ -44,12 +45,13 @@ public abstract class AbstractSensor {
     public boolean checkIfPluginIsDisabled(SensorContext context, String propertyName) {
         LOG.debug("Checking for property: " + propertyName);
 
-        if (context.config().getBoolean(propertyName).isPresent()) {
-            Boolean propertyDisabled = context.config().getBoolean(propertyName).get();
-            LOG.debug(propertyName + " " + propertyDisabled);
-            return propertyDisabled;
-        }
-        return false;
+        AtomicBoolean isPropertyEnabled = new AtomicBoolean(false);
+        context.config().getBoolean(propertyName).ifPresent(present -> {
+            LOG.debug(propertyName + " " + present);
+            isPropertyEnabled.set(present);
+        });
+
+        return isPropertyEnabled.get();
     }
 
 }

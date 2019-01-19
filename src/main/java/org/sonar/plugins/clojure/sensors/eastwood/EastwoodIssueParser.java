@@ -15,7 +15,7 @@ public class EastwoodIssueParser {
     public static String parseRuntimeInfo(CommandStreamConsumer output) {
         if (output != null) {
             List<String> lines = output.getData();
-            if (lines.size() > 0) {
+            if (!lines.isEmpty()) {
                 // Remove the "== " prefix in eastwood's output
                 return lines.get(0).substring(3);
             }
