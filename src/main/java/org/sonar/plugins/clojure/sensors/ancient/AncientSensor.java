@@ -17,30 +17,28 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class AncientSensor extends AbstractSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(AncientSensor.class);
 
-    private static final String LEIN_COMMAND = "lein";
-
     private static final String LEIN_ARGUMENTS = "ancient";
 
-    private CommandRunner commandRunner;
-
     public AncientSensor(CommandRunner commandRunner) {
-        this.commandRunner = commandRunner;
+        super(commandRunner);
     }
 
 
-    private InputFile getFile(String filePath, FileSystem fileSystem) {
-        return fileSystem.inputFile(
+    public Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {
+        return Optional.ofNullable(fileSystem.inputFile(
                 fileSystem.predicates().and(
                         fileSystem.predicates().hasRelativePath(filePath),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
+                        fileSystem.predicates().hasType(InputFile.Type.MAIN))));
     }
 
 
@@ -54,50 +52,47 @@ public class AncientSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context, "sonar.clojure.ancient-clj.disabled")) {
+        if (!checkIfPluginIsDisabled(context, ClojureProperties.ANCIENT_CLJ_DISABLED)) {
             LOG.info("Running Lein Ancient");
-            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, "ancient");
+            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), LEIN_ARGUMENTS)) {
-                List<OutdatedDependency> outdated = AncientOutputParser.parse(stdOut.getData());
-                LOG.debug("Parsed " + outdated.size() + " dependencies");
-                saveOutdated(outdated, context);
+                List<OutdatedDependency> outdatedDependencies = AncientOutputParser.parse(stdOut.getData());
+                LOG.debug("Parsed " + outdatedDependencies.size() + " dependencies");
+                saveOutdated(outdatedDependencies, context);
             } else {
-                LOG.warn("Parsing skipped because Leiningen or Ancient is not installed");
+                LOG.warn("Parsing skipped because Leiningen or Ancient are not installed");
             }
         } else {
-            LOG.info("Lein Ancient is disabled");
+            LOG.info("Ancient is disabled");
         }
     }
 
-    private void saveOutdated(List<OutdatedDependency> outdated, SensorContext context) {
+    private void saveOutdated(List<OutdatedDependency> outdatedDependencies, SensorContext context) {
 
-        InputFile project = getFile("project.clj", context.fileSystem());
-        if (project != null) {
+        Optional<InputFile> projectFileOptional = getFile("project.clj", context.fileSystem());
+
+        projectFileOptional.ifPresent(inputFile -> outdatedDependencies.stream().forEach(outdatedDependency -> {
+            ProjectFile pr = null;
             try {
-                for (OutdatedDependency o :
-                        outdated) {
-                    ProjectFile pr = new ProjectFile(project.contents());
-                    LOG.debug("Processing outdated dependencies");
-
-                    RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-clj-dependency");
-                    NewIssue newIssue = context.newIssue().forRule(ruleKey);
-                    int lineLocation = pr.findLineNumber(o.getName() + " \"" + o.getCurrentVersion() + "\"");
-
-                    NewIssueLocation primaryLocation = newIssue
-                            .newLocation()
-                            .on(project)
-                            .message(o.toString())
-                            .at(project.selectLine(lineLocation));
-                    newIssue.at(primaryLocation);
-                    newIssue.save();
-                }
-
+                pr = new ProjectFile(inputFile.contents());
             } catch (IOException e) {
                 LOG.warn("project.clj could not be read");
             }
-        } else {
-            LOG.warn("project.clj does not exists in the filesystem");
-        }
+            LOG.debug("Processing outdated dependencies");
+
+            RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "ancient-clj-dependency");
+            NewIssue newIssue = context.newIssue().forRule(ruleKey);
+            int lineNumber = pr.findLineNumber(
+                    outdatedDependency.getName() + " \"" + outdatedDependency.getCurrentVersion() + "\"");
+
+            NewIssueLocation primaryLocation = newIssue
+                    .newLocation()
+                    .on(inputFile)
+                    .message(outdatedDependency.toString())
+                    .at(inputFile.selectLine(lineNumber));
+            newIssue.at(primaryLocation);
+            newIssue.save();
+        }));
     }
 
 }

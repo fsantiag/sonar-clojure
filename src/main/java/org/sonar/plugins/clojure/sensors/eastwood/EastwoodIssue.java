@@ -1,13 +1,13 @@
-package org.sonar.plugins.clojure.sensors;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
-public class Issue {
+public class EastwoodIssue {
 
     private String externalRuleId;
     private String issueMessage;
     private String filePath;
     private int line;
 
-    public Issue(String externalRuleId, String description, String filePath, int line) {
+    public EastwoodIssue(String externalRuleId, String description, String filePath, int line) {
         this.externalRuleId = externalRuleId;
         this.issueMessage = description;
         this.filePath = filePath;

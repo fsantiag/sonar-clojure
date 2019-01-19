@@ -27,8 +27,16 @@ public class AncientOutputParserTest {
         expected.setAvailableVersion("0.2.10");
         expected.setCurrentVersion("0.2.1");
         assertEquals(reitit, expected);
+    }
 
+    @Test
+    public void testNoMatchParseCase() {
+        CommandStreamConsumer output = new CommandStreamConsumer();
+        output.consumeLine("This output doesnt contain any any outdated dependencies");
 
+        List<OutdatedDependency> outdated = AncientOutputParser.parse(output.getData());
+
+        assertThat(outdated.size(), is(0));
     }
 
 

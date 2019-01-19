@@ -58,7 +58,7 @@ public class AncientSensorTest {
     @Test
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
-        // Adding file to Sonar Contex
+        // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "project.clj");
 

@@ -11,6 +11,8 @@ public class ClojureProperties {
 
     public static final String FILE_SUFFIXES_KEY = "sonar.clojure.file.suffixes";
     public static final String FILE_SUFFIXES_DEFAULT_VALUE = "clj,cljs,cljc";
+    public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
+    public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
 
     private ClojureProperties() {}
 
@@ -30,7 +32,7 @@ public class ClojureProperties {
     }
 
     public static PropertyDefinition getEastwoodDisabledProperty() {
-        return PropertyDefinition.builder("sonar.clojure.eastwood.disabled")
+        return PropertyDefinition.builder(EASTWOOD_DISABLED)
                 .category("ClojureLanguage")
                 .subCategory("Sensors")
                 .defaultValue("false")
@@ -40,7 +42,7 @@ public class ClojureProperties {
     }
 
     public static PropertyDefinition getAncientCljDisabledProperty() {
-        return PropertyDefinition.builder("sonar.clojure.ancient-clj.disabled")
+        return PropertyDefinition.builder(ANCIENT_CLJ_DISABLED)
                 .category("ClojureLanguage")
                 .subCategory("Sensors")
                 .defaultValue("false")

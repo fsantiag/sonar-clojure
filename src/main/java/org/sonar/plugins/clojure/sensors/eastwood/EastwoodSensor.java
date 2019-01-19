@@ -1,8 +1,6 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 
-import org.sonar.api.Properties;
-import org.sonar.api.Property;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
@@ -18,7 +16,7 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
-import org.sonar.plugins.clojure.sensors.Issue;
+import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.util.List;
 
@@ -27,42 +25,39 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
     private static final Logger LOG = Loggers.get(EastwoodSensor.class);
 
     private static final String EASTWOOD_COMMAND = "eastwood";
-    private static final String LEIN_COMMAND = "lein";
-
-    private CommandRunner commandRunner;
 
     public EastwoodSensor(CommandRunner commandRunner) {
-        this.commandRunner = commandRunner;
+        super(commandRunner);
     }
 
-    private void saveIssue(Issue issue, SensorContext context) {
-        InputFile file = getFile(issue, context.fileSystem());
+    private void saveIssue(EastwoodIssue eastwoodIssue, SensorContext context) {
+        InputFile file = getFile(eastwoodIssue, context.fileSystem());
 
         if (file == null) {
-            LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
+            LOG.warn("Not able to find a file with path '{}'", eastwoodIssue.getFilePath());
             return;
         }
 
-        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
+        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, eastwoodIssue.getExternalRuleId().trim());
 
         NewIssue newIssue = context.newIssue().forRule(ruleKey);
 
         NewIssueLocation primaryLocation = newIssue
                 .newLocation()
                 .on(file)
-                .message(issue.getDescription().trim());
+                .message(eastwoodIssue.getDescription().trim());
 
-        primaryLocation.at(file.selectLine(issue.getLine()));
+        primaryLocation.at(file.selectLine(eastwoodIssue.getLine()));
 
         newIssue.at(primaryLocation);
 
         newIssue.save();
     }
 
-    private InputFile getFile(Issue issue, FileSystem fileSystem) {
+    private InputFile getFile(EastwoodIssue eastwoodIssue, FileSystem fileSystem) {
         return fileSystem.inputFile(
                 fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(issue.getFilePath()),
+                        fileSystem.predicates().hasRelativePath(eastwoodIssue.getFilePath()),
                         fileSystem.predicates().hasType(InputFile.Type.MAIN)));
     }
 
@@ -77,7 +72,7 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context, "sonar.clojure.eastwood.disabled")) {
+        if (!checkIfPluginIsDisabled(context, ClojureProperties.EASTWOOD_DISABLED)) {
             LOG.info("Clojure project detected");
             LOG.info("Running Eastwood");
             CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
@@ -89,10 +84,10 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
                     LOG.warn("Eastwood resulted in empty output");
                 }
 
-                List<Issue> issues = EastwoodIssueParser.parse(stdOut);
-                LOG.info("Saving issues");
-                for (Issue issue : issues) {
-                    saveIssue(issue, context);
+                List<EastwoodIssue> eastwoodIssues = EastwoodIssueParser.parse(stdOut);
+                LOG.info("Saving eastwoodIssues");
+                for (EastwoodIssue eastwoodIssue : eastwoodIssues) {
+                    saveIssue(eastwoodIssue, context);
                 }
             }
         } else {
