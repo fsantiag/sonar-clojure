@@ -17,6 +17,13 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
 
+### ancient-clj
+
+[ancient-clj](https://github.com/xsc/lein-ancient) is a Clojure library with Leiningen plugin which checks your project for outdated dependencies and plugins and  suggest updates. The Sonarqube plugin
+marks these as minor vulnerabilities to project.clj file.
+
+ancient-clj sensor requires project.clj to be included in sonar.sources property.
+
 ### Lein-nvd
 
 [Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
@@ -40,9 +47,11 @@ In order to install SonarClojure:
 1. Change your ***project.clj*** file and add Eastwood to the list of plugins:
 
     ```clojure
-    :plugins [[jonase/eastwood "0.2.5"]]
+    :plugins [[jonase/eastwood "0.2.5"]
+              [lein-ancient "0.6.15"]
+           [lein-nvd "0.6.0"]]
     ```
-    
+
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
     ```properties
@@ -51,13 +60,20 @@ In order to install SonarClojure:
     sonar.projectVersion=1.0
     sonar.sources=src,test,resources,project.clj,target/nvd/dependency-check-report.json
     ```
-    
+
+## Disabling sensors
+
+Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
+by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
+
+Sensor names are ```eastwood```, ```ancient-clj``` and ```lein-nvd```.
+
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
 
 ```sh
-mvn clean package
+./mvnw clean package
 ```
 
 Maven will generate an SNAPSHOT under the folder ***target***.
@@ -66,7 +82,7 @@ Maven will generate an SNAPSHOT under the folder ***target***.
 
 ```sh
 mvn clean package
-start-sonarcube.sh
+start-sonarqube.sh
 ```
 
 Create sonar-project.properties file. Run ```sonar-scanner``` on Clojure applications root directory which you like to analyze.
@@ -74,7 +90,10 @@ Open http://localhost:9000/dashboard?id=your-project-key and check for issues.
 
 ## Compatibility
 
-At the moment, SonarClojure was tested on SonarQube 6.7 and 7.4 Community Edition.
+At the moment, SonarClojure was tested on SonarQube 7.1 Community Edition.
+
+If using later versions than SonarQube 7.1 then the project overview might be empty. This can be fixed by adding a xml file or other SonarQube analyzable
+file to scanned files for example to resources folder. Remember to check that the folder is also in sonar.sources property.
 
 ## License
 

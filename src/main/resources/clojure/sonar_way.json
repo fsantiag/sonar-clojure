@@ -5,6 +5,7 @@
     "nvd-high",
     "nvd-medium",
     "nvd-low",
+    "ancient-clj-dependency",
     "bad-arglists",
     "constant-test",
     "def-in-def",
