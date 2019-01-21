@@ -7,8 +7,7 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.ancient.AncientSensor;
 import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
-import org.sonar.plugins.clojure.sensors.leinNvd.LeinNvdSensor;
+import org.sonar.plugins.clojure.sensors.leinnvd.LeinNvdSensor;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 public class ClojurePlugin implements Plugin {

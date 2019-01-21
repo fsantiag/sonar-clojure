@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors.leinNvd;
+package org.sonar.plugins.clojure.sensors.leinnvd;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +17,7 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 
 import java.io.File;
@@ -54,6 +55,8 @@ public class LeinNvdSensorTest {
     @Test
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
+
+        context.settings().appendProperty(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION, "src/test/resources/nvd-report.json");
         // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
         File project = new File(baseDir, "project.clj");
@@ -64,16 +67,6 @@ public class LeinNvdSensorTest {
                 .setContents(new String(Files.readAllBytes(project.toPath()), StandardCharsets.UTF_8))
                 .build();
         context.fileSystem().add(projectFile);
-
-
-        File vulnerabilityReport = new File(baseDir, "nvd-report.json");
-        DefaultInputFile jsonReport = TestInputFileBuilder.create("", "target/nvd/dependency-check-report.json")
-                .setLanguage(ClojureLanguage.KEY)
-                .initMetadata(new String(Files.readAllBytes(vulnerabilityReport.toPath()), StandardCharsets.UTF_8))
-                .setContents(new String(Files.readAllBytes(vulnerabilityReport.toPath()), StandardCharsets.UTF_8))
-                .build();
-        context.fileSystem().add(jsonReport);
-
 
         // Creating fake rules to the Sonar Context
         context.setActiveRules((new ActiveRulesBuilder())
@@ -108,7 +101,7 @@ public class LeinNvdSensorTest {
         stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
         stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
         Mockito.when(commandRunner.run("lein", "nvd", "check")).thenReturn(stdOut);
-
+        context.settings().appendProperty(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION, "src/test/resources/nvd-report.json");
         LeinNvdSensor leinNvdSensor = new LeinNvdSensor(commandRunner);
         leinNvdSensor.execute(context);
     }

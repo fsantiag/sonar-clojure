@@ -27,10 +27,11 @@ ancient-clj sensor requires project.clj to be included in sonar.sources property
 ### Lein-nvd
 
 [Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
-the [National Vulnerability Database](https://nvd.nist.gov/). The Sonarcube plugin currently marks all the found vulnerabilites to 
+the [National Vulnerability Database](https://nvd.nist.gov/). The SonarQube plugin currently marks all the found vulnerabilites to 
 the first line of project.clj because the lein-nvd only returns JAR name not the dependency which pulls it directly or transitively.
 
-Remember to add target/nvd/dependency-check-report.json to sonar.sources-property or the plugin cannot read the generated report.
+Set the ```sonar.clojure.lein-nvd.json-output-location``` property in sonar-project.properties file to point to Lein-nvd json output which is by default
+```target/nvd/dependency-check-report.json```.
  
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
@@ -58,7 +59,8 @@ In order to install SonarClojure:
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-    sonar.sources=src,test,resources,project.clj,target/nvd/dependency-check-report.json
+    sonar.sources=src,project.clj
+    sonar.clojure.lein-nvd.json-output-location=target/nvd/dependency-check-report.json
     ```
 
 ## Disabling sensors

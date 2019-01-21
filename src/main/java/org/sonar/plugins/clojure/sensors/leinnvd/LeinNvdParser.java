@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors.leinNvd;
+package org.sonar.plugins.clojure.sensors.leinnvd;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,6 +12,8 @@ import java.util.List;
 
 public class LeinNvdParser {
     private static final Logger LOG = Loggers.get(LeinNvdParser.class);
+
+    private LeinNvdParser(){}
 
     public static List<Vulnerability> parseJson(String json){
         List<Vulnerability> vulnerabilities = new ArrayList<>();

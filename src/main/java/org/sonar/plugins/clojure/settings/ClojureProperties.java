@@ -13,15 +13,17 @@ public class ClojureProperties {
     public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
     public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
     public static final String LEIN_NVD_DISABLED = "sonar.clojure.lein-nvd.disabled";
+    public static final String LEIN_NVD_JSON_OUTPUT_LOCATION = "sonar.clojure.lein-nvd.json-output-location";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
-  
+
     private ClojureProperties() {}
 
     public static List<PropertyDefinition> getProperties() {
         return asList(getFileSuffixProperty(),
                 getEastwoodDisabledProperty(),
                 getAncientCljDisabledProperty(),
-                getLeinNvdDisabledProperty());
+                getLeinNvdDisabledProperty(),
+                getLeinNVdXMLOutputLocation());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -60,6 +62,16 @@ public class ClojureProperties {
                 .defaultValue("false")
                 .name("Lein NVD sensor disabling")
                 .description("Set true to disable Lein NVD sensor.")
+                .build();
+    }
+
+    public static PropertyDefinition getLeinNVdXMLOutputLocation() {
+        return PropertyDefinition.builder(LEIN_NVD_JSON_OUTPUT_LOCATION)
+                .category("ClojureLanguage")
+                .subCategory("Sensors")
+                .defaultValue("src/test/resources/nvd-report.json")
+                .name("Lein NVD output location")
+                .description("Set this to path where Lein NVD generates the result xml file.")
                 .build();
     }
 }
