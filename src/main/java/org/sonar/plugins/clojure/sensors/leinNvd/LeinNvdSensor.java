@@ -1,6 +1,7 @@
 package org.sonar.plugins.clojure.sensors.leinNvd;
 
 
+import jdk.internal.util.xml.impl.Input;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
@@ -13,6 +14,7 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 
 import java.io.IOException;
@@ -20,27 +22,17 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
-public class LeinNvdSensor implements Sensor {
+public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(LeinNvdSensor.class);
 
     private static final String COMMAND = "nvd";
-    private static final String LEIN_COMMAND = "lein";
-
-    private CommandRunner commandRunner;
 
     public LeinNvdSensor(CommandRunner commandRunner) {
-        this.commandRunner = commandRunner;
+        super(commandRunner);
     }
-
-    private InputFile getFile(String filePath, FileSystem fileSystem) {
-        return fileSystem.inputFile(
-                fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(filePath),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
-    }
-
 
     @Override
     public void describe(SensorDescriptor descriptor) {
@@ -70,8 +62,10 @@ public class LeinNvdSensor implements Sensor {
     }
 
     private void saveVulnerabilities(List<Vulnerability> vulnerabilities, SensorContext context) {
-        InputFile file = getFile("project.clj", context.fileSystem());
-        if (file != null){
+        Optional<InputFile> projectFile = getFile("project.clj", context.fileSystem());
+
+        if (projectFile.isPresent()){
+            InputFile projectFileFromOptional = projectFile.get();
             for (Vulnerability v :
                     vulnerabilities) {
                 LOG.debug("Processing vulnerability: " +v.toString());
@@ -79,18 +73,17 @@ public class LeinNvdSensor implements Sensor {
                 NewIssue newIssue = context.newIssue().forRule(ruleKey);
                 NewIssueLocation primaryLocation = newIssue
                         .newLocation()
-                        .on(file)
+                        .on(projectFileFromOptional)
                         .message(v.getName()
                                 + ";" + v.getCwe()
                                 + ";" + v.getFileName())
-                        .at(file.selectLine(1));
+                        .at(projectFileFromOptional.selectLine(1));
                 newIssue.at(primaryLocation);
                 newIssue.save();
             }
         } else {
             LOG.warn("Project.clj is missing - cannot mark vulnerabilities!");
         }
-
     }
 
 }
