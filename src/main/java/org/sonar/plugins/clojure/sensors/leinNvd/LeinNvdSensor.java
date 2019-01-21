@@ -1,7 +1,5 @@
 package org.sonar.plugins.clojure.sensors.leinNvd;
 
-
-import jdk.internal.util.xml.impl.Input;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
@@ -16,11 +14,10 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +25,8 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(LeinNvdSensor.class);
 
-    private static final String COMMAND = "nvd";
+    private static final String PLUGIN_NAME = "nvd";
+    private static final String[] LEIN_ARGUMENTS = {"nvd", "check"};
 
     public LeinNvdSensor(CommandRunner commandRunner) {
         super(commandRunner);
@@ -43,29 +41,39 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        LOG.info("Running Lein NVD");
-        this.commandRunner.run(LEIN_COMMAND, COMMAND, "check");
-        FileSystem fs = context.fileSystem();
-        InputFile vulnerabilityFile = fs.inputFile(fs.predicates().hasRelativePath("target/nvd/dependency-check-report.json"));
 
-        if (vulnerabilityFile != null){
-            List<Vulnerability> vulnerabilities = null;
-            try {
-                vulnerabilities = LeinNvdParser.parseJson(vulnerabilityFile.contents());
-            } catch (IOException e) {
-                LOG.warn("Lein NVD dependency report cannot be read");
+        if (!checkIfPluginIsDisabled(context, ClojureProperties.LEIN_NVD_DISABLED)) {
+            LOG.info("Running Lein NVD");
+
+            CommandStreamConsumer stdOut =  this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
+            if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), PLUGIN_NAME)){
+                FileSystem fs = context.fileSystem();
+                InputFile vulnerabilityFile = fs.inputFile(fs.predicates().hasRelativePath("target/nvd/dependency-check-report.json"));
+
+                if (vulnerabilityFile != null){
+                    try {
+                        List<Vulnerability> vulnerabilities = LeinNvdParser.parseJson(vulnerabilityFile.contents());
+                        saveVulnerabilities(vulnerabilities, context);
+                    } catch (IOException e) {
+                        LOG.warn("Lein NVD dependency report cannot be read");
+                    }
+                } else {
+                    LOG.warn("Lein NVD dependency report does not exists. Is Lein NVD installed as a plugin?");
+                }
+            } else {
+                LOG.warn("Running sensor skipped because Leiningen or Lein NVD are not installed");
             }
-            saveVulnerabilities(vulnerabilities, context);
+
         } else {
-            LOG.warn("Lein NVD dependency report does not exists. Is lein-nvd installed as a plugin?");
+            LOG.info("Lein NVD is disabled");
         }
+
     }
 
     private void saveVulnerabilities(List<Vulnerability> vulnerabilities, SensorContext context) {
         Optional<InputFile> projectFile = getFile("project.clj", context.fileSystem());
 
-        if (projectFile.isPresent()){
-            InputFile projectFileFromOptional = projectFile.get();
+        projectFile.ifPresent(projectFileFromOpt -> {
             for (Vulnerability v :
                     vulnerabilities) {
                 LOG.debug("Processing vulnerability: " +v.toString());
@@ -73,15 +81,17 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
                 NewIssue newIssue = context.newIssue().forRule(ruleKey);
                 NewIssueLocation primaryLocation = newIssue
                         .newLocation()
-                        .on(projectFileFromOptional)
+                        .on(projectFileFromOpt)
                         .message(v.getName()
                                 + ";" + v.getCwe()
                                 + ";" + v.getFileName())
-                        .at(projectFileFromOptional.selectLine(1));
+                        .at(projectFileFromOpt.selectLine(1));
                 newIssue.at(primaryLocation);
                 newIssue.save();
             }
-        } else {
+        });
+
+        if (!projectFile.isPresent()){
             LOG.warn("Project.clj is missing - cannot mark vulnerabilities!");
         }
     }

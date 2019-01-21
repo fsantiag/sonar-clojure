@@ -54,7 +54,7 @@ public class LeinNvdSensorTest {
     @Test
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
-        // Adding file to Sonar Contex
+        // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
         File project = new File(baseDir, "project.clj");
 
@@ -103,12 +103,11 @@ public class LeinNvdSensorTest {
     public void testExecuteSensorWithNonExistingProject() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
 
-
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("This is some non related line which should not end to report");
         stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
         stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
-        Mockito.when(commandRunner.run("lein", "ancient")).thenReturn(stdOut);
+        Mockito.when(commandRunner.run("lein", "nvd", "check")).thenReturn(stdOut);
 
         LeinNvdSensor leinNvdSensor = new LeinNvdSensor(commandRunner);
         leinNvdSensor.execute(context);

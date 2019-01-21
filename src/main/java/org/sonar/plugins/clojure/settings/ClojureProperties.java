@@ -13,13 +13,15 @@ public class ClojureProperties {
     public static final String FILE_SUFFIXES_DEFAULT_VALUE = "clj,cljs,cljc";
     public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
     public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
+    public static final String LEIN_NVD_DISABLED = "sonar.clojure.lein-nvd.disabled";
 
     private ClojureProperties() {}
 
     public static List<PropertyDefinition> getProperties() {
         return asList(getFileSuffixProperty(),
                 getEastwoodDisabledProperty(),
-                getAncientCljDisabledProperty());
+                getAncientCljDisabledProperty(),
+                getLeinNvdDisabledProperty());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -48,6 +50,16 @@ public class ClojureProperties {
                 .defaultValue("false")
                 .name("ancient-clj sensor disabling")
                 .description("Set true to disable ancient-clj sensor.")
+                .build();
+    }
+
+    public static PropertyDefinition getLeinNvdDisabledProperty() {
+        return PropertyDefinition.builder(LEIN_NVD_DISABLED)
+                .category("ClojureLanguage")
+                .subCategory("Sensors")
+                .defaultValue("false")
+                .name("Lein NVD sensor disabling")
+                .description("Set true to disable Lein NVD sensor.")
                 .build();
     }
 }
