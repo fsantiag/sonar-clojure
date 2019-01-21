@@ -1,7 +1,6 @@
 package org.sonar.plugins.clojure.settings;
 
 import org.sonar.api.config.PropertyDefinition;
-import org.sonar.api.resources.Qualifiers;
 
 import java.util.List;
 
@@ -14,7 +13,8 @@ public class ClojureProperties {
     public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
     public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
     public static final String LEIN_NVD_DISABLED = "sonar.clojure.lein-nvd.disabled";
-
+    public static final String MAIN_CATEGORY = "ClojureLanguage";
+  
     private ClojureProperties() {}
 
     public static List<PropertyDefinition> getProperties() {
@@ -27,7 +27,7 @@ public class ClojureProperties {
     public static PropertyDefinition getFileSuffixProperty() {
         return PropertyDefinition.builder(FILE_SUFFIXES_KEY)
                 .defaultValue(FILE_SUFFIXES_DEFAULT_VALUE)
-                .category("ClojureLanguage")
+                .category(MAIN_CATEGORY)
                 .name("File Suffixes")
                 .description("Comma-separated list of suffixes for files to analyze.")
                 .build();
@@ -35,7 +35,7 @@ public class ClojureProperties {
 
     public static PropertyDefinition getEastwoodDisabledProperty() {
         return PropertyDefinition.builder(EASTWOOD_DISABLED)
-                .category("ClojureLanguage")
+                .category(MAIN_CATEGORY)
                 .subCategory("Sensors")
                 .defaultValue("false")
                 .name("Eastwood sensor disabling")
@@ -45,7 +45,7 @@ public class ClojureProperties {
 
     public static PropertyDefinition getAncientCljDisabledProperty() {
         return PropertyDefinition.builder(ANCIENT_CLJ_DISABLED)
-                .category("ClojureLanguage")
+                .category(MAIN_CATEGORY)
                 .subCategory("Sensors")
                 .defaultValue("false")
                 .name("ancient-clj sensor disabling")
