@@ -76,8 +76,8 @@ public class CloverageSensorTest {
         context.fileSystem().add(sourceFile);
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("We are not really interested of std out");
-        Mockito.when(commandRunner.run("lein", "nvd", "check")).thenReturn(stdOut);
+        stdOut.consumeLine("Cloverage is running just fine - please relax");
+        Mockito.when(commandRunner.run("lein", "cloverage", "--codecov")).thenReturn(stdOut);
 
         CloverageSensor cloverageSensor = new CloverageSensor(commandRunner);
         cloverageSensor.execute(context);
@@ -89,8 +89,8 @@ public class CloverageSensorTest {
 
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("We are not really interested of std out");
-        Mockito.when(commandRunner.run("lein", "ancient")).thenReturn(stdOut);
+        stdOut.consumeLine("Cloverage is running but no file could not be found");
+        Mockito.when(commandRunner.run("lein", "cloverage", "--codecov")).thenReturn(stdOut);
 
         CloverageSensor cloverageSensor = new CloverageSensor(commandRunner);
         cloverageSensor.execute(context);

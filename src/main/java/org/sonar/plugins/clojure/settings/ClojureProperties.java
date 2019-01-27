@@ -13,13 +13,15 @@ public class ClojureProperties {
     public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
     public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
+    public static final String CLOVERAGE_DISABLED = "sonar.clojure.cloverage.disabled";
 
     private ClojureProperties() {}
 
     public static List<PropertyDefinition> getProperties() {
         return asList(getFileSuffixProperty(),
                 getEastwoodDisabledProperty(),
-                getAncientCljDisabledProperty());
+                getAncientCljDisabledProperty(),
+                getCloverageDisabledProperty());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -48,6 +50,16 @@ public class ClojureProperties {
                 .defaultValue("false")
                 .name("ancient-clj sensor disabling")
                 .description("Set true to disable ancient-clj sensor.")
+                .build();
+    }
+
+    public static PropertyDefinition getCloverageDisabledProperty() {
+        return PropertyDefinition.builder(CLOVERAGE_DISABLED)
+                .category(MAIN_CATEGORY)
+                .subCategory("Sensors")
+                .defaultValue("false")
+                .name("Cloverage sensor disabling")
+                .description("Set true to disable Cloverage sensor.")
                 .build();
     }
 }

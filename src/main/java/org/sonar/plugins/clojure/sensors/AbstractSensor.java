@@ -1,11 +1,14 @@
 package org.sonar.plugins.clojure.sensors;
 
+import org.sonar.api.batch.fs.FileSystem;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Optional;
 
 public abstract class AbstractSensor {
 
@@ -54,4 +57,10 @@ public abstract class AbstractSensor {
         return isPropertyEnabled.get();
     }
 
+    public Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {
+        return Optional.ofNullable(fileSystem.inputFile(
+                fileSystem.predicates().and(
+                        fileSystem.predicates().hasRelativePath(filePath),
+                        fileSystem.predicates().hasType(InputFile.Type.MAIN))));
+    }
 }
