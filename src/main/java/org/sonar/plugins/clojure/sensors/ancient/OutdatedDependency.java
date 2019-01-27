@@ -18,10 +18,9 @@ public class OutdatedDependency {
                 Objects.equals(availableVersion, that.availableVersion);
     }
 
-
-
-    public String getName() {
-        return name;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, currentVersion, availableVersion);
     }
 
     @Override
@@ -29,6 +28,10 @@ public class OutdatedDependency {
         return name + " is using version: " +
                 getCurrentVersion() + " but version: " +
                 getAvailableVersion() + " is available.";
+    }
+
+    public String getName() {
+        return name;
     }
 
     public OutdatedDependency setName(String name) {

@@ -1,8 +1,5 @@
 package org.sonar.plugins.clojure.sensors.ancient;
 
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,9 +7,9 @@ import java.util.stream.Collectors;
 
 public class AncientOutputParser {
 
-    private static final Logger LOG = Loggers.get(AncientOutputParser.class);
-
     private static final Pattern ANCIENT_PATTERN = Pattern.compile("\\[([^\\s]+)\\s\"([^\"]+)\"]([^\"]+)\"([^\"]+)\"");
+
+    private AncientOutputParser() {}
 
     private static Matcher parseString(String str){
         Matcher matcher = ANCIENT_PATTERN.matcher(str);
