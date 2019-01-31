@@ -23,6 +23,15 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 marks these as minor vulnerabilities to project.clj file.
 
 ancient-clj sensor requires project.clj to be included in sonar.sources property.
+
+### Lein-nvd
+
+[Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
+the [National Vulnerability Database](https://nvd.nist.gov/). The SonarQube plugin currently marks all the found vulnerabilites to 
+the first line of project.clj because the lein-nvd only returns JAR name not the dependency which pulls it directly or transitively.
+
+Set the ```sonar.clojure.lein-nvd.json-output-location``` property in sonar-project.properties file to point to Lein-nvd json output which is by default
+```target/nvd/dependency-check-report.json```.
  
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
@@ -40,7 +49,8 @@ In order to install SonarClojure:
 
     ```clojure
     :plugins [[jonase/eastwood "0.2.5"]
-              [lein-ancient "0.6.15"]]
+              [lein-ancient "0.6.15"]
+           [lein-nvd "0.6.0"]]
     ```
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
@@ -50,6 +60,7 @@ In order to install SonarClojure:
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
     sonar.sources=src,project.clj
+    sonar.clojure.lein-nvd.json-output-location=target/nvd/dependency-check-report.json
     ```
 
 ## Disabling sensors
@@ -57,7 +68,7 @@ In order to install SonarClojure:
 Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
 by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
 
-Sensor names are ```eastwood``` and ```ancient-clj```.
+Sensor names are ```eastwood```, ```ancient-clj``` and ```lein-nvd```.
 
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 

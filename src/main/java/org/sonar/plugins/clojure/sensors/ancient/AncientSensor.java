@@ -33,15 +33,6 @@ public class AncientSensor extends AbstractSensor implements Sensor {
         super(commandRunner);
     }
 
-
-    public Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {
-        return Optional.ofNullable(fileSystem.inputFile(
-                fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(filePath),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN))));
-    }
-
-
     @Override
     public void describe(SensorDescriptor descriptor) {
         descriptor.name("SonarClojureAncient")

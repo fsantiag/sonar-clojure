@@ -1,6 +1,10 @@
 {
   "name": "Sonar way",
   "ruleKeys": [
+    "nvd-critical",
+    "nvd-high",
+    "nvd-medium",
+    "nvd-low",
     "ancient-clj-dependency",
     "bad-arglists",
     "constant-test",
