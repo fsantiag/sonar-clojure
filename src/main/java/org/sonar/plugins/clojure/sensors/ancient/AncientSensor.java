@@ -33,7 +33,6 @@ public class AncientSensor extends AbstractSensor implements Sensor {
         super(commandRunner);
     }
 
-
     @Override
     public void describe(SensorDescriptor descriptor) {
         descriptor.name("SonarClojureAncient")

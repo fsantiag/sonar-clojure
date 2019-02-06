@@ -65,7 +65,18 @@ public class ClojureSonarWayProfileTest {
 
         List<String> ruleKeys = new ArrayList<>();
         ruleKeys.addAll(asList("ancient-clj-dependency"));
-
         ruleKeys.stream().forEach(ancientCljRule -> assertTrue(profileRules.contains(ancientCljRule)));
     }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithLeinNvdRules() {
+
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("nvd-critical",
+                "nvd-high",
+                "nvd-medium",
+                "nvd-low"));
+        ruleKeys.stream().forEach(leinNvdRule -> assertTrue(profileRules.contains(leinNvdRule)));
+    }
+
 }
