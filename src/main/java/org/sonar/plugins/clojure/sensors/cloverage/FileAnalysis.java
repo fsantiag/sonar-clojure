@@ -1,18 +1,20 @@
 package org.sonar.plugins.clojure.sensors.cloverage;
 
+import org.sonar.api.batch.fs.InputFile;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileAnalysis {
-    private String path = null;
+    private InputFile file = null;
     private List<LineAnalysis> entries = new ArrayList<>();
 
-    public String getPath() {
-        return path;
+    public InputFile getFile() {
+        return file;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setInputFile(InputFile file) {
+        this.file = file;
     }
 
     public void addLine(int number, int hits){

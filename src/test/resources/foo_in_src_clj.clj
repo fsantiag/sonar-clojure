@@ -1,4 +1,4 @@
-(ns foo)
+(ns foo-in-src-clj)
 
 (def bar 1)
 

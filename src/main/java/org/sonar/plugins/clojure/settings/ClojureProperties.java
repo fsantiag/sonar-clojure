@@ -16,6 +16,7 @@ public class ClojureProperties {
     public static final String LEIN_NVD_JSON_OUTPUT_LOCATION = "sonar.clojure.lein-nvd.json-output-location";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
     public static final String CLOVERAGE_DISABLED = "sonar.clojure.cloverage.disabled";
+    public static final String CLOVERAGE_JSON_OUTPUT_LOCATION = "sonar.clojure.cloverage.json-output-location";
 
     private ClojureProperties() {}
 
@@ -24,6 +25,7 @@ public class ClojureProperties {
                 getEastwoodDisabledProperty(),
                 getAncientCljDisabledProperty(),
                 getCloverageDisabledProperty(),
+                getCloverageJsonOutputLocation(),
                 getLeinNvdDisabledProperty(),
                 getLeinNVdXMLOutputLocation());
     }
@@ -68,6 +70,16 @@ public class ClojureProperties {
                 .build();
     }
 
+    public static PropertyDefinition getCloverageJsonOutputLocation() {
+        return PropertyDefinition.builder(CLOVERAGE_JSON_OUTPUT_LOCATION)
+                .category(MAIN_CATEGORY)
+                .subCategory("Sensors")
+                .defaultValue("target/coverage/codecov.json")
+                .name("Cloverage json report location")
+                .description("Path to the Cloverage json output location")
+                .build();
+    }
+
     public static PropertyDefinition getLeinNvdDisabledProperty() {
         return PropertyDefinition.builder(LEIN_NVD_DISABLED)
                 .category("ClojureLanguage")
@@ -85,7 +97,6 @@ public class ClojureProperties {
                 .defaultValue("src/test/resources/nvd-report.json")
                 .name("Lein NVD output location")
                 .description("Set this to path where Lein NVD generates the result xml file.")
-
                 .build();
     }
 }

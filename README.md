@@ -24,16 +24,14 @@ marks these as minor vulnerabilities to project.clj file.
 
 ancient-clj sensor requires project.clj to be included in sonar.sources property.
 
-<<<<<<< HEAD
 ### Cloverage
 
-[Cloverage](https://github.com/cloverage/cloverage) is a code coverage tool for Clojure which runs the tests ot a program 
+[Cloverage](https://github.com/cloverage/cloverage) is a code coverage tool for Clojure which runs the tests of a program 
 and calculates line and form coverage for namespaces. Only line coverage is supported by Sonarcube and calculation seems to be
 be somehow different compared to Cloverage itself by few percents.
 
-Remember to add target/coverage/codecov.json to SonarQube properties or the sensor cannot read Cloverage output.
+Set the property ```sonar.clojure.cloverage.json-output-location``` to point to Cloverage export file which is by default target/coverage/codecov.json.
 
-=======
 ### Lein-nvd
 
 [Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
@@ -43,7 +41,6 @@ the first line of project.clj because the lein-nvd only returns JAR name not the
 Set the ```sonar.clojure.lein-nvd.json-output-location``` property in sonar-project.properties file to point to Lein-nvd json output which is by default
 ```target/nvd/dependency-check-report.json```.
  
->>>>>>> 6004bb858341ee548ad2b48dac1320d43bb7c263
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
@@ -61,12 +58,8 @@ In order to install SonarClojure:
     ```clojure
     :plugins [[jonase/eastwood "0.2.5"]
               [lein-ancient "0.6.15"]
-<<<<<<< HEAD
-              [lein-cloverage "1.0.13"]]
-=======
-           [lein-nvd "0.6.0"]]
->>>>>>> 6004bb858341ee548ad2b48dac1320d43bb7c263
-    ```
+              [lein-cloverage "1.0.13"]
+              [lein-nvd "0.6.0"]]
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
@@ -74,12 +67,9 @@ In order to install SonarClojure:
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-<<<<<<< HEAD
-    sonar.sources=src,project.clj,target/coverage/codecov.json
-=======
     sonar.sources=src,project.clj
     sonar.clojure.lein-nvd.json-output-location=target/nvd/dependency-check-report.json
->>>>>>> 6004bb858341ee548ad2b48dac1320d43bb7c263
+    sonar.clojure.cloverage.json-output-location=target/coverage/codecov.json
     ```
 
 ## Disabling sensors
@@ -87,11 +77,7 @@ In order to install SonarClojure:
 Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
 by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
 
-<<<<<<< HEAD
-Sensor names are ```eastwood```, ```ancient-clj``` and ```cloverage```.
-=======
-Sensor names are ```eastwood```, ```ancient-clj``` and ```lein-nvd```.
->>>>>>> 6004bb858341ee548ad2b48dac1320d43bb7c263
+Sensor names are ```eastwood```, ```ancient-clj```, ``lein-nvd``` and ```cloverage```.
 
 3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 

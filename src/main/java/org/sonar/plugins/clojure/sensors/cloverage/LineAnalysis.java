@@ -1,7 +1,5 @@
 package org.sonar.plugins.clojure.sensors.cloverage;
 
-import java.util.Objects;
-
 public class LineAnalysis {
 
     private int lineNumber;

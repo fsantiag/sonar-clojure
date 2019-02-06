@@ -8,6 +8,10 @@
       null,
       0,
       true
+    ],
+    "bar.cljc": [
+      null,
+      1
     ]
   }
 }

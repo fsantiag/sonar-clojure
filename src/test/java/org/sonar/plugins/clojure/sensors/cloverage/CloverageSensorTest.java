@@ -4,30 +4,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
-import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.batch.sensor.issue.Issue;
-import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
-import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -58,22 +55,25 @@ public class CloverageSensorTest {
         // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
 
-        File codecovResult = new File(baseDir, "cloverage-result.json");
+        context.settings().appendProperty(ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION, "src/test/resources/cloverage-result.json");
 
-        DefaultInputFile jsonReport = TestInputFileBuilder.create("", "target/coverage/codecov.json")
-                .setLanguage(ClojureLanguage.KEY)
-                .initMetadata(new String(Files.readAllBytes(codecovResult.toPath()), StandardCharsets.UTF_8))
-                .setContents(new String(Files.readAllBytes(codecovResult.toPath()), StandardCharsets.UTF_8))
-                .build();
-        context.fileSystem().add(jsonReport);
-
-        File fooSource = new File(baseDir, "foo.clj");
-        DefaultInputFile sourceFile = TestInputFileBuilder.create("", "src/foo.clj")
+        File fooSource = new File(baseDir, "foo_in_src_clj.clj");
+        final String fooPath = "src/clj/foo.clj";
+        DefaultInputFile fooFile = TestInputFileBuilder.create("", fooPath)
                 .setLanguage(ClojureLanguage.KEY)
                 .initMetadata(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
                 .setContents(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
                 .build();
-        context.fileSystem().add(sourceFile);
+        context.fileSystem().add(fooFile);
+
+        File barSource = new File(baseDir, "bar_in_src_cljc.cljc");
+        final String barPath = "src/cljc/bar.cljc";
+        DefaultInputFile barFile = TestInputFileBuilder.create("", barPath)
+                .setLanguage(ClojureLanguage.KEY)
+                .initMetadata(new String(Files.readAllBytes(barSource.toPath()), StandardCharsets.UTF_8))
+                .setContents(new String(Files.readAllBytes(barSource.toPath()), StandardCharsets.UTF_8))
+                .build();
+        context.fileSystem().add(barFile);
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("Cloverage is running just fine - please relax");
@@ -81,6 +81,11 @@ public class CloverageSensorTest {
 
         CloverageSensor cloverageSensor = new CloverageSensor(commandRunner);
         cloverageSensor.execute(context);
+        FileSystem fs = context.fileSystem();
+
+        //fileKey parameter must have : character added to path
+        assertEquals(new Integer(1), context.lineHits(":"  + fooPath, 1));
+        assertEquals(new Integer(1), context.lineHits(":" + barPath, 1));
     }
 
     @Test
