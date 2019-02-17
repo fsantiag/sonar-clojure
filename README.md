@@ -27,7 +27,7 @@ ancient-clj sensor requires project.clj to be included in sonar.sources property
 ### Cloverage
 
 [Cloverage](https://github.com/cloverage/cloverage) is a code coverage tool for Clojure which runs the tests of a program 
-and calculates line and form coverage for namespaces. Only line coverage is supported by Sonarcube and calculation seems to be
+and calculates line and form coverage for namespaces. Only line coverage is supported by SonarQube and calculation seems to be
 be somehow different compared to Cloverage itself by few percents.
 
 Set the property ```sonar.clojure.cloverage.json-output-location``` to point to Cloverage export file which is by default target/coverage/codecov.json.
