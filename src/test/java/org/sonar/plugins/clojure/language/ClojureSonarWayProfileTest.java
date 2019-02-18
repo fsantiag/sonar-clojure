@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.sensors.eastwood;
+package org.sonar.plugins.clojure.language;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,28 +7,31 @@ import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertTrue;
 
-public class EastwoodRulesTest {
+public class ClojureSonarWayProfileTest {
 
     private BuiltInQualityProfilesDefinition.Context context;
     private ClojureSonarWayProfile clojureSonarWayProfile;
-
+    private List<String> profileRules;
     @Before
     public void setUp() {
         context = new BuiltInQualityProfilesDefinition.Context();
         clojureSonarWayProfile = new ClojureSonarWayProfile();
         clojureSonarWayProfile.define(context);
+        BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
+        List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
+        this.profileRules = rules.stream().map(r -> r.ruleKey()).collect(Collectors.toList());
+
     }
 
 
     @Test
     public void testIfSonarwayProfileIsCreatedWithAllEastwoodRules() {
-        BuiltInQualityProfilesDefinition.BuiltInQualityProfile profile = context.profile("clj", "Sonar way");
-        List<BuiltInQualityProfilesDefinition.BuiltInActiveRule> rules = profile.rules();
-        //assertThat(rules.size(), is(23));
+
         List<String> ruleKeys = new ArrayList<>();
         ruleKeys.addAll(asList("bad-arglists",
                 "constant-test",
@@ -54,6 +57,34 @@ public class EastwoodRulesTest {
                 "wrong-pre-post",
                 "wrong-tag"));
 
-        ruleKeys.stream().forEach(eastwoodRule -> assertTrue(ruleKeys.contains(eastwoodRule)));
+        ruleKeys.stream().forEach(eastwoodRule -> assertTrue(profileRules.contains(eastwoodRule)));
     }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithAllAncientCljRules() {
+
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("ancient-clj-dependency"));
+        ruleKeys.stream().forEach(ancientCljRule -> assertTrue(profileRules.contains(ancientCljRule)));
+    }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithLeinNvdRules() {
+
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("nvd-critical",
+                "nvd-high",
+                "nvd-medium",
+                "nvd-low"));
+        ruleKeys.stream().forEach(leinNvdRule -> assertTrue(profileRules.contains(leinNvdRule)));
+    }
+
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithKibitRules() {
+
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("kibit"));
+        ruleKeys.stream().forEach(kibitRule -> assertTrue(profileRules.contains(kibitRule)));
+    }
+
 }

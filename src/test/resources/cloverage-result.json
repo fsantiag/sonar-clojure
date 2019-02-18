@@ -1,0 +1,17 @@
+{
+  "coverage": {
+    "foo.clj": [
+      null,
+      1,
+      null,
+      1,
+      null,
+      0,
+      true
+    ],
+    "bar.cljc": [
+      null,
+      1
+    ]
+  }
+}
