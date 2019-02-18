@@ -8,7 +8,7 @@
     <artifactId>sonar-clojure-plugin</artifactId>
     <version>1.4.0-SNAPSHOT</version>
     <packaging>sonar-plugin</packaging>
-    <name>Sonar-Clojure</name>
+    <name>sonar-clojure</name>
     <description>SonarClojure is a plugin for SonarQube to analyze Clojure source.</description>
     <url>https://github.com/fsantiag/sonar-clojure</url>
 
