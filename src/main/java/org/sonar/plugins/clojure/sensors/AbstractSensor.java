@@ -5,9 +5,16 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Optional;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public abstract class AbstractSensor {
 
@@ -57,10 +64,27 @@ public abstract class AbstractSensor {
     }
 
     protected Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {
+
         return Optional.ofNullable(fileSystem.inputFile(
                 fileSystem.predicates().and(
                         fileSystem.predicates().hasRelativePath(filePath),
                         fileSystem.predicates().hasType(InputFile.Type.MAIN))));
     }
+
+    /**
+     * Gets the file directly from filesystem. This is useful when the file is needed to be read which is not wanted to
+     * be part of SonarQube scanning
+     * @param filename
+     * @return
+     */
+    public Optional<String> readFromFileSystem(String filename){
+        try {
+            return Optional.of(new String(Files.readAllBytes(Paths.get(filename)), UTF_8));
+        } catch (IOException e) {
+            return Optional.empty();
+        }
+
+    }
+
 
 }

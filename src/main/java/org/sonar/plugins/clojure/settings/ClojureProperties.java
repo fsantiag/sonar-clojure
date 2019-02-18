@@ -15,6 +15,8 @@ public class ClojureProperties {
     public static final String LEIN_NVD_DISABLED = "sonar.clojure.lein-nvd.disabled";
     public static final String LEIN_NVD_JSON_OUTPUT_LOCATION = "sonar.clojure.lein-nvd.json-output-location";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
+    public static final String CLOVERAGE_DISABLED = "sonar.clojure.cloverage.disabled";
+    public static final String CLOVERAGE_JSON_OUTPUT_LOCATION = "sonar.clojure.cloverage.json-output-location";
 
     private ClojureProperties() {}
 
@@ -22,6 +24,8 @@ public class ClojureProperties {
         return asList(getFileSuffixProperty(),
                 getEastwoodDisabledProperty(),
                 getAncientCljDisabledProperty(),
+                getCloverageDisabledProperty(),
+                getCloverageJsonOutputLocation(),
                 getLeinNvdDisabledProperty(),
                 getLeinNVdXMLOutputLocation());
     }
@@ -52,6 +56,27 @@ public class ClojureProperties {
                 .defaultValue("false")
                 .name("ancient-clj sensor disabling")
                 .description("Set true to disable ancient-clj sensor.")
+                .build();
+    }
+
+
+    public static PropertyDefinition getCloverageDisabledProperty() {
+        return PropertyDefinition.builder(CLOVERAGE_DISABLED)
+                .category(MAIN_CATEGORY)
+                .subCategory("Sensors")
+                .defaultValue("false")
+                .name("Cloverage sensor disabling")
+                .description("Set true to disable Cloverage sensor.")
+                .build();
+    }
+
+    public static PropertyDefinition getCloverageJsonOutputLocation() {
+        return PropertyDefinition.builder(CLOVERAGE_JSON_OUTPUT_LOCATION)
+                .category(MAIN_CATEGORY)
+                .subCategory("Sensors")
+                .defaultValue("target/coverage/codecov.json")
+                .name("Cloverage json report location")
+                .description("Path to the Cloverage json output location")
                 .build();
     }
 

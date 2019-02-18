@@ -43,14 +43,7 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
                 .global();
     }
 
-    public Optional<String> readFromFileSystem(String filename){
-        try {
-            return Optional.of(new String(Files.readAllBytes(Paths.get(filename)), UTF_8));
-        } catch (IOException e) {
-            return Optional.empty();
-        }
 
-    }
 
     @Override
     public void execute(SensorContext context) {
