@@ -26,18 +26,17 @@ public class KibitIssueParserTest {
     @Test
     public void testIssueGenerateForValidStreamConsumer() {
         CommandStreamConsumer output = new CommandStreamConsumer();
-        output.consumeLine("----");
-        output.consumeLine("##### `src/sok_register_api/boa.clj:45`");
+        output.consumeLine("At src/clojure_sonar_example/core.clj:13:");
         output.consumeLine("Consider using:...");
         output.consumeLine("some consideration");
         output.consumeLine("----");
-        output.consumeLine("##### `src/sok_register_api/something.clj:67`");
+        output.consumeLine("At /sok_register_api/something.clj:67:");
         output.consumeLine("Consider something else");
         List<Issue> issues = KibitIssueParser.parse(output);
 
         assertThat(issues.size(), is(2));
-        assertThat(issues.get(0).getLine(), is(45));
-        assertThat(issues.get(0).getFilePath(), is("src/sok_register_api/boa.clj"));
+        assertThat(issues.get(0).getLine(), is(13));
+        assertThat(issues.get(0).getFilePath(), is("src/clojure_sonar_example/core.clj"));
         assertThat(issues.get(0).getDescription(), is("Consider using:..." + "\n" + "some consideration\n"));
         assertThat(issues.get(0).getExternalRuleId(), is("kibit"));
 

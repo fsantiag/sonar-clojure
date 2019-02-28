@@ -68,9 +68,9 @@ public class KibitSensorTest {
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("----");
-        stdOut.consumeLine("##### `kibit.clj:5`");
+        stdOut.consumeLine("At kibit.clj:5:");
         stdOut.consumeLine("Kibit will say that there is pos? function available");
-        Mockito.when(commandRunner.run("lein", "kibit", "-r", "markdown")).thenReturn(stdOut);
+        Mockito.when(commandRunner.run("lein", "kibit")).thenReturn(stdOut);
 
         KibitSensor kibitSensor = new KibitSensor(commandRunner);
         kibitSensor.execute(context);
