@@ -16,6 +16,7 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.Issue;
 import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.util.List;
@@ -30,36 +31,7 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
         super(commandRunner);
     }
 
-    private void saveIssue(EastwoodIssue eastwoodIssue, SensorContext context) {
-        InputFile file = getFile(eastwoodIssue, context.fileSystem());
 
-        if (file == null) {
-            LOG.warn("Not able to find a file with path '{}'", eastwoodIssue.getFilePath());
-            return;
-        }
-
-        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, eastwoodIssue.getExternalRuleId().trim());
-
-        NewIssue newIssue = context.newIssue().forRule(ruleKey);
-
-        NewIssueLocation primaryLocation = newIssue
-                .newLocation()
-                .on(file)
-                .message(eastwoodIssue.getDescription().trim());
-
-        primaryLocation.at(file.selectLine(eastwoodIssue.getLine()));
-
-        newIssue.at(primaryLocation);
-
-        newIssue.save();
-    }
-
-    private InputFile getFile(EastwoodIssue eastwoodIssue, FileSystem fileSystem) {
-        return fileSystem.inputFile(
-                fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(eastwoodIssue.getFilePath()),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
-    }
 
 
     @Override
@@ -84,10 +56,10 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
                     LOG.warn("Eastwood resulted in empty output");
                 }
 
-                List<EastwoodIssue> eastwoodIssues = EastwoodIssueParser.parse(stdOut);
-                LOG.info("Saving eastwoodIssues");
-                for (EastwoodIssue eastwoodIssue : eastwoodIssues) {
-                    saveIssue(eastwoodIssue, context);
+                List<Issue> issues = EastwoodIssueParser.parse(stdOut);
+                LOG.info("Saving issues");
+                for (Issue issue : issues) {
+                    saveIssue(issue, context);
                 }
             }
         } else {

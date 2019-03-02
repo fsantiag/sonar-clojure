@@ -2,6 +2,7 @@ package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Test;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.Issue;
 
 
 import java.util.List;
@@ -17,9 +18,9 @@ public class EastwoodIssueParserTest {
         CommandStreamConsumer output = new CommandStreamConsumer();
         output.consumeLine("invalid issue");
 
-        List<EastwoodIssue> eastwoodIssues = EastwoodIssueParser.parse(output);
+        List<Issue> issues = EastwoodIssueParser.parse(output);
 
-        assertThat(eastwoodIssues.size(), is(0));
+        assertThat(issues.size(), is(0));
     }
 
     @Test
@@ -27,22 +28,22 @@ public class EastwoodIssueParserTest {
         CommandStreamConsumer output = new CommandStreamConsumer();
         output.consumeLine("path:1:2:some-key:description");
 
-        List<EastwoodIssue> eastwoodIssues = EastwoodIssueParser.parse(output);
+        List<Issue> issues = EastwoodIssueParser.parse(output);
 
-        assertThat(eastwoodIssues.size(), is(1));
-        assertThat(eastwoodIssues.get(0).getLine(), is(1));
-        assertThat(eastwoodIssues.get(0).getFilePath(), is("path"));
-        assertThat(eastwoodIssues.get(0).getDescription(), is("description"));
-        assertThat(eastwoodIssues.get(0).getExternalRuleId(), is("some-key"));
+        assertThat(issues.size(), is(1));
+        assertThat(issues.get(0).getLine(), is(1));
+        assertThat(issues.get(0).getFilePath(), is("path"));
+        assertThat(issues.get(0).getDescription(), is("description"));
+        assertThat(issues.get(0).getExternalRuleId(), is("some-key"));
     }
 
     @Test
     public void testNoIssuesGeneratedForNullStreamConsumer() {
         CommandStreamConsumer output = null;
 
-        List<EastwoodIssue> eastwoodIssues = EastwoodIssueParser.parse(output);
+        List<Issue> issues = EastwoodIssueParser.parse(output);
 
-        assertThat(eastwoodIssues.size(), is(0));
+        assertThat(issues.size(), is(0));
     }
 
     @Test

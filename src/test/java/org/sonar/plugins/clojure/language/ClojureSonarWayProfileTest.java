@@ -79,4 +79,12 @@ public class ClojureSonarWayProfileTest {
         ruleKeys.stream().forEach(leinNvdRule -> assertTrue(profileRules.contains(leinNvdRule)));
     }
 
+    @Test
+    public void testIfSonarwayProfileIsCreatedWithKibitRules() {
+
+        List<String> ruleKeys = new ArrayList<>();
+        ruleKeys.addAll(asList("kibit"));
+        ruleKeys.stream().forEach(kibitRule -> assertTrue(profileRules.contains(kibitRule)));
+    }
+
 }

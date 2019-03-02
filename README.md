@@ -17,6 +17,17 @@ that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Cl
 [Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
  , def in defs and tests which always returns true.
 
+### Kibit
+[Kibit](https://github.com/jonase/eastwood) is a static code analyzer which detects code that could be rewritten with a more idiomatic 
+function or macro. For example: 
+```clojure 
+(> x 0) 
+; more idiomatically
+(pos? x)
+```
+
+Kibit is most useful for beginning Clojure programmers. Kibit supports also Clojurescript.
+
 ### ancient-clj
 
 [ancient-clj](https://github.com/xsc/lein-ancient) is a Clojure library with Leiningen plugin which checks your project for outdated dependencies and plugins and  suggest updates. The Sonarqube plugin
@@ -44,6 +55,7 @@ Set the ```sonar.clojure.lein-nvd.json-output-location``` property in sonar-proj
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
+
 
 ## Installation
 
@@ -77,18 +89,18 @@ In order to install SonarClojure:
 Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
 by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
 
-Sensor names are ```eastwood```, ```ancient-clj```, ``lein-nvd``` and ```cloverage```.
+Sensor names are ```eastwood```, ```kibit```, ```ancient-clj```, ``lein-nvd``` and ```cloverage```.
 
-3. Run [sonnar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
+3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
-
+◊
 ```sh
 ./mvnw clean package
 ```
 
 Maven will generate an SNAPSHOT under the folder ***target***.
-
+``
 ## Testing the plugin with locally running dockerized Sonarqube 
 
 ```sh

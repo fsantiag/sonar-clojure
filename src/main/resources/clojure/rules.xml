@@ -11,7 +11,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -25,7 +24,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -39,7 +37,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -53,7 +50,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -67,7 +63,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -81,7 +76,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -95,7 +89,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -109,7 +102,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -123,7 +115,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -137,7 +128,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -151,7 +141,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -165,7 +154,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -179,7 +167,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -193,7 +180,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -207,7 +193,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -221,7 +206,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -235,7 +219,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -249,7 +232,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -263,7 +245,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -277,7 +258,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -291,7 +271,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -305,7 +284,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -319,7 +297,19 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>CODE_SMELL</type>
-        <tag>example</tag>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>kibit</key>
+        <name>Suggestion from Kibit</name>
+        <internalKey>kibit</internalKey>
+        <description>The suggestion is generated using core.logic to search for patterns of code that could be rewritten with a more idiomatic function or macro.
+        </description>
+        <severity>MINOR</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
@@ -333,7 +323,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>VULNERABILITY</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
     </rule>
@@ -347,7 +336,6 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>VULNERABILITY</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
     </rule>
@@ -355,13 +343,12 @@
         <key>nvd-high</key>
         <name>nvd-high</name>
         <internalKey>nvd-high</internalKey>
-        <description> High severity security problem
+        <description>High severity security problem
         </description>
         <severity>BLOCKER</severity>
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>VULNERABILITY</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
     </rule>
@@ -369,13 +356,12 @@
         <key>nvd-medium</key>
         <name>nvd-medium</name>
         <internalKey>nvd-medium</internalKey>
-        <description> High severity security problem
+        <description>High severity security problem
         </description>
         <severity>MAJOR</severity>
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>VULNERABILITY</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
     </rule>
@@ -389,8 +375,7 @@
         <cardinality>SINGLE</cardinality>
         <status>READY</status>
         <type>VULNERABILITY</type>
-        <tag>example</tag>
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
-        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>
+        <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>◊
     </rule>
 </rules>

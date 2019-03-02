@@ -16,6 +16,7 @@ public class ClojureProperties {
     public static final String LEIN_NVD_JSON_OUTPUT_LOCATION = "sonar.clojure.lein-nvd.json-output-location";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
     public static final String CLOVERAGE_DISABLED = "sonar.clojure.cloverage.disabled";
+    public static final String KIBIT_DISABLED = "sonar.clojure.kibit.disabled";
     public static final String CLOVERAGE_JSON_OUTPUT_LOCATION = "sonar.clojure.cloverage.json-output-location";
 
     private ClojureProperties() {}
@@ -27,7 +28,8 @@ public class ClojureProperties {
                 getCloverageDisabledProperty(),
                 getCloverageJsonOutputLocation(),
                 getLeinNvdDisabledProperty(),
-                getLeinNVdXMLOutputLocation());
+                getLeinNVdXMLOutputLocation(),
+                getKibitDisabledProperty());
     }
 
     public static PropertyDefinition getFileSuffixProperty() {
@@ -97,6 +99,16 @@ public class ClojureProperties {
                 .defaultValue("src/test/resources/nvd-report.json")
                 .name("Lein NVD output location")
                 .description("Set this to path where Lein NVD generates the result xml file.")
+                .build();
+    }
+
+    public static PropertyDefinition getKibitDisabledProperty() {
+        return PropertyDefinition.builder(KIBIT_DISABLED)
+                .category("ClojureLanguage")
+                .subCategory("Sensors")
+                .defaultValue("false")
+                .name("Kibit sensor disabling")
+                .description("Set true to disable the sensor.")
                 .build();
     }
 }
