@@ -94,22 +94,12 @@ Sensor names are ```eastwood```, ```kibit```, ```ancient-clj```, ``lein-nvd``` a
 3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
 ## Building from source
-◊
 ```sh
 ./mvnw clean package
 ```
 
 Maven will generate an SNAPSHOT under the folder ***target***.
 ``
-## Testing the plugin with locally running dockerized Sonarqube 
-
-```sh
-mvn clean package
-start-sonarqube.sh
-```
-
-Create sonar-project.properties file. Run ```sonar-scanner``` on Clojure applications root directory which you like to analyze.
-Open http://localhost:9000/dashboard?id=your-project-key and check for issues.
 
 ## Compatibility
 
