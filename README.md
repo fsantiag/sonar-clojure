@@ -7,55 +7,17 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.sonar.plugins.clojure%3Asonar-clojure-plugin&metric=coverage
 )](https://sonarcloud.io/dashboard?id=org.sonar.plugins.clojure%3Asonar-clojure-plugin)
 
-
-SonarClojure is is a [SonarQube](https://www.sonarqube.org/) [plugin](https://docs.sonarqube.org/display/PLUG/Plugin+Library)
-that uses [Eastwood](https://github.com/jonase/eastwood) lint tool to analyze Clojure source.
-
 ## Current State
 
-### Eastwood
-[Eastwood](https://github.com/jonase/eastwood) is a lintter for Clojure (no CLJS support) which detects for example misplaced docstrings
- , def in defs and tests which always returns true.
+### Features:
+* Static code analysis powered by [eastwood](https://github.com/jonase/eastwood) and [kibit](https://github.com/jonase/kibit).
+* Outdated dependency and plugin checks powered by [lein-ancient](https://github.com/xsc/lein-ancient)
+* Coverage reports powered by [cloverage](https://github.com/cloverage/cloverage).
+* Detection of vulnerable dependencies powered by [lein-nvd](https://github.com/rm-hull/lein-nvd).
 
-### Kibit
-[Kibit](https://github.com/jonase/eastwood) is a static code analyzer which detects code that could be rewritten with a more idiomatic 
-function or macro. For example: 
-```clojure 
-(> x 0) 
-; more idiomatically
-(pos? x)
-```
-
-Kibit is most useful for beginning Clojure programmers. Kibit supports also Clojurescript.
-
-### ancient-clj
-
-[ancient-clj](https://github.com/xsc/lein-ancient) is a Clojure library with Leiningen plugin which checks your project for outdated dependencies and plugins and  suggest updates. The Sonarqube plugin
-marks these as minor vulnerabilities to project.clj file.
-
-ancient-clj sensor requires project.clj to be included in sonar.sources property.
-
-### Cloverage
-
-[Cloverage](https://github.com/cloverage/cloverage) is a code coverage tool for Clojure which runs the tests of a program 
-and calculates line and form coverage for namespaces. Only line coverage is supported by SonarQube and calculation seems to be
-be somehow different compared to Cloverage itself by few percents.
-
-Set the property ```sonar.clojure.cloverage.json-output-location``` to point to Cloverage export file which is by default target/coverage/codecov.json.
-
-### Lein-nvd
-
-[Lein-nvd] is a dependency-checker plugin whichs checks JARS in the programs classpath for known vulnerabilites against 
-the [National Vulnerability Database](https://nvd.nist.gov/). The SonarQube plugin currently marks all the found vulnerabilites to 
-the first line of project.clj because the lein-nvd only returns JAR name not the dependency which pulls it directly or transitively.
-
-Set the ```sonar.clojure.lein-nvd.json-output-location``` property in sonar-project.properties file to point to Lein-nvd json output which is by default
-```target/nvd/dependency-check-report.json```.
- 
 >This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
-this moment is not under development anymore and doesn't support SonarQube 6.7. Since the changes to port
+this moment is not under development and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
-
 
 ## Installation
 
@@ -65,10 +27,11 @@ In order to install SonarClojure:
 3. Restart the SonarQube server.
 
 ## Usage
-1. Change your ***project.clj*** file and add Eastwood to the list of plugins:
+1. Change your ***project.clj*** file and add the required plugins:
 
     ```clojure
     :plugins [[jonase/eastwood "0.2.5"]
+              [jonase/kibit "0.1.6"]
               [lein-ancient "0.6.15"]
               [lein-cloverage "1.0.13"]
               [lein-nvd "0.6.0"]]
@@ -84,30 +47,31 @@ In order to install SonarClojure:
     sonar.clojure.cloverage.json-output-location=target/coverage/codecov.json
     ```
 
-## Disabling sensors
-
-Sensors can be disabled by setting ```sonar.clojure.sensorname.disabled=true```  or
-by using command line switch ```-Dsonar.clojure.sensorname.disabled``` when running ```sonar-scanner```.
-
-Sensor names are ```eastwood```, ```kibit```, ```ancient-clj```, ``lein-nvd``` and ```cloverage```.
-
 3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
-## Building from source
+### Disabling Sensors
+
+Sensors can be disabled by setting ```sonar.clojure.<sensorname>.disabled=true```  or
+by using command line switch ```-Dsonar.clojure.<sensorname>.disabled``` when running sonar-scanner.
+
+Sensor names are ```eastwood```, ```kibit```, ```ancient-clj```, ```lein-nvd``` and ```cloverage```.
+
+> Some sensors have mandatory properties. Keep in mind that if you don't disable it, you will have to set the property.
+
+## Building from Source
 ```sh
 ./mvnw clean package
 ```
 
-Maven will generate an SNAPSHOT under the folder ***target***.
-``
+Maven will generate a SNAPSHOT under the folder ***target***.
 
 ## Compatibility
 
-At the moment, SonarClojure was tested on SonarQube 7.1 Community Edition.
+At the moment, SonarClojure was tested on SonarQube up to version 7.1.
 
-If using later versions than SonarQube 7.1 then the project overview might be empty. This can be fixed by adding a xml file or other SonarQube analyzable
-file to scanned files for example to resources folder. Remember to check that the folder is also in sonar.sources property.
-
+We noticed that in later versions of SonarQube, the project overview might be empty.
+This normally suggests that SonarClojure was not able to detect analyzable files during
+the scanning.
 ## License
 
 SonarClojure is open-sourced software licensed under the [MIT license](https://github.com/fsantiag/sonar-clojure/blob/master/LICENSE).
