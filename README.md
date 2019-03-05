@@ -11,11 +11,11 @@
 
 ### Features:
 * Static code analysis powered by [eastwood](https://github.com/jonase/eastwood) and [kibit](https://github.com/jonase/kibit).
-* Outdated dependency and plugin checks powered by [lein-ancient](https://github.com/xsc/lein-ancient)
+* Detection of outdated dependencies/plugins powered by [lein-ancient](https://github.com/xsc/lein-ancient).
 * Coverage reports powered by [cloverage](https://github.com/cloverage/cloverage).
 * Detection of vulnerable dependencies powered by [lein-nvd](https://github.com/rm-hull/lein-nvd).
 
->This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
+> This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
 this moment is not under development and doesn't support SonarQube 6.7. Since the changes to port
 the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
 
@@ -35,6 +35,7 @@ In order to install SonarClojure:
               [lein-ancient "0.6.15"]
               [lein-cloverage "1.0.13"]
               [lein-nvd "0.6.0"]]
+              ```
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
@@ -51,10 +52,10 @@ In order to install SonarClojure:
 
 ### Disabling Sensors
 
-Sensors can be disabled by setting ```sonar.clojure.<sensorname>.disabled=true```  or
-by using command line switch ```-Dsonar.clojure.<sensorname>.disabled``` when running sonar-scanner.
+Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` or
+by using command line switch `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
 
-Sensor names are ```eastwood```, ```kibit```, ```ancient-clj```, ```lein-nvd``` and ```cloverage```.
+Sensor names are `eastwood`, `kibit`, `ancient-clj`, `lein-nvd` and `cloverage`.
 
 > Some sensors have mandatory properties. Keep in mind that if you don't disable it, you will have to set the property.
 

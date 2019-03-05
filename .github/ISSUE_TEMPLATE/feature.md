@@ -2,7 +2,7 @@
 name: Feature
 about: Suggest a feature you would like to see.
 title: ''
-labels: 'enhancement'
+labels: 'feature'
 assignees: ''
 
 ---
