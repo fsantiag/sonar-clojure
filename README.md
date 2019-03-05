@@ -35,7 +35,7 @@ In order to install SonarClojure:
               [lein-ancient "0.6.15"]
               [lein-cloverage "1.0.13"]
               [lein-nvd "0.6.0"]]
-              ```
+     ```
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
