@@ -83,26 +83,30 @@ public abstract class AbstractSensor {
     }
 
     protected void saveIssue(Issue issue, SensorContext context) {
-        InputFile file = getFile(issue, context.fileSystem());
+        try {
+            InputFile file = getFile(issue, context.fileSystem());
 
-        if (file == null) {
-            LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
-            return;
+            if (file == null) {
+                LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
+                return;
+            }
+
+            RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
+
+            NewIssue newIssue = context.newIssue().forRule(ruleKey);
+
+            NewIssueLocation primaryLocation = newIssue
+                    .newLocation()
+                    .on(file)
+                    .message(issue.getDescription().trim());
+
+            primaryLocation.at(file.selectLine(issue.getLine()));
+
+            newIssue.at(primaryLocation);
+            newIssue.save();
+        } catch (Exception e) {
+            LOG.error("Can not save the issue due to: " + e.getMessage());
         }
-
-        RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
-
-        NewIssue newIssue = context.newIssue().forRule(ruleKey);
-
-        NewIssueLocation primaryLocation = newIssue
-                .newLocation()
-                .on(file)
-                .message(issue.getDescription().trim());
-
-        primaryLocation.at(file.selectLine(issue.getLine()));
-
-        newIssue.at(primaryLocation);
-        newIssue.save();
     }
 
     /**
