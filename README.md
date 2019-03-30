@@ -30,12 +30,16 @@ In order to install SonarClojure:
 1. Change your ***project.clj*** file and add the required plugins:
 
     ```clojure
-    :plugins [[jonase/eastwood "0.2.5"]
-              [jonase/kibit "0.1.6"]
+    :plugins [[jonase/eastwood "0.3.5"]
+              [lein-kibit "0.1.6"]
               [lein-ancient "0.6.15"]
-              [lein-cloverage "1.0.13"]
-              [lein-nvd "0.6.0"]]
+              [lein-cloverage "1.1.1"]
+              [lein-nvd "1.0.0"]]
      ```
+
+> Note: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
+execute each one of them individually on your project. Once they are running fine, SonarClojure should be able to
+parse their reports.
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 

@@ -54,6 +54,19 @@
         <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
     </rule>
     <rule>
+        <key>implicit-dependencies</key>
+        <name>implicit-dependencies</name>
+        <internalKey>deprecations</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
         <key>keyword-typos</key>
         <name>keyword-typos</name>
         <internalKey>keyword-typos</internalKey>
@@ -238,6 +251,19 @@
     <rule>
         <key>unused-ret-vals</key>
         <name>unused-ret-vals</name>
+        <internalKey>unused-ret-vals</internalKey>
+        <description>This is an example of rule defined thru the XML.
+        </description>
+        <severity>BLOCKER</severity>
+        <cardinality>SINGLE</cardinality>
+        <status>READY</status>
+        <type>CODE_SMELL</type>
+        <remediationFunction>CONSTANT_ISSUE</remediationFunction>
+        <remediationFunctionBaseEffort>2min</remediationFunctionBaseEffort>
+    </rule>
+    <rule>
+        <key>unused-ret-vals-in-try</key>
+        <name>unused-ret-vals-in-try</name>
         <internalKey>unused-ret-vals</internalKey>
         <description>This is an example of rule defined thru the XML.
         </description>
