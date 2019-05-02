@@ -32,8 +32,6 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
     }
 
 
-
-
     @Override
     public void describe(SensorDescriptor descriptor) {
         descriptor.name("SonarClojure")
@@ -43,11 +41,11 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-
         if (!checkIfPluginIsDisabled(context, ClojureProperties.EASTWOOD_DISABLED)) {
             LOG.info("Clojure project detected");
             LOG.info("Running Eastwood");
-            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND);
+            String options = context.config().get(ClojureProperties.EASTWOOD_OPTIONS).orElse(null);
+            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND, options);
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), EASTWOOD_COMMAND)){
                 String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);
                 if (info != null) {
@@ -57,7 +55,7 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
                 }
 
                 List<Issue> issues = EastwoodIssueParser.parse(stdOut);
-                LOG.info("Saving issues");
+                LOG.info("Saving issues " + issues.size());
                 for (Issue issue : issues) {
                     saveIssue(issue, context);
                 }
@@ -65,7 +63,5 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
         } else {
             LOG.info ("Eastwood plugin is disabled");
         }
-
     }
-
 }

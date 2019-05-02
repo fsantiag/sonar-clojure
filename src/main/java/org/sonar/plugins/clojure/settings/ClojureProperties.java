@@ -12,6 +12,7 @@ public class ClojureProperties {
     public static final String FILE_SUFFIXES_DEFAULT_VALUE = "clj,cljs,cljc";
     public static final String ANCIENT_CLJ_DISABLED = "sonar.clojure.ancient-clj.disabled";
     public static final String EASTWOOD_DISABLED = "sonar.clojure.eastwood.disabled";
+    public static final String EASTWOOD_OPTIONS = "sonar.clojure.eastwood.options";
     public static final String LEIN_NVD_DISABLED = "sonar.clojure.lein-nvd.disabled";
     public static final String LEIN_NVD_JSON_OUTPUT_LOCATION = "sonar.clojure.lein-nvd.json-output-location";
     public static final String MAIN_CATEGORY = "ClojureLanguage";
@@ -24,6 +25,7 @@ public class ClojureProperties {
     public static List<PropertyDefinition> getProperties() {
         return asList(getFileSuffixProperty(),
                 getEastwoodDisabledProperty(),
+                getEastwoodOptionsProperty(),
                 getAncientCljDisabledProperty(),
                 getCloverageDisabledProperty(),
                 getCloverageJsonOutputLocation(),
@@ -48,6 +50,16 @@ public class ClojureProperties {
                 .defaultValue("false")
                 .name("Eastwood sensor disabling")
                 .description("Set true to disable Eastwood sensor.")
+                .build();
+    }
+
+    public static PropertyDefinition getEastwoodOptionsProperty() {
+        return PropertyDefinition.builder(EASTWOOD_OPTIONS)
+                .category(MAIN_CATEGORY)
+                .subCategory("Sensors")
+                .defaultValue(null)
+                .name("Eastwood sensor options")
+                .description("Provide string of options for eastwood plugin (e.g {:continue-on-exception true})")
                 .build();
     }
 

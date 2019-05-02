@@ -1,6 +1,7 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -73,7 +74,9 @@ public class EastwoodSensorTest {
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
         stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
-        Mockito.when(commandRunner.run("lein", "eastwood")).thenReturn(stdOut);
+        String ignoredOptions = null;
+        Mockito.when(commandRunner.run("lein", "eastwood", ignoredOptions))
+                .thenReturn(stdOut);
 
         EastwoodSensor eastwoodSensor = new EastwoodSensor(commandRunner);
         eastwoodSensor.execute(context);

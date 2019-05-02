@@ -14,7 +14,9 @@ public class CommandRunner {
         CommandStreamConsumer stdErr = new CommandStreamConsumer();
         Command cmd = Command.create(command);
         for (String arg: arguments) {
-            cmd.addArgument(arg);
+            if (arg != null) {
+                cmd.addArgument(arg);
+            }
         }
         CommandExecutor.create().execute(cmd, stdOut, stdErr, TIMEOUT);
         return stdOut;
