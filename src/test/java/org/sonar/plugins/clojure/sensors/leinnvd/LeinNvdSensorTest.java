@@ -17,7 +17,7 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.NvdProperties;
 
 
 import java.io.File;
@@ -56,7 +56,7 @@ public class LeinNvdSensorTest {
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
 
-        context.settings().appendProperty(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION, "src/test/resources/nvd-report.json");
+        context.settings().appendProperty(NvdProperties.NVD_REPORT_LOCATION, "src/test/resources/nvd-report.json");
         // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
         File project = new File(baseDir, "project.clj");
@@ -101,7 +101,7 @@ public class LeinNvdSensorTest {
         stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
         stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
         Mockito.when(commandRunner.run("lein", "nvd", "check")).thenReturn(stdOut);
-        context.settings().appendProperty(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION, "src/test/resources/nvd-report.json");
+        context.settings().appendProperty(NvdProperties.NVD_REPORT_LOCATION, "src/test/resources/nvd-report.json");
         LeinNvdSensor leinNvdSensor = new LeinNvdSensor(commandRunner);
         leinNvdSensor.execute(context);
     }

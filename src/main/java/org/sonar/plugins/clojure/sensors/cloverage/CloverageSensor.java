@@ -11,7 +11,7 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.CloverageProperties;
 
 import java.util.Optional;
 
@@ -51,15 +51,15 @@ public class CloverageSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.CLOVERAGE_DISABLED)) {
+        if (!checkIfPluginIsDisabled(context, CloverageProperties.CLOVERAGE_DISABLED)) {
 
-            if (context.config().get(ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION).isPresent()){
+            if (context.config().get(CloverageProperties.CLOVERAGE_REPORT_LOCATION).isPresent()){
                 LOG.info("Running Cloverage");
                 CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
                 if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), PLUGIN_NAME)) {
 
 
-                    Optional<String> fileString = readFromFileSystem(context.config().get(ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION).get() );
+                    Optional<String> fileString = readFromFileSystem(context.config().get(CloverageProperties.CLOVERAGE_REPORT_LOCATION).get() );
                     if (fileString.isPresent()) {
                         try {
                             CoverageReport report = null;
@@ -69,13 +69,13 @@ public class CloverageSensor extends AbstractSensor implements Sensor {
                             LOG.warn("Running parser or saving caused exception", e);
                         }
                     } else {
-                        LOG.warn("Cloverage report does not exists. Have you added added target/coverage/codecov.json to " + ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION + "?");
+                        LOG.warn("Cloverage report does not exists. Have you added added target/coverage/codecov.json to " + CloverageProperties.CLOVERAGE_REPORT_LOCATION + "?");
                     }
                 } else {
                     LOG.warn("Parsing skipped because Leiningen or Cloverate are not installed");
                 }
             } else {
-                LOG.warn("Required property "  + ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION + " is not set. Skipping Cloverage generation");
+                LOG.warn("Required property "  + CloverageProperties.CLOVERAGE_REPORT_LOCATION + " is not set. Skipping Cloverage generation");
             }
 
         }

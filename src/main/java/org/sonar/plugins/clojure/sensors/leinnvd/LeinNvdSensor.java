@@ -15,15 +15,10 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.NvdProperties;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
@@ -48,15 +43,15 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.LEIN_NVD_DISABLED)) {
+        if (!checkIfPluginIsDisabled(context, NvdProperties.NVD_DISABLED)) {
 
-            if (context.config().get(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION).isPresent()){
+            if (context.config().get(NvdProperties.NVD_REPORT_LOCATION).isPresent()){
                 LOG.info("Running Lein NVD");
 
                 CommandStreamConsumer stdOut =  this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
                 if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), PLUGIN_NAME)){
                     FileSystem fs = context.fileSystem();
-                    Optional<String> vulnerabilityContext = readFromFileSystem(context.config().get(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION).get());
+                    Optional<String> vulnerabilityContext = readFromFileSystem(context.config().get(NvdProperties.NVD_REPORT_LOCATION).get());
                     if (vulnerabilityContext.isPresent()){
                         List<Vulnerability> vulnerabilities = LeinNvdParser.parseJson(vulnerabilityContext.get());
                         saveVulnerabilities(vulnerabilities, context);
@@ -67,7 +62,7 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
                     LOG.warn("Running sensor skipped because Leiningen or Lein NVD are not installed");
                 }
             } else {
-                LOG.warn("Required property " + ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION + " is not set");
+                LOG.warn("Required property " + NvdProperties.NVD_REPORT_LOCATION + " is not set");
             }
 
         } else {

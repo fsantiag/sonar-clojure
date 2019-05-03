@@ -14,7 +14,7 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.CloverageProperties;
 
 
 import java.io.File;
@@ -55,7 +55,7 @@ public class CloverageSensorTest {
         // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
 
-        context.settings().appendProperty(ClojureProperties.CLOVERAGE_JSON_OUTPUT_LOCATION, "src/test/resources/cloverage-result.json");
+        context.settings().appendProperty(CloverageProperties.CLOVERAGE_REPORT_LOCATION, "src/test/resources/cloverage-result.json");
 
         File fooSource = new File(baseDir, "foo_in_src_clj.clj");
         final String fooPath = "src/clj/foo.clj";

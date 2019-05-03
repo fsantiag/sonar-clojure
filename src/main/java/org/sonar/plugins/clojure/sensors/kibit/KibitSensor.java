@@ -1,9 +1,6 @@
 package org.sonar.plugins.clojure.sensors.kibit;
 
 
-import org.sonar.api.batch.fs.FileSystem;
-import org.sonar.api.batch.fs.InputFile;
-
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
@@ -16,7 +13,7 @@ import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.Issue;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.KibitProperties;
 
 import java.util.List;
 
@@ -37,10 +34,9 @@ public class KibitSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.KIBIT_DISABLED)) {
-            LOG.info("Running Kibit");
-            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
-
+        LOG.info("Running Kibit");
+        CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
+        if (!checkIfPluginIsDisabled(context, KibitProperties.KIBIT_DISABLED)) {
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), KIBIT_COMMAND)){
 
                 List<Issue> issues = KibitIssueParser.parse(stdOut);

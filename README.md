@@ -48,8 +48,8 @@ parse their reports.
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
     sonar.sources=src,project.clj
-    sonar.clojure.lein-nvd.json-output-location=target/nvd/dependency-check-report.json
-    sonar.clojure.cloverage.json-output-location=target/coverage/codecov.json
+    sonar.clojure.nvd.reportPath=target/nvd/dependency-check-report.json
+    sonar.clojure.cloverage.reportPath=target/coverage/codecov.json
     ```
 
 3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
@@ -59,7 +59,7 @@ parse their reports.
 Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` or
 by using command line switch `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
 
-Sensor names are `eastwood`, `kibit`, `ancient-clj`, `lein-nvd` and `cloverage`.
+Sensor names are `eastwood`, `kibit`, `ancient`, `nvd` and `cloverage`.
 
 > Some sensors have mandatory properties. Keep in mind that if you don't disable it, you will have to set the property.
 

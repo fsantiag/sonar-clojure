@@ -1,23 +1,17 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 
-import org.sonar.api.batch.fs.FileSystem;
-import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.batch.sensor.issue.NewIssue;
-import org.sonar.api.batch.sensor.issue.NewIssueLocation;
-import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
-import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.Issue;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.EastwoodProperties;
 
 import java.util.List;
 
@@ -41,9 +35,9 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.EASTWOOD_DISABLED)) {
+        if (!checkIfPluginIsDisabled(context, EastwoodProperties.EASTWOOD_DISABLED)) {
             LOG.info("Running Eastwood");
-            String options = context.config().get(ClojureProperties.EASTWOOD_OPTIONS).orElse(null);
+            String options = context.config().get(EastwoodProperties.EASTWOOD_OPTIONS).orElse(null);
             CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND, options);
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), EASTWOOD_COMMAND)){
                 String info = EastwoodIssueParser.parseRuntimeInfo(stdOut);

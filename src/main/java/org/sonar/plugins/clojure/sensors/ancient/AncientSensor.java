@@ -1,7 +1,6 @@
 package org.sonar.plugins.clojure.sensors.ancient;
 
 
-import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -17,7 +16,7 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.AncientProperties;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,7 +42,7 @@ public class AncientSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.ANCIENT_CLJ_DISABLED)) {
+        if (!checkIfPluginIsDisabled(context, AncientProperties.ANCIENT_DISABLED)) {
             LOG.info("Running Lein Ancient");
             CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), LEIN_ARGUMENTS)) {

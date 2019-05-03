@@ -9,9 +9,7 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 

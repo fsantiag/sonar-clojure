@@ -2,7 +2,7 @@ package org.sonar.plugins.clojure.language;
 
 import org.sonar.api.config.Configuration;
 import org.sonar.api.resources.AbstractLanguage;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.Properties;
 
 public class ClojureLanguage extends AbstractLanguage {
     public static final String KEY = "clj";
@@ -17,9 +17,9 @@ public class ClojureLanguage extends AbstractLanguage {
 
     @Override
     public String[] getFileSuffixes() {
-        String[] suffixes = config.getStringArray(ClojureProperties.FILE_SUFFIXES_KEY);
+        String[] suffixes = config.getStringArray(Properties.FILE_SUFFIXES_KEY);
         if (suffixes.length == 0) {
-            suffixes = ClojureProperties.FILE_SUFFIXES_DEFAULT_VALUE.split(",");
+            suffixes = Properties.FILE_SUFFIXES_DEFAULT_VALUE.split(",");
         }
         return suffixes;
     }
