@@ -7,6 +7,7 @@ import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @ScannerSide
 public class CommandRunner {
@@ -30,7 +31,7 @@ public class CommandRunner {
     CommandStreamConsumer run(String command, CommandStreamConsumer stdout,
                                      CommandStreamConsumer stderr, String... arguments) {
         Command cmd = Command.create(command);
-        Arrays.stream(arguments).forEach(cmd::addArgument);
+        Arrays.stream(arguments).filter(Objects::nonNull).forEach(cmd::addArgument);
 
         commandExecutor.execute(cmd, stdout, stderr, TIMEOUT);
 

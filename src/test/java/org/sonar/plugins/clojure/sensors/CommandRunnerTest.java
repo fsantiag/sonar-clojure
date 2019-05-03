@@ -14,7 +14,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,13 +36,7 @@ public class CommandRunnerTest {
 
     @Test
     public void shouldTakeMultipleArgumentsForCommand() {
-        doReturn(0).when(commandExecutor).execute(
-                any(),
-                any(),
-                any(),
-                anyLong());
-
-        commandRunner.run("echo", "argument1", "argument2");
+        commandRunner.run("echo", "argument1", null, "argument2");
 
         ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
         verify(commandExecutor, times(1))
