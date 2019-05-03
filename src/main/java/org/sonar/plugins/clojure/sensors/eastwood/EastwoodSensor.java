@@ -42,7 +42,6 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
         if (!checkIfPluginIsDisabled(context, ClojureProperties.EASTWOOD_DISABLED)) {
-            LOG.info("Clojure project detected");
             LOG.info("Running Eastwood");
             String options = context.config().get(ClojureProperties.EASTWOOD_OPTIONS).orElse(null);
             CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND, options);
