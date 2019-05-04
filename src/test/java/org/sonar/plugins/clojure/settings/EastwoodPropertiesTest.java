@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 public class EastwoodPropertiesTest {
     @Test
     public void shouldHaveEastwoodDisabledProperty() {
-        PropertyDefinition eastwoodDisabled = EastwoodProperties.getEastwoodDisabled();
+        PropertyDefinition eastwoodDisabled = EastwoodProperties.getDisabledProperty();
         assertThat(eastwoodDisabled.key(), is("sonar.clojure.eastwood.disabled"));
         assertThat(eastwoodDisabled.name(), is("Eastwood Disabled"));
         assertThat(eastwoodDisabled.category(), is("SonarClojure"));

@@ -13,10 +13,7 @@ import org.sonar.api.utils.log.Logger;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandRunnerTest {
@@ -53,27 +50,27 @@ public class CommandRunnerTest {
     }
 
     @Test
-    public void shouldLogCommandOutputWhenDebugIsEnabled() {
-        when(logger.isDebugEnabled()).thenReturn(true);
+    public void shouldLogStdoutStderrAndCommandInDebugMode() {
         CommandStreamConsumer stdout = new CommandStreamConsumer();
-        String commandOutput = "command output";
-        stdout.consumeLine(commandOutput);
+        stdout.consumeLine("line in stdout");
+        CommandStreamConsumer stderr = new CommandStreamConsumer();
+        stderr.consumeLine("line in stderr");
 
-        commandRunner.run("echo", stdout, new CommandStreamConsumer(), "argument1", "argument2");
+        commandRunner.run("echo", stdout, stderr, "argument1", "argument2");
 
-        verify(logger).debug("Stdout: command output");
+        verify(logger, times(1)).debug("command: [argument1, argument2]");
+        verify(logger, times(1)).debug("stdout: line in stdout");
+        verify(logger, times(1)).debug("stderr: line in stderr");
     }
 
     @Test
-    public void shouldLogWarningForErrorsInStderr() {
-        when(logger.isDebugEnabled()).thenReturn(true);
-        CommandStreamConsumer stderr = new CommandStreamConsumer();
-        String error = "some error message";
-        stderr.consumeLine(error);
+    public void shouldLogErrorForReturnCodeDifferentThanZero() {
+        when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(1);
+        CommandStreamConsumer dummyStreamConsumer = new CommandStreamConsumer();
 
-        commandRunner.run("echo", new CommandStreamConsumer(), stderr, "argument1", "argument2");
-
-        verify(logger).warn("Stderr: some error message");
+        commandRunner.run("echo", dummyStreamConsumer, dummyStreamConsumer, "argument1", "argument2");
+        verify(logger, times(1)).warn("Command: [argument1, argument2] returned a non-zero " +
+                "code. Please make sure plugin is working isolated before running sonar-scanner");
     }
 
 }

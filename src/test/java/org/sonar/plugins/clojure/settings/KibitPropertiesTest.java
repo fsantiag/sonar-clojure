@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 public class KibitPropertiesTest {
     @Test
     public void shouldHaveKibitDisabledProperty() {
-        PropertyDefinition kibitDisabled = KibitProperties.getKibitDisabled();
+        PropertyDefinition kibitDisabled = KibitProperties.getDisabledProperty();
         assertThat(kibitDisabled.key(), is("sonar.clojure.kibit.disabled"));
         assertThat(kibitDisabled.name(), is("Kibit Disabled"));
         assertThat(kibitDisabled.category(), is("SonarClojure"));

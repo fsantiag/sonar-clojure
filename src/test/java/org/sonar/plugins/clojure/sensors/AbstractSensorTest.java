@@ -1,50 +1,50 @@
 package org.sonar.plugins.clojure.sensors;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.sonar.plugins.clojure.sensors.ancient.AncientSensor;
-import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.sonar.api.batch.sensor.internal.SensorContextTester;
+import org.sonar.api.utils.log.LogTester;
 
+import java.io.File;
+
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(MockitoJUnitRunner.class)
 public class AbstractSensorTest {
 
     @Mock
     private CommandRunner commandRunner;
 
+    @Rule
+    public LogTester logTester = new LogTester();
+
+    private DummySensor dummySensor;
+
     @Before
     public void setUp() {
-        initMocks(this);
-    }
-
-
-    @Test
-    public void testIfLeinIsInstalled(){
-        List<String> normalOutput =  new ArrayList<String>();
-        normalOutput.add("Contains something else");
-        List<String> osxBashOutputILeinIsNotFound =  new ArrayList<String>();
-        osxBashOutputILeinIsNotFound.add("-bash: lein: command not found");
-
-        AbstractSensor sensor = new AncientSensor(commandRunner);
-        assertFalse(sensor.isLeinInstalled(osxBashOutputILeinIsNotFound));
-        assertTrue(sensor.isLeinInstalled(normalOutput));
-
+        this.dummySensor = new DummySensor(commandRunner);
     }
 
     @Test
-    public void testIfPluginIsInstalled(){
-        List<String> osxOutputIfAncientIsNotFound =  new ArrayList<String>();
-        osxOutputIfAncientIsNotFound.add("'ancient' is not a task. See 'lein help'.");
-        List<String> normalOutput =  new ArrayList<String>();
-        normalOutput.add("Contains something else");
+    public void shouldDisablePluginWhenPropertyIsSet() {
+        SensorContextTester context = SensorContextTester.create(new File("/"));
+        context.settings().appendProperty("property.foo", "true");
 
-        AbstractSensor sensor = new AncientSensor(commandRunner);
-        assertFalse(sensor.isPluginInstalled(osxOutputIfAncientIsNotFound, "ancient"));
-        assertTrue(sensor.isPluginInstalled(normalOutput, "ancient"));
+        boolean isDisabled = dummySensor.isPluginDisabled(context, "SOME_PLUGIN", "property.foo", false);
+
+        assertTrue(isDisabled);
+        assertThat(logTester.logs(), hasItem("SOME_PLUGIN disabled"));
     }
 
-
-
+    private class DummySensor extends AbstractSensor {
+        DummySensor(CommandRunner commandRunner) {
+            super(commandRunner);
+        }
+    }
 }

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class LeinNvdSensorTest {
     public void testSensorDescriptor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         new LeinNvdSensor(commandRunner).describe(descriptor);
-        assertThat(descriptor.name(), is("SonarClojureLeinNvd"));
+        assertThat(descriptor.name(), is("NVD"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
@@ -56,7 +57,7 @@ public class LeinNvdSensorTest {
     public void testExecuteSensor() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
 
-        context.settings().appendProperty(NvdProperties.NVD_REPORT_LOCATION, "src/test/resources/nvd-report.json");
+        context.settings().appendProperty(NvdProperties.REPORT_LOCATION_PROPERTY, "src/test/resources/nvd-report.json");
         // Adding file to Sonar Context
         File baseDir = new File("src/test/resources/");
         File project = new File(baseDir, "project.clj");
@@ -86,23 +87,9 @@ public class LeinNvdSensorTest {
         LeinNvdSensor leinNvdSensor = new LeinNvdSensor(commandRunner);
         leinNvdSensor.execute(context);
 
-        List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(2));
         assertThat(issuesList.get(0).ruleKey().rule(), is("nvd-medium"));
         assertThat(issuesList.get(1).ruleKey().rule(), is("nvd-high"));
-    }
-
-    @Test
-    public void testExecuteSensorWithNonExistingProject() throws IOException {
-        SensorContextTester context = SensorContextTester.create(new File("/"));
-
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("This is some non related line which should not end to report");
-        stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
-        stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
-        Mockito.when(commandRunner.run("lein", "nvd", "check")).thenReturn(stdOut);
-        context.settings().appendProperty(NvdProperties.NVD_REPORT_LOCATION, "src/test/resources/nvd-report.json");
-        LeinNvdSensor leinNvdSensor = new LeinNvdSensor(commandRunner);
-        leinNvdSensor.execute(context);
     }
 }

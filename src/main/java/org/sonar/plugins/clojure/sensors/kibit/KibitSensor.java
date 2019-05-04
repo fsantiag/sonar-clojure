@@ -22,34 +22,33 @@ public class KibitSensor extends AbstractSensor implements Sensor {
     private static final Logger LOG = Loggers.get(KibitSensor.class);
 
     private static final String KIBIT_COMMAND = "kibit";
+    private static final String PLUGIN_NAME = "Kibit";
 
-    public KibitSensor(CommandRunner commandRunner) { super(commandRunner); }
+    @SuppressWarnings("WeakerAccess")
+    public KibitSensor(CommandRunner commandRunner) {
+        super(commandRunner);
+    }
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-        descriptor.name("SonarClojureKibit")
+        descriptor.name(PLUGIN_NAME)
                 .onlyOnLanguage(ClojureLanguage.KEY)
                 .global();
     }
 
     @Override
     public void execute(SensorContext context) {
-        LOG.info("Running Kibit");
-        CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
-        if (!checkIfPluginIsDisabled(context, KibitProperties.KIBIT_DISABLED)) {
-            if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), KIBIT_COMMAND)){
+        if (!isPluginDisabled(context, PLUGIN_NAME, KibitProperties.DISABLED_PROPERTY, KibitProperties.DISABLED_PROPERTY_DEFAULT)) {
+            LOG.info("Running Kibit");
 
-                List<Issue> issues = KibitIssueParser.parse(stdOut);
-                LOG.info("Saving issues");
-                for (Issue issue : issues) {
-                    saveIssue(issue, context);
-                }
-            } else {
-                LOG.warn("Parsing skipped because Leiningen or Kibit are not installed");
+            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
+
+            List<Issue> issues = KibitIssueParser.parse(stdOut);
+            LOG.info("Saving issues");
+            for (Issue issue : issues) {
+                saveIssue(issue, context);
             }
-        } else {
-            LOG.info ("Kibit sensor is disabled");
+
         }
     }
-
 }

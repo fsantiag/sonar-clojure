@@ -1,7 +1,5 @@
 package org.sonar.plugins.clojure.sensors.kibit;
 
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.Issue;
 

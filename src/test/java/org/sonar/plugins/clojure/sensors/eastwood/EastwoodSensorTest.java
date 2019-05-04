@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,11 +44,9 @@ public class EastwoodSensorTest {
     public void testSensorDescriptor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         new EastwoodSensor(commandRunner).describe(descriptor);
-        assertThat(descriptor.name(), is("SonarClojure"));
+        assertThat(descriptor.name(), is("Eastwood"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
-        assertThat(descriptor.name(), is("SonarClojure"));
-        assertThat(descriptor.name(), is("SonarClojure"));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class EastwoodSensorTest {
         EastwoodSensor eastwoodSensor = new EastwoodSensor(commandRunner);
         eastwoodSensor.execute(context);
 
-        List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(2));
         assertThat(issuesList.get(0).ruleKey().rule(), is("issue-1"));
         assertThat(issuesList.get(1).ruleKey().rule(), is("issue-2"));

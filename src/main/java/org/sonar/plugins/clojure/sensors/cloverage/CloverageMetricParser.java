@@ -25,14 +25,12 @@ public class CloverageMetricParser {
         FilePredicate pattern = fs.predicates().matchesPathPattern("**/" + filename);
         InputFile potentialFile = fs.inputFile(pattern);
 
-
         if (potentialFile != null) {
             LOG.debug("Found file");
             FileAnalysis foundSource = new FileAnalysis();
             foundSource.setInputFile(potentialFile);
             return Optional.of(foundSource);
         }
-        ;
 
         return Optional.empty();
     }
@@ -48,7 +46,6 @@ public class CloverageMetricParser {
 
         for (Map.Entry<String, JsonElement> e : r.entrySet()) {
 
-
             LOG.debug("Created new FileAnalysis: " + e.getKey());
 
             Optional<FileAnalysis> fileAnalysisOptional = findFileBySources(context, e.getKey());
@@ -58,21 +55,18 @@ public class CloverageMetricParser {
                 // first entry in csv is line number 0 which can be discarded
                 int lineNumber = 0;
                 for (JsonElement i : e.getValue().getAsJsonArray()) {
-                    if (lineNumber > 0) {
-                        if (!i.isJsonNull()) {
-                            try {
-                                fileAnalysis.addLine(lineNumber, i.getAsInt());
-                            } catch (NumberFormatException n) {
-                                fileAnalysis.addLine(lineNumber, 1);
-                            }
+                    if (lineNumber > 0 && !i.isJsonNull()) {
+                        try {
+                            fileAnalysis.addLine(lineNumber, i.getAsInt());
+                        } catch (NumberFormatException n) {
+                            fileAnalysis.addLine(lineNumber, 1);
                         }
                     }
                     lineNumber++;
-
                 }
                 report.addFile(fileAnalysis);
             } else {
-                LOG.warn("Namespace: " + e.getKey() + " cannot be found. Check  property");
+                LOG.warn("Namespace: " + e.getKey() + " cannot be found.");
             }
         }
 

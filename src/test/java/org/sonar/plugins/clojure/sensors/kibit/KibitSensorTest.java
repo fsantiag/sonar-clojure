@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,7 @@ public class KibitSensorTest {
     public void testSensorDescriptor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         new KibitSensor(commandRunner).describe(descriptor);
-        assertThat(descriptor.name(), is("SonarClojureKibit"));
+        assertThat(descriptor.name(), is("Kibit"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
@@ -75,7 +76,7 @@ public class KibitSensorTest {
         KibitSensor kibitSensor = new KibitSensor(commandRunner);
         kibitSensor.execute(context);
 
-        List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(1));
         assertThat(issuesList.get(0).ruleKey().rule(), is("kibit"));
     }

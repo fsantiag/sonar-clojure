@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
 public class CloveragePropertiesTest {
     @Test
     public void shouldHaveCloverageDisabledProperty() {
-        PropertyDefinition cloverageDisabled = CloverageProperties.getCloverageDisabled();
+        PropertyDefinition cloverageDisabled = CloverageProperties.getDisabledProperty();
         assertThat(cloverageDisabled.key(), is("sonar.clojure.cloverage.disabled"));
         assertThat(cloverageDisabled.name(), is("Cloverage Disabled"));
         assertThat(cloverageDisabled.category(), is("SonarClojure"));
@@ -20,7 +20,7 @@ public class CloveragePropertiesTest {
 
     @Test
     public void shouldHaveCloverageReportLocationProperty() {
-        PropertyDefinition cloverageReportLocation = CloverageProperties.getCloverageReportLocation();
+        PropertyDefinition cloverageReportLocation = CloverageProperties.getReportLocationProperty();
         assertThat(cloverageReportLocation.key(), is("sonar.clojure.cloverage.reportPath"));
         assertThat(cloverageReportLocation.name(), is("Cloverage Report Location"));
         assertThat(cloverageReportLocation.category(), is("SonarClojure"));

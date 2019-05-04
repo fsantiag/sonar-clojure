@@ -50,7 +50,7 @@ public class AncientSensorTest {
     public void testSensorDescriptor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         new AncientSensor(commandRunner).describe(descriptor);
-        assertThat(descriptor.name(), is("SonarClojureAncient"));
+        assertThat(descriptor.name(), is("Ancient"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
@@ -83,23 +83,9 @@ public class AncientSensorTest {
         AncientSensor ancientSensor = new AncientSensor(commandRunner);
         ancientSensor.execute(context);
 
-        List<Issue> issuesList = context.allIssues().stream().collect(Collectors.toList());
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(2));
         assertThat(issuesList.get(0).ruleKey().rule(), is("ancient-clj-dependency"));
         assertThat(issuesList.get(1).ruleKey().rule(), is("ancient-clj-dependency"));
-    }
-    @Test
-    public void testExecuteSensorWithNonExistingProject() throws IOException {
-        SensorContextTester context = SensorContextTester.create(new File("/"));
-
-
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("This is some non related line which should not end to report");
-        stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
-        stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
-        Mockito.when(commandRunner.run("lein", "ancient")).thenReturn(stdOut);
-
-        AncientSensor ancientSensor = new AncientSensor(commandRunner);
-        ancientSensor.execute(context);
     }
 }
