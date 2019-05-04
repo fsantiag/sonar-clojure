@@ -37,9 +37,10 @@ public class KibitSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        LOG.info("Running Kibit");
-        CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
         if (!checkIfPluginIsDisabled(context, ClojureProperties.KIBIT_DISABLED)) {
+            LOG.info("Running Kibit");
+            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, KIBIT_COMMAND);
+
             if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), KIBIT_COMMAND)){
 
                 List<Issue> issues = KibitIssueParser.parse(stdOut);
