@@ -3,10 +3,8 @@ package org.sonar.plugins.clojure.sensors.cloverage;
 import org.junit.Test;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
-import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,5 @@
 package org.sonar.plugins.clojure.sensors.leinnvd;
 
-import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -14,92 +13,73 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
-import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.settings.ClojureProperties;
+import org.sonar.plugins.clojure.settings.NvdProperties;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.sonar.plugins.clojure.settings.NvdProperties.*;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
     private static final Logger LOG = Loggers.get(LeinNvdSensor.class);
 
-    private static final String PLUGIN_NAME = "nvd";
     private static final String[] LEIN_ARGUMENTS = {"nvd", "check"};
+    private static final String PLUGIN_NAME = "NVD";
 
+    @SuppressWarnings("WeakerAccess")
     public LeinNvdSensor(CommandRunner commandRunner) {
         super(commandRunner);
     }
 
     @Override
     public void describe(SensorDescriptor descriptor) {
-        descriptor.name("SonarClojureLeinNvd")
+        descriptor.name(PLUGIN_NAME)
                 .onlyOnLanguage(ClojureLanguage.KEY)
                 .global();
     }
 
-
-
     @Override
     public void execute(SensorContext context) {
 
-        if (!checkIfPluginIsDisabled(context, ClojureProperties.LEIN_NVD_DISABLED)) {
+        if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
+            LOG.info("Running Lein NVD");
+            String reportPath = context.config().get(NvdProperties.REPORT_LOCATION_PROPERTY).orElse(REPORT_LOCATION_DEFAULT);
 
-            if (context.config().get(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION).isPresent()){
-                LOG.info("Running Lein NVD");
+            long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
+                    .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
+            this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
 
-                CommandStreamConsumer stdOut =  this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
-                if (isLeinInstalled(stdOut.getData()) && isPluginInstalled(stdOut.getData(), PLUGIN_NAME)){
-                    FileSystem fs = context.fileSystem();
-                    Optional<String> vulnerabilityContext = readFromFileSystem(context.config().get(ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION).get());
-                    if (vulnerabilityContext.isPresent()){
-                        List<Vulnerability> vulnerabilities = LeinNvdParser.parseJson(vulnerabilityContext.get());
-                        saveVulnerabilities(vulnerabilities, context);
-                    } else {
-                        LOG.warn("Lein NVD dependency report does not exists. Is Lein NVD installed as a plugin?");
-                    }
-                } else {
-                    LOG.warn("Running sensor skipped because Leiningen or Lein NVD are not installed");
-                }
+            Optional<String> vulnerabilityContext = readFromFileSystem(reportPath);
+            if (vulnerabilityContext.isPresent()) {
+                List<Vulnerability> vulnerabilities = LeinNvdParser.parseJson(vulnerabilityContext.get());
+                saveVulnerabilities(vulnerabilities, context);
             } else {
-                LOG.warn("Required property " + ClojureProperties.LEIN_NVD_JSON_OUTPUT_LOCATION + " is not set");
+                LOG.warn("Lein NVD dependency report does not exists. Is Lein NVD installed as a plugin?");
             }
-
-        } else {
-            LOG.info("Lein NVD is disabled");
         }
-
     }
 
     private void saveVulnerabilities(List<Vulnerability> vulnerabilities, SensorContext context) {
-        Optional<InputFile> projectFile = getFile("project.clj", context.fileSystem());
+        Optional<InputFile> fileOptional = getFile("project.clj", context.fileSystem());
 
-        projectFile.ifPresent(projectFileFromOpt -> {
-            for (Vulnerability v :
-                    vulnerabilities) {
+        fileOptional.ifPresent(projectFile -> {
+            for (Vulnerability v : vulnerabilities) {
                 LOG.debug("Processing vulnerability: " +v.toString());
                 RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "nvd-" + v.getSeverity().toLowerCase());
                 NewIssue newIssue = context.newIssue().forRule(ruleKey);
                 NewIssueLocation primaryLocation = newIssue
                         .newLocation()
-                        .on(projectFileFromOpt)
+                        .on(projectFile)
                         .message(v.getName()
                                 + ";" + v.getCwe()
                                 + ";" + v.getFileName())
-                        .at(projectFileFromOpt.selectLine(1));
+                        .at(projectFile.selectLine(1));
                 newIssue.at(primaryLocation);
                 newIssue.save();
             }
         });
-
-        if (!projectFile.isPresent()){
-            LOG.warn("Project.clj is missing - cannot mark vulnerabilities!");
-        }
     }
-
 }

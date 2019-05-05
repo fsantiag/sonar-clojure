@@ -13,8 +13,8 @@ import java.util.Objects;
 public class CommandRunner {
 
     private static final Logger STATIC_LOGGER = Loggers.get(CommandRunner.class);
-    private static final long TIMEOUT = 300_000;
     private static final String DELIMITER = "\n";
+    private static final int SUCCESS_RETURN_CODE = 0;
 
     private final Logger logger;
     private final CommandExecutor commandExecutor;
@@ -29,24 +29,30 @@ public class CommandRunner {
     }
 
     CommandStreamConsumer run(String command, CommandStreamConsumer stdout,
-                                     CommandStreamConsumer stderr, String... arguments) {
+                              CommandStreamConsumer stderr, Long timeOut, String... arguments) {
         Command cmd = Command.create(command);
         Arrays.stream(arguments).filter(Objects::nonNull).forEach(cmd::addArgument);
 
-        commandExecutor.execute(cmd, stdout, stderr, TIMEOUT);
+        int returnCode = commandExecutor.execute(cmd, stdout, stderr, fromSecondsToMilliseconds(timeOut));
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Stdout: " + String.join(DELIMITER, stdout.getData()));
-        }
+        logger.debug("command: " + cmd.getArguments());
+        logger.debug("stdout: " + String.join(DELIMITER, stdout.getData()));
+        logger.debug("stderr: " + String.join(DELIMITER, stderr.getData()));
 
-        if (!stderr.getData().isEmpty()) {
-            logger.warn("Stderr: " + String.join(DELIMITER, stderr.getData()));
+        if (SUCCESS_RETURN_CODE != returnCode) {
+            logger.warn("Command: " + cmd.getArguments() + " returned a non-zero code." +
+                    " Please make sure plugin is working" +
+                    " isolated before running sonar-scanner");
         }
 
         return stdout;
     }
 
-    public CommandStreamConsumer run(String command, String... arguments) {
-        return run(command, new CommandStreamConsumer(), new CommandStreamConsumer(), arguments);
+    private Long fromSecondsToMilliseconds(long seconds) {
+        return seconds * 1000;
+    }
+
+    public CommandStreamConsumer run(Long timeOut, String command, String... arguments) {
+        return run(command, new CommandStreamConsumer(), new CommandStreamConsumer(), timeOut, arguments);
     }
 }

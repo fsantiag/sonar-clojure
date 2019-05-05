@@ -13,9 +13,6 @@ import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -32,78 +29,45 @@ public abstract class AbstractSensor {
         this.commandRunner = commandRunner;
     }
 
-    public boolean isLeinInstalled(List<String> output) {
-        String leinNotInstalled = "lein: command not found";
-        if (!output.toString().contains(leinNotInstalled)) {
-            return true;
+    protected boolean isPluginDisabled(SensorContext context, String pluginName, String propertyName, boolean defaultValue) {
+        Boolean pluginDisabled = context.config().getBoolean(propertyName).orElse(defaultValue);
+        LOG.debug(String.format("Property: %s Value: %s", propertyName, pluginDisabled));
+        if (pluginDisabled) {
+            LOG.info(pluginName + " disabled");
         }
-        LOG.error("Leiningen is propably not installed!");
-        LOG.error(output.toString());
-        return false;
-
-    }
-
-    public boolean isPluginInstalled(List<String> output, String leinTask) {
-        String taskNotInstalled = "'" + leinTask + "' is not a task";
-        if (!output.toString().contains(taskNotInstalled)) {
-            return true;
-        }
-
-        LOG.error(taskNotInstalled + "  is propably not installed!");
-        LOG.error(output.toString());
-        return false;
-
-    }
-
-    public boolean checkIfPluginIsDisabled(SensorContext context, String propertyName) {
-        LOG.debug("Checking for property: " + propertyName);
-
-        AtomicBoolean isPropertyEnabled = new AtomicBoolean(false);
-        context.config().getBoolean(propertyName).ifPresent(present -> {
-            LOG.debug(propertyName + " " + present);
-            isPropertyEnabled.set(present);
-        });
-
-        return isPropertyEnabled.get();
+        return pluginDisabled;
     }
 
     protected Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {
-
         return Optional.ofNullable(fileSystem.inputFile(
                 fileSystem.predicates().and(
                         fileSystem.predicates().hasRelativePath(filePath),
                         fileSystem.predicates().hasType(InputFile.Type.MAIN))));
     }
 
-    private InputFile getFile(Issue issue, FileSystem fileSystem) {
-        return fileSystem.inputFile(
-                fileSystem.predicates().and(
-                        fileSystem.predicates().hasRelativePath(issue.getFilePath()),
-                        fileSystem.predicates().hasType(InputFile.Type.MAIN)));
-    }
 
     protected void saveIssue(Issue issue, SensorContext context) {
         try {
-            InputFile file = getFile(issue, context.fileSystem());
+            Optional<InputFile> fileOptional = getFile(issue.getFilePath(), context.fileSystem());
 
-            if (file == null) {
+            if (fileOptional.isPresent()) {
+                InputFile file = fileOptional.get();
+                RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
+
+                NewIssue newIssue = context.newIssue().forRule(ruleKey);
+
+                NewIssueLocation primaryLocation = newIssue
+                        .newLocation()
+                        .on(file)
+                        .message(issue.getDescription().trim());
+
+                primaryLocation.at(file.selectLine(issue.getLine()));
+
+                newIssue.at(primaryLocation);
+                newIssue.save();
+            } else {
                 LOG.warn("Not able to find a file with path '{}'", issue.getFilePath());
-                return;
             }
-
-            RuleKey ruleKey = RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, issue.getExternalRuleId().trim());
-
-            NewIssue newIssue = context.newIssue().forRule(ruleKey);
-
-            NewIssueLocation primaryLocation = newIssue
-                    .newLocation()
-                    .on(file)
-                    .message(issue.getDescription().trim());
-
-            primaryLocation.at(file.selectLine(issue.getLine()));
-
-            newIssue.at(primaryLocation);
-            newIssue.save();
         } catch (Exception e) {
             LOG.error("Can not save the issue due to: " + e.getMessage());
         }
@@ -112,8 +76,6 @@ public abstract class AbstractSensor {
     /**
      * Gets the file directly from filesystem. This is useful when the file is needed to be read which is not wanted to
      * be part of SonarQube scanning
-     * @param filename
-     * @return
      */
     public Optional<String> readFromFileSystem(String filename){
         try {
@@ -123,6 +85,4 @@ public abstract class AbstractSensor {
         }
 
     }
-
-
 }

@@ -15,12 +15,7 @@
 * Coverage reports powered by [cloverage](https://github.com/cloverage/cloverage).
 * Detection of vulnerable dependencies powered by [lein-nvd](https://github.com/rm-hull/lein-nvd).
 
-> This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
-this moment is not under development and doesn't support SonarQube 6.7. Since the changes to port
-the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
-
 ## Installation
-
 In order to install SonarClojure:
 1. Download the [latest](https://github.com/fsantiag/sonar-clojure/releases) jar of the plugin.
 2. Place the jar in the SonarQube server plugins directory, usually located under: `/opt/sonarqube/extensions/plugins/`
@@ -48,20 +43,42 @@ parse their reports.
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
     sonar.sources=src,project.clj
-    sonar.clojure.lein-nvd.json-output-location=target/nvd/dependency-check-report.json
-    sonar.clojure.cloverage.json-output-location=target/coverage/codecov.json
     ```
 
 3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
 
-### Disabling Sensors
+### Configuring Sensors
 
-Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` or
-by using command line switch `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
+#### Disabling
+Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` in the sonar-project.properties or
+by using the command line argument `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
+Sensor names are `eastwood`, `kibit`, `ancient`, `nvd` and `cloverage`.
 
-Sensor names are `eastwood`, `kibit`, `ancient-clj`, `lein-nvd` and `cloverage`.
+#### Report file location
+Some sensors use report files to parse the results. Both cloverage and lein-nvd use this report files.
+By default they have a path already set but you can change the file locations by setting the property in the
+sonar-project.properties:
 
-> Some sensors have mandatory properties. Keep in mind that if you don't disable it, you will have to set the property.
+`sonar.clojure.cloverage.reportPath=target/coverage/codecov.json`
+
+`sonar.clojure.nvd.reportPath=target/nvd/dependency-check-report.json`
+
+#### Setting a timeout
+By default, sensors have a timeout value of 300 seconds. This value applies per sensor while they are executing.
+You can change the default value by setting the property `sonar.clojure.sensors.timeout` in the sonar-project.properties
+file.
+
+#### Debugging
+* SonarClojure is in its early days and therefore you might face problems when trying to run the plugin, especially because
+ we rely on other plugins that are also in its early days. A nice way to try to debug
+a problem you might have is to make sure the particular plugin you are using is running fine before executing the 
+sonar-scanner. For instance, if you are trying to visualize the coverage data on SonarQube, make sure to run cloverage
+against your project using `lein cloverage --codecov` for instance. Once you fix the cloverage issue on your project,
+then SonarClojure should be able to parse the results. The same idea applies to all the plugins.
+ 
+* In general, plugins should not stop execution in case of errors, unless an exception happens.
+
+* You can use `-X` or `--debug` when running sonar-scanner to get a detailed information of what SonarClojure is trying to do.
 
 ## Building from Source
 ```sh
@@ -71,7 +88,6 @@ Sensor names are `eastwood`, `kibit`, `ancient-clj`, `lein-nvd` and `cloverage`.
 Maven will generate a SNAPSHOT under the folder ***target***.
 
 ## Compatibility
-
 At the moment, SonarClojure was tested on SonarQube up to version 7.1.
 
 We noticed that in later versions of SonarQube, the project overview might be empty.
