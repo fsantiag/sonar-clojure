@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.sonar.plugins.clojure.settings.CloverageProperties.REPORT_LOCATION_PROPERTY;
 
@@ -30,6 +31,8 @@ import static org.sonar.plugins.clojure.settings.CloverageProperties.REPORT_LOCA
 public class CloverageSensorTest {
 
     private static final String MODULE_KEY = "moduleKey";
+    public static final String FOO_PATH = "src/clj/foo.clj";
+    public static final String BAR_PATH = "src/cljc/bar.cljc";
 
     @Mock
     private CommandRunner commandRunner;
@@ -45,7 +48,7 @@ public class CloverageSensorTest {
     }
 
     @Test
-    public void shouldSetSensorDescription() {
+    public void shouldConfigureSensor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         cloverageSensor.describe(descriptor);
         assertThat(descriptor.name(), is("Cloverage"));
@@ -55,50 +58,56 @@ public class CloverageSensorTest {
 
     @Test
     public void shouldExecuteCloverage() throws IOException {
-        SensorContextTester context = SensorContextTester.create(new File("/"));
-        File baseDir = new File("src/test/resources/");
-        context.settings().appendProperty(REPORT_LOCATION_PROPERTY, "src/test/resources/cloverage-result.json");
-        String fooPath = "src/clj/foo.clj";
-        String barPath = "src/cljc/bar.cljc";
-        addFileToContext(context, fooPath, baseDir, "foo_in_src_clj.clj");
-        addFileToContext(context, barPath, baseDir, "bar_in_src_cljc.cljc");
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("Cloverage is running just fine - please relax");
-        when(commandRunner.run("lein", "cloverage", "--codecov")).thenReturn(stdOut);
+        SensorContextTester context = prepareContext();
 
         cloverageSensor.execute(context);
 
-        String fooKey = MODULE_KEY + ":" + fooPath;
+        String fooKey = MODULE_KEY + ":" + FOO_PATH;
         assertThat(context.lineHits(fooKey, 1), is(1));
         assertThat(context.lineHits(fooKey, 3), is(1));
         assertThat(context.lineHits(fooKey, 5), is(0));
         assertThat(context.lineHits(fooKey, 6), is(1));
 
-        String barKey = MODULE_KEY + ":" + barPath;
+        String barKey = MODULE_KEY + ":" + BAR_PATH;
         assertThat(context.lineHits(barKey, 1), is(1));
 
         assertThat(logTester.logs(), hasItems("Running Cloverage"));
+        verify(commandRunner).run(300L, "lein", "cloverage", "--codecov");
     }
 
     @Test
     public void shouldLogIfCloverageReportPathIsInvalid() {
         SensorContextTester context = SensorContextTester.create(new File("/"));
         context.settings().appendProperty(REPORT_LOCATION_PROPERTY, "invalid/file/path");
-        when(commandRunner.run("lein", "cloverage", "--codecov")).thenReturn(new CommandStreamConsumer());
 
         cloverageSensor.execute(context);
 
         assertThat(logTester.logs(), hasItem("Cloverage report does not exist in the given path: invalid/file/path"));
     }
 
-    private void addFileToContext(SensorContextTester context, String fakePath, File baseDir, String fileName) throws IOException {
-        File fooSource = new File(baseDir, fileName);
-        DefaultInputFile fooFile = TestInputFileBuilder.create(MODULE_KEY, fakePath)
-                .setLanguage(ClojureLanguage.KEY)
-                .initMetadata(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
-                .setContents(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
-                .build();
-        context.fileSystem().add(fooFile);
+    private SensorContextTester prepareContext() throws IOException {
+        SensorContextTester context = SensorContextTester.create(new File("/"));
+        File baseDir = new File("src/test/resources/");
+        context.settings().appendProperty(REPORT_LOCATION_PROPERTY, "src/test/resources/cloverage-result.json");
+
+        addFileToContext(context, baseDir, FOO_PATH, "foo_in_src_clj.clj");
+        addFileToContext(context, baseDir, BAR_PATH, "bar_in_src_cljc.cljc");
+
+        CommandStreamConsumer stdOut = new CommandStreamConsumer();
+        stdOut.consumeLine("Cloverage is running just fine - please relax");
+        when(commandRunner.run(300L, "lein", "cloverage", "--codecov")).thenReturn(stdOut);
+        return context;
     }
+
+    private void addFileToContext(SensorContextTester context, File baseDir, String fooPath, String s) throws IOException {
+        File fooSource1 = new File(baseDir, s);
+        DefaultInputFile fooFile1 = TestInputFileBuilder.create(MODULE_KEY, fooPath)
+                .setLanguage(ClojureLanguage.KEY)
+                .initMetadata(new String(Files.readAllBytes(fooSource1.toPath()), StandardCharsets.UTF_8))
+                .setContents(new String(Files.readAllBytes(fooSource1.toPath()), StandardCharsets.UTF_8))
+                .build();
+        context.fileSystem().add(fooFile1);
+    }
+
 }
 

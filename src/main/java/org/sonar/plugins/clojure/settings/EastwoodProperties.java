@@ -4,7 +4,7 @@ import org.sonar.api.config.PropertyDefinition;
 
 import java.util.List;
 
-import static java.lang.String.*;
+import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;

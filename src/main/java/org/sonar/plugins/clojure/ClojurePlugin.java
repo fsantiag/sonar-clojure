@@ -14,6 +14,7 @@ import org.sonar.plugins.clojure.settings.Properties;
 
 public class ClojurePlugin implements Plugin {
 
+    @Override
     public void define(Context context) {
         context.addExtension(Properties.getAllProperties());
         context.addExtension(ClojureLanguage.class);

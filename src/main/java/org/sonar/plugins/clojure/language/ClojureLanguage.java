@@ -17,9 +17,9 @@ public class ClojureLanguage extends AbstractLanguage {
 
     @Override
     public String[] getFileSuffixes() {
-        String[] suffixes = config.getStringArray(Properties.FILE_SUFFIXES_KEY);
+        String[] suffixes = config.getStringArray(Properties.FILE_SUFFIXES_PROPERTY);
         if (suffixes.length == 0) {
-            suffixes = Properties.FILE_SUFFIXES_DEFAULT_VALUE.split(",");
+            suffixes = Properties.FILE_SUFFIXES_PROPERTY_DEFAULT.split(",");
         }
         return suffixes;
     }

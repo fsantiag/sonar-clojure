@@ -3,7 +3,6 @@ package org.sonar.plugins.clojure.sensors.kibit;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
@@ -15,7 +14,6 @@ import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class KibitSensorTest {
@@ -35,22 +33,41 @@ public class KibitSensorTest {
     @Mock
     private CommandRunner commandRunner;
 
+    private KibitSensor kibitSensor;
+
     @Before
     public void setUp() {
         initMocks(this);
+        kibitSensor = new KibitSensor(commandRunner);
     }
 
     @Test
-    public void testSensorDescriptor() {
+    public void shouldConfigureSensor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
-        new KibitSensor(commandRunner).describe(descriptor);
+        kibitSensor.describe(descriptor);
         assertThat(descriptor.name(), is("Kibit"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
 
     @Test
-    public void testExecuteSensor() throws IOException {
+    public void shouldExecuteKibit() throws IOException {
+        SensorContextTester context = prepareContext();
+
+        CommandStreamConsumer stdOut = new CommandStreamConsumer();
+        stdOut.consumeLine("----");
+        stdOut.consumeLine("At kibit.clj:5:");
+        stdOut.consumeLine("Kibit will say that there is pos? function available");
+        when(commandRunner.run(300L, "lein", "kibit")).thenReturn(stdOut);
+
+        kibitSensor.execute(context);
+
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
+        assertThat(issuesList.size(), is(1));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("kibit"));
+    }
+
+    private SensorContextTester prepareContext() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("src/test/resources/"));
 
         File baseDir = new File("src/test/resources/");
@@ -66,18 +83,6 @@ public class KibitSensorTest {
                 .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "kibit"))
                 .activate()
                 .build());
-
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("----");
-        stdOut.consumeLine("At kibit.clj:5:");
-        stdOut.consumeLine("Kibit will say that there is pos? function available");
-        Mockito.when(commandRunner.run("lein", "kibit")).thenReturn(stdOut);
-
-        KibitSensor kibitSensor = new KibitSensor(commandRunner);
-        kibitSensor.execute(context);
-
-        List<Issue> issuesList = new ArrayList<>(context.allIssues());
-        assertThat(issuesList.size(), is(1));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("kibit"));
+        return context;
     }
 }

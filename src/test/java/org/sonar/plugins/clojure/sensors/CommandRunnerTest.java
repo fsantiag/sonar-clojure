@@ -33,7 +33,7 @@ public class CommandRunnerTest {
 
     @Test
     public void shouldTakeMultipleArgumentsForCommand() {
-        commandRunner.run("echo", "argument1", null, "argument2");
+        commandRunner.run(300L, "echo", "argument1", null, "argument2");
 
         ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
         verify(commandExecutor, times(1))
@@ -56,7 +56,7 @@ public class CommandRunnerTest {
         CommandStreamConsumer stderr = new CommandStreamConsumer();
         stderr.consumeLine("line in stderr");
 
-        commandRunner.run("echo", stdout, stderr, "argument1", "argument2");
+        commandRunner.run("echo", stdout, stderr, 300L, "argument1", "argument2");
 
         verify(logger, times(1)).debug("command: [argument1, argument2]");
         verify(logger, times(1)).debug("stdout: line in stdout");
@@ -68,7 +68,7 @@ public class CommandRunnerTest {
         when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(1);
         CommandStreamConsumer dummyStreamConsumer = new CommandStreamConsumer();
 
-        commandRunner.run("echo", dummyStreamConsumer, dummyStreamConsumer, "argument1", "argument2");
+        commandRunner.run("echo", dummyStreamConsumer, dummyStreamConsumer, 300L, "argument1", "argument2");
         verify(logger, times(1)).warn("Command: [argument1, argument2] returned a non-zero " +
                 "code. Please make sure plugin is working isolated before running sonar-scanner");
     }

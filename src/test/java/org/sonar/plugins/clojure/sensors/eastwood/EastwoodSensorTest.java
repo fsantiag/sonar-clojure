@@ -1,10 +1,8 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
@@ -14,8 +12,8 @@ import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.plugins.clojure.language.ClojureLanguage;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
-import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,37 +21,62 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.sonar.plugins.clojure.settings.EastwoodProperties.EASTWOOD_OPTIONS;
 
 public class EastwoodSensorTest {
 
     @Mock
     private CommandRunner commandRunner;
 
+    private EastwoodSensor eastwoodSensor;
+
     @Before
     public void setUp() {
         initMocks(this);
+        eastwoodSensor = new EastwoodSensor(commandRunner);
     }
 
     @Test
-    public void testSensorDescriptor() {
+    public void shouldConfigureSensor() {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
-        new EastwoodSensor(commandRunner).describe(descriptor);
+        eastwoodSensor.describe(descriptor);
         assertThat(descriptor.name(), is("Eastwood"));
         assertTrue(descriptor.languages().contains("clj"));
         assertThat(descriptor.languages().size(), is(1));
     }
 
     @Test
-    public void testExecuteSensor() throws IOException {
+    public void shouldExecuteEastwood() throws IOException {
+        SensorContextTester context = prepareContext();
+
+        CommandStreamConsumer stdOut = new CommandStreamConsumer();
+        stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
+        stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
+        String options = "eastwood-option";
+        when(commandRunner.run(300L, "lein", "eastwood", options))
+                .thenReturn(stdOut);
+
+        eastwoodSensor.execute(context);
+
+        List<Issue> issuesList = new ArrayList<>(context.allIssues());
+        assertThat(issuesList.size(), is(2));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("issue-1"));
+        assertThat(issuesList.get(0).primaryLocation().message(), is("description-1"));
+        assertThat(issuesList.get(1).ruleKey().rule(), is("issue-2"));
+        assertThat(issuesList.get(1).primaryLocation().message(), is("description-2"));
+    }
+
+    private SensorContextTester prepareContext() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("src/test/resources/"));
 
-        // Adding file to Sonar Contex
+        context.settings().appendProperty(EASTWOOD_OPTIONS, "eastwood-option");
+
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "file.clj");
         DefaultInputFile inputFile = TestInputFileBuilder.create("", "file.clj")
@@ -62,27 +85,12 @@ public class EastwoodSensorTest {
                 .build();
         context.fileSystem().add(inputFile);
 
-        // Creating fake rules to the Sonar Context
         context.setActiveRules((new ActiveRulesBuilder())
                 .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-1"))
                 .activate()
                 .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-2"))
                 .activate()
                 .build());
-
-        CommandStreamConsumer stdOut = new CommandStreamConsumer();
-        stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
-        stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
-        String ignoredOptions = null;
-        Mockito.when(commandRunner.run("lein", "eastwood", ignoredOptions))
-                .thenReturn(stdOut);
-
-        EastwoodSensor eastwoodSensor = new EastwoodSensor(commandRunner);
-        eastwoodSensor.execute(context);
-
-        List<Issue> issuesList = new ArrayList<>(context.allIssues());
-        assertThat(issuesList.size(), is(2));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("issue-1"));
-        assertThat(issuesList.get(1).ruleKey().rule(), is("issue-2"));
+        return context;
     }
 }

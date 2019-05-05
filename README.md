@@ -15,10 +15,6 @@
 * Coverage reports powered by [cloverage](https://github.com/cloverage/cloverage).
 * Detection of vulnerable dependencies powered by [lein-nvd](https://github.com/rm-hull/lein-nvd).
 
-> This plugin was inspired in the previous [SonarClojure](https://github.com/zmsp/sonar-clojure) that at
-this moment is not under development and doesn't support SonarQube 6.7. Since the changes to port
-the old plugin were very extensive, I decided to start from scratch and use the old plugin as inspiration.
-
 ## Installation
 In order to install SonarClojure:
 1. Download the [latest](https://github.com/fsantiag/sonar-clojure/releases) jar of the plugin.
@@ -67,6 +63,10 @@ sonar-project.properties:
 
 `sonar.clojure.nvd.reportPath=target/nvd/dependency-check-report.json`
 
+#### Setting a timeout
+By default, sensors have a timeout value of 300 seconds. This value applies per sensor while they are executing.
+You can change the default value by setting the property `sonar.clojure.sensors.timeout` in the sonar-project.properties
+file.
 
 #### Debugging
 * SonarClojure is in its early days and therefore you might face problems when trying to run the plugin, especially because

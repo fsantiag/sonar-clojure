@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.sonar.plugins.clojure.settings.NvdProperties.*;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
@@ -46,7 +48,9 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
             LOG.info("Running Lein NVD");
             String reportPath = context.config().get(NvdProperties.REPORT_LOCATION_PROPERTY).orElse(REPORT_LOCATION_DEFAULT);
 
-            this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
+            long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
+                    .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
+            this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
 
             Optional<String> vulnerabilityContext = readFromFileSystem(reportPath);
             if (vulnerabilityContext.isPresent()) {

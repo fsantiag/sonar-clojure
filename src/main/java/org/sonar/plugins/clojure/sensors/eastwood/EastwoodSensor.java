@@ -15,6 +15,8 @@ import org.sonar.plugins.clojure.sensors.Issue;
 import java.util.List;
 
 import static org.sonar.plugins.clojure.settings.EastwoodProperties.*;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class EastwoodSensor extends AbstractSensor implements Sensor {
 
@@ -40,7 +42,11 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
         if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running Eastwood");
             String options = context.config().get(EASTWOOD_OPTIONS).orElse(null);
-            CommandStreamConsumer stdOut = this.commandRunner.run(LEIN_COMMAND, EASTWOOD_COMMAND, options);
+            long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
+                    .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
+
+            CommandStreamConsumer stdOut = this.commandRunner.run(timeOut, LEIN_COMMAND, EASTWOOD_COMMAND, options);
+
             List<Issue> issues = EastwoodIssueParser.parse(stdOut);
             LOG.info("Saving issues " + issues.size());
             for (Issue issue : issues) {

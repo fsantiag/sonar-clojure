@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.singletonList;
+import static java.util.Arrays.asList;
 
 public class Properties {
 
-    public static final String FILE_SUFFIXES_KEY = "sonar.clojure.file.suffixes";
-    public static final String FILE_SUFFIXES_DEFAULT_VALUE = "clj,cljs,cljc";
+    public static final String FILE_SUFFIXES_PROPERTY = "sonar.clojure.file.suffixes";
+    public static final String FILE_SUFFIXES_PROPERTY_DEFAULT = "clj,cljs,cljc";
+    public static final String SENSORS_TIMEOUT_PROPERTY = "sonar.clojure.sensors.timeout";
+    public static final String SENSORS_TIMEOUT_PROPERTY_DEFAULT = "300";
     static final String MAIN_CATEGORY = "SonarClojure";
     static final String SUB_CATEGORY = "Sensors";
 
@@ -32,16 +34,24 @@ public class Properties {
     }
 
     static List<PropertyDefinition> getGeneralProperties() {
-        return singletonList(getFileSuffix());
+        return asList(getFileSuffix(), getSensorsTimeout());
     }
 
     static PropertyDefinition getFileSuffix() {
-        return PropertyDefinition.builder(FILE_SUFFIXES_KEY)
-                .defaultValue(FILE_SUFFIXES_DEFAULT_VALUE)
+        return PropertyDefinition.builder(FILE_SUFFIXES_PROPERTY)
+                .defaultValue(FILE_SUFFIXES_PROPERTY_DEFAULT)
                 .category(MAIN_CATEGORY)
                 .name("File Suffixes")
                 .description("Comma-separated list of file suffixes to analyze")
                 .build();
     }
 
+    static PropertyDefinition getSensorsTimeout() {
+        return PropertyDefinition.builder(SENSORS_TIMEOUT_PROPERTY)
+                .defaultValue(SENSORS_TIMEOUT_PROPERTY_DEFAULT)
+                .category(MAIN_CATEGORY)
+                .name("Sensors Timeout")
+                .description("Defines the maximum timeout (per sensor, in seconds) when sensors are executing")
+                .build();
+    }
 }

@@ -15,6 +15,8 @@ import java.util.Optional;
 
 import static org.sonar.plugins.clojure.sensors.cloverage.CloverageMetricParser.parse;
 import static org.sonar.plugins.clojure.settings.CloverageProperties.*;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
+import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class CloverageSensor extends AbstractSensor implements Sensor {
 
@@ -39,9 +41,13 @@ public class CloverageSensor extends AbstractSensor implements Sensor {
         if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running " + PLUGIN_NAME);
 
-            this.commandRunner.run(LEIN_COMMAND, LEIN_ARGUMENTS);
+            long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
+                    .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
+
+            this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
 
             String reportPath = context.config().get(REPORT_LOCATION_PROPERTY).orElse(REPORT_LOCATION_DEFAULT);
+            LOG.debug("Using report file: " + reportPath);
             Optional<String> fileString = readFromFileSystem(reportPath);
 
             if (fileString.isPresent()) {
