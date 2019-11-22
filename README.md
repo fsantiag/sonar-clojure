@@ -68,6 +68,11 @@ By default, sensors have a timeout value of 300 seconds. This value applies per 
 You can change the default value by setting the property `sonar.clojure.sensors.timeout` in the sonar-project.properties
 file.
 
+#### Setting a profile
+With this property you can determine the profile of your project that contains the dependencies.
+You can set the name of profile by setting the property `sonar.clojure.lein.profile.name` in the sonar-project.properties
+file.
+
 #### Debugging
 * SonarClojure is in its early days and therefore you might face problems when trying to run the plugin, especially because
  we rely on other plugins that are also in its early days. A nice way to try to debug

@@ -26,6 +26,7 @@ import static org.sonar.plugins.clojure.settings.AncientProperties.DISABLED_PROP
 import static org.sonar.plugins.clojure.settings.AncientProperties.DISABLED_PROPERTY_DEFAULT;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
+import static org.sonar.plugins.clojure.settings.Properties.LEIN_PROFILE_NAME_PROPERTY;
 
 public class AncientSensor extends AbstractSensor implements Sensor {
 
@@ -54,7 +55,11 @@ public class AncientSensor extends AbstractSensor implements Sensor {
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
 
-            CommandStreamConsumer stdOut = this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
+            String leinProfileName = context.config().get(LEIN_PROFILE_NAME_PROPERTY).orElse(null);
+
+            String leinCommand = leinProfileName != null ? String.format(LEIN_WITH_PROFILE_COMMAND, leinProfileName) : LEIN_COMMAND;
+
+            CommandStreamConsumer stdOut = this.commandRunner.run(timeOut, leinCommand, LEIN_ARGUMENTS);
 
             List<OutdatedDependency> outdatedDependencies = parse(stdOut.getData());
             LOG.debug("Parsed " + outdatedDependencies.size() + " dependencies");

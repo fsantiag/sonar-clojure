@@ -14,6 +14,7 @@ public class Properties {
     public static final String FILE_SUFFIXES_PROPERTY = "sonar.clojure.file.suffixes";
     public static final String FILE_SUFFIXES_PROPERTY_DEFAULT = "clj,cljs,cljc";
     public static final String SENSORS_TIMEOUT_PROPERTY = "sonar.clojure.sensors.timeout";
+    public static final String LEIN_PROFILE_NAME_PROPERTY = "sonar.clojure.lein.profile.name";
     public static final String SENSORS_TIMEOUT_PROPERTY_DEFAULT = "300";
     static final String MAIN_CATEGORY = "SonarClojure";
     static final String SUB_CATEGORY = "Sensors";
@@ -52,6 +53,14 @@ public class Properties {
                 .category(MAIN_CATEGORY)
                 .name("Sensors Timeout")
                 .description("Defines the maximum timeout (per sensor, in seconds) when sensors are executing")
+                .build();
+    }
+
+    static PropertyDefinition getLeinProfileName() {
+        return PropertyDefinition.builder(LEIN_PROFILE_NAME_PROPERTY)
+                .category(MAIN_CATEGORY)
+                .name("Lein Profile Name")
+                .description("Defines the name of profile can be used by lein when sensors are executing")
                 .build();
     }
 }

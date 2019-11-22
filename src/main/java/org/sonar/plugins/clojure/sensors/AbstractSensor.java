@@ -22,6 +22,7 @@ public abstract class AbstractSensor {
     private static final Logger LOG = Loggers.get(AbstractSensor.class);
 
     protected static final String LEIN_COMMAND = "lein";
+    protected static final String LEIN_WITH_PROFILE_COMMAND = "lein with-profile %s";
 
     protected CommandRunner commandRunner;
 
