@@ -60,12 +60,12 @@ public class LeinNvdSensorTest {
 
         List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(2));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("nvd-medium"));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("nvd-high"));
         assertThat(issuesList.get(0).primaryLocation().message(),
-                is("CVE-2017-7656;CWE-284 Improper Access Control;jetty-util-9.2.21.v20170120.jar"));
-        assertThat(issuesList.get(1).ruleKey().rule(), is("nvd-high"));
+                is("CVE-2018-5968;CWE-502,CWE-184;jackson-databind-2.9.3.jar"));
+        assertThat(issuesList.get(1).ruleKey().rule(), is("nvd-critical"));
         assertThat(issuesList.get(1).primaryLocation().message(),
-                is("CVE-2017-7657;CWE-190 Integer Overflow or Wraparound;jetty-util-9.2.21.v20170120.jar"));
+                is("CVE-2018-19362;CWE-502;jackson-databind-2.9.3.jar"));
     }
 
     private SensorContextTester prepareContext() throws IOException {
