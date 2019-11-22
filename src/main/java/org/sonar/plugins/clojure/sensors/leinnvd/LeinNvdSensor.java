@@ -74,7 +74,7 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
                         .newLocation()
                         .on(projectFile)
                         .message(v.getName()
-                                + ";" + v.getCwe()
+                                + ";" + v.getCwes()
                                 + ";" + v.getFileName())
                         .at(projectFile.selectLine(1));
                 newIssue.at(primaryLocation);

@@ -24,17 +24,17 @@ public class LeinNvdParserTest {
         List<Vulnerability> expected = new ArrayList<>();
         expected.addAll(asList(
                 new Vulnerability()
-                        .setName("CVE-2017-7656")
-                        .setSeverity("Medium")
-                        .setCwe("CWE-284 Improper Access Control")
-                        .setDescription("In Eclipse Jetty, versions 9.2.x and older, 9.3.x (all configurations), and 9.4.x (non-default configuration with RFC2616 compliance enabled), HTTP/0.9 is handled poorly. An HTTP/1 style request line (i.e. method space URI space version) that declares a version of HTTP/0.9 was accepted and treated as a 0.9 request. If deployed behind an intermediary that also accepted and passed through the 0.9 version (but did not act on it), then the response sent could be interpreted by the intermediary as HTTP/1 headers. This could be used to poison the cache if the server allowed the origin client to generate arbitrary content in the response.")
-                        .setFileName("jetty-util-9.2.21.v20170120.jar"),
+                        .setName("CVE-2018-5968")
+                        .setSeverity("HIGH")
+                        .setCwes("CWE-502,CWE-184")
+                        .setDescription("FasterXML jackson-databind through 2.8.11 and 2.9.x through 2.9.3 allows unauthenticated remote code execution because of an incomplete fix for the CVE-2017-7525 and CVE-2017-17485 deserialization flaws. This is exploitable via two different gadgets that bypass a blacklist.")
+                        .setFileName("jackson-databind-2.9.3.jar"),
                 new Vulnerability()
-                        .setName("CVE-2017-7657")
-                        .setSeverity("High")
-                        .setCwe("CWE-190 Integer Overflow or Wraparound")
-                        .setDescription("In Eclipse Jetty, versions 9.2.x and older, 9.3.x (all configurations), and 9.4.x (non-default configuration with RFC2616 compliance enabled), transfer-encoding chunks are handled poorly. The chunk length parsing was vulnerable to an integer overflow. Thus a large chunk size could be interpreted as a smaller chunk size and content sent as chunk body could be interpreted as a pipelined request. If Jetty was deployed behind an intermediary that imposed some authorization and that intermediary allowed arbitrarily large chunks to be passed on unchanged, then this flaw could be used to bypass the authorization imposed by the intermediary as the fake pipelined request would not be interpreted by the intermediary as a request.")
-                        .setFileName("jetty-util-9.2.21.v20170120.jar")));
+                        .setName("CVE-2018-19362")
+                        .setSeverity("CRITICAL")
+                        .setCwes("CWE-502")
+                        .setDescription("FasterXML jackson-databind 2.x before 2.9.8 might allow attackers to have unspecified impact by leveraging failure to block the jboss-common-core class from polymorphic deserialization.")
+                        .setFileName("jackson-databind-2.9.3.jar")));
         expected.stream().forEach(entry -> assertTrue(vulnerabilities.contains(entry)));
     }
 
