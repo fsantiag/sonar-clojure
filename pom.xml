@@ -34,6 +34,11 @@
             <artifactId>gson</artifactId>
             <version>2.8.4</version>
         </dependency>
+        <dependency>
+            <groupId>us.bpsm</groupId>
+            <artifactId>edn-java</artifactId>
+            <version>0.6.0</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -66,4 +71,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>sonatype</id>
+            <name>Sonatype</name>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+    </repositories>
 </project>

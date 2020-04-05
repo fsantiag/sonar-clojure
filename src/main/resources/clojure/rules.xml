@@ -404,4 +404,101 @@
         <remediationFunction>CONSTANT_ISSUE</remediationFunction>
         <remediationFunctionBaseEffort>60min</remediationFunctionBaseEffort>◊
     </rule>
+    <rule>
+        <key>unused-binding</key>
+        <name>unused-binding</name>
+        <internalKey>unused-binding</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>refer-all</key>
+        <name>refer-all</name>
+        <internalKey>refer-all</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>unresolved-symbol</key>
+        <name>unresolved-symbol</name>
+        <internalKey>unresolved-symbol</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>type-mismatch</key>
+        <name>type-mismatch</name>
+        <internalKey>type-mismatch</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>BUG</type>
+    </rule>
+    <rule>
+        <key>unused-namespace</key>
+        <name>unused-namespace</name>
+        <internalKey>unused-namespace</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>invalid-arity</key>
+        <name>invalid-arity</name>
+        <internalKey>invalid-arity</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>BUG</type>
+    </rule>
+    <rule>
+        <key>not-a-function</key>
+        <name>not-a-function</name>
+        <internalKey>not-a-function</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>BUG</type>
+    </rule>
+    <rule>
+        <key>private-call</key>
+        <name>private-call</name>
+        <internalKey>private-call</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>BUG</type>
+    </rule>
+    <rule>
+        <key>inline-def</key>
+        <name>inline-def</name>
+        <internalKey>inline-def</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>redundant-do</key>
+        <name>redundant-do</name>
+        <internalKey>redundant-do</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>cond-else</key>
+        <name>cond-else</name>
+        <internalKey>cond-else</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>CODE_SMELL</type>
+    </rule>
+    <rule>
+        <key>syntax</key>
+        <name>syntax</name>
+        <internalKey>syntax</internalKey>
+        <description>clj-kondo linting rule
+        </description>
+        <type>BUG</type>
+    </rule>
+
 </rules>

@@ -29,6 +29,18 @@
     "wrong-arity",
     "wrong-ns-form",
     "wrong-pre-post",
-    "wrong-tag"
+    "wrong-tag",
+    "unused-binding",
+    "refer-all",
+    "unresolved-symbol",
+    "type-mismatch",
+    "unused-namespace",
+    "invalid-arity",
+    "not-a-function",
+    "private-call",
+    "inline-def",
+    "redundant-do",
+    "cond-else",
+    "syntax"
   ]
 }

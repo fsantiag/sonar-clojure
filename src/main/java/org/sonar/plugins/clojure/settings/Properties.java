@@ -28,7 +28,8 @@ public class Properties {
                     CloverageProperties.getProperties(),
                     AncientProperties.getProperties(),
                     KibitProperties.getProperties(),
-                    NvdProperties.getProperties())
+                    NvdProperties.getProperties(),
+                    KondoProperties.getProperties())
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
