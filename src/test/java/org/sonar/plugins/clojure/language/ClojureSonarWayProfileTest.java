@@ -3,7 +3,6 @@ package org.sonar.plugins.clojure.language;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.server.profile.BuiltInQualityProfilesDefinition;
-import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 
 import java.util.ArrayList;
 import java.util.List;
