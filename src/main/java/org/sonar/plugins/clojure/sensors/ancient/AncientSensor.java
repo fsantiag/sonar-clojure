@@ -10,7 +10,7 @@ import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.leiningen.ProjectFile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
@@ -42,8 +42,7 @@ public class AncientSensor extends AbstractSensor implements Sensor {
     @Override
     public void describe(SensorDescriptor descriptor) {
         descriptor.name(PLUGIN_NAME)
-                .onlyOnLanguage(ClojureLanguage.KEY)
-                .global();
+                .onlyOnLanguage(Clojure.KEY);
     }
 
     @Override

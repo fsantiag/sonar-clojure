@@ -4,12 +4,13 @@ package org.sonar.plugins.clojure;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.Plugin;
+import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.utils.Version;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.eastwood.EastwoodSensor;
@@ -27,14 +28,15 @@ public class ClojurePluginTest {
 
     @Before
     public void setUp() {
-        SonarRuntime runtime = SonarRuntimeImpl.forSonarQube(Version.create(6, 7), SonarQubeSide.SERVER);
+        SonarRuntime runtime = SonarRuntimeImpl
+                .forSonarQube(Version.create(7, 9, 3), SonarQubeSide.SERVER, SonarEdition.COMMUNITY);
         context = new Plugin.Context(runtime);
         new ClojurePlugin().define(context);
     }
 
     @Test
     public void testClojureLanguageIsAPluginExtension() {
-        assertTrue(context.getExtensions().contains(ClojureLanguage.class));
+        assertTrue(context.getExtensions().contains(Clojure.class));
     }
 
     @Test

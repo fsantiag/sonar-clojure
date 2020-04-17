@@ -4,13 +4,13 @@ import org.sonar.api.config.Configuration;
 import org.sonar.api.resources.AbstractLanguage;
 import org.sonar.plugins.clojure.settings.Properties;
 
-public class ClojureLanguage extends AbstractLanguage {
+public class Clojure extends AbstractLanguage {
     public static final String KEY = "clj";
     public static final String NAME = "Clojure";
 
     private final Configuration config;
 
-    public ClojureLanguage(Configuration config) {
+    public Clojure(Configuration config) {
         super(KEY, NAME);
         this.config = config;
     }

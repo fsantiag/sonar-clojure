@@ -11,7 +11,7 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.utils.log.LogTester;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
@@ -102,7 +102,7 @@ public class CloverageSensorTest {
     private void addFileToContext(SensorContextTester context, File baseDir, String fooPath, String s) throws IOException {
         File fooSource1 = new File(baseDir, s);
         DefaultInputFile fooFile1 = TestInputFileBuilder.create(MODULE_KEY, fooPath)
-                .setLanguage(ClojureLanguage.KEY)
+                .setLanguage(Clojure.KEY)
                 .initMetadata(new String(Files.readAllBytes(fooSource1.toPath()), StandardCharsets.UTF_8))
                 .setContents(new String(Files.readAllBytes(fooSource1.toPath()), StandardCharsets.UTF_8))
                 .build();

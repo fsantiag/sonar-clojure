@@ -7,7 +7,7 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.coverage.NewCoverage;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 
@@ -32,8 +32,7 @@ public class CloverageSensor extends AbstractSensor implements Sensor {
     @Override
     public void describe(SensorDescriptor descriptor) {
         descriptor.name(PLUGIN_NAME)
-                .onlyOnLanguage(ClojureLanguage.KEY)
-                .global();
+                .onlyOnLanguage(Clojure.KEY);
     }
 
     @Override

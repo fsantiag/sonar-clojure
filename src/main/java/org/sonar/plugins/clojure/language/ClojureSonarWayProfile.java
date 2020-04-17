@@ -14,7 +14,7 @@ public final class ClojureSonarWayProfile implements BuiltInQualityProfilesDefin
 
     @Override
     public void define(Context context) {
-        NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Sonar way", ClojureLanguage.KEY);
+        NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Sonar way", Clojure.KEY);
         profile.setDefault(true);
 
         JsonProfile jsonProfile = readProfile();

@@ -5,13 +5,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
-import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
-import org.sonar.api.rule.RuleKey;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
-import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
+import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
@@ -80,17 +77,11 @@ public class EastwoodSensorTest {
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "file.clj");
         DefaultInputFile inputFile = TestInputFileBuilder.create("", "file.clj")
-                .setLanguage(ClojureLanguage.KEY)
+                .setLanguage(Clojure.KEY)
                 .initMetadata(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8))
                 .build();
         context.fileSystem().add(inputFile);
 
-        context.setActiveRules((new ActiveRulesBuilder())
-                .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-1"))
-                .activate()
-                .create(RuleKey.of(ClojureLintRulesDefinition.REPOSITORY_KEY, "issue-2"))
-                .activate()
-                .build());
         return context;
     }
 }
