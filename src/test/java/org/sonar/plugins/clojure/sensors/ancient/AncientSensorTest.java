@@ -32,6 +32,8 @@ public class AncientSensorTest {
     private CommandRunner commandRunner;
 
     private AncientSensor ancientSensor;
+    private static final String LEIN_CMD =
+            System.getProperty("os.name").toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
 
     @Before
     public void setUp() {
@@ -56,7 +58,7 @@ public class AncientSensorTest {
         stdOut.consumeLine("This is some non related line which should not end to report");
         stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
         stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
-        when(commandRunner.run(any(), eq("lein"), eq("ancient"))).thenReturn(stdOut);
+        when(commandRunner.run(any(), eq(LEIN_CMD), eq("ancient"))).thenReturn(stdOut);
 
         ancientSensor.execute(context);
 

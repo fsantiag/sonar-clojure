@@ -21,7 +21,8 @@ public abstract class AbstractSensor {
 
     private static final Logger LOG = Loggers.get(AbstractSensor.class);
 
-    protected static final String LEIN_COMMAND = "lein";
+    protected static final String LEIN_COMMAND =
+            System.getProperty("os.name").toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
 
     protected CommandRunner commandRunner;
 

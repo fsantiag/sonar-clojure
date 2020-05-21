@@ -32,6 +32,8 @@ public class EastwoodSensorTest {
     private CommandRunner commandRunner;
 
     private EastwoodSensor eastwoodSensor;
+    private static final String LEIN_CMD =
+            System.getProperty("os.name").toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
 
     @Before
     public void setUp() {
@@ -56,7 +58,7 @@ public class EastwoodSensorTest {
         stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
         stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
         String options = "eastwood-option";
-        when(commandRunner.run(300L, "lein", "eastwood", options))
+        when(commandRunner.run(300L, LEIN_CMD, "eastwood", options))
                 .thenReturn(stdOut);
 
         eastwoodSensor.execute(context);

@@ -31,6 +31,8 @@ public class KibitSensorTest {
     private CommandRunner commandRunner;
 
     private KibitSensor kibitSensor;
+    private static final String LEIN_CMD =
+            System.getProperty("os.name").toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
 
     @Before
     public void setUp() {
@@ -55,7 +57,7 @@ public class KibitSensorTest {
         stdOut.consumeLine("----");
         stdOut.consumeLine("At kibit.clj:5:");
         stdOut.consumeLine("Kibit will say that there is pos? function available");
-        when(commandRunner.run(300L, "lein", "kibit")).thenReturn(stdOut);
+        when(commandRunner.run(300L, LEIN_CMD, "kibit")).thenReturn(stdOut);
 
         kibitSensor.execute(context);
 

@@ -33,6 +33,8 @@ public class CloverageSensorTest {
     private static final String MODULE_KEY = "moduleKey";
     public static final String FOO_PATH = "src/clj/foo.clj";
     public static final String BAR_PATH = "src/cljc/bar.cljc";
+    private static final String LEIN_CMD =
+            System.getProperty("os.name").toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
 
     @Mock
     private CommandRunner commandRunner;
@@ -72,7 +74,7 @@ public class CloverageSensorTest {
         assertThat(context.lineHits(barKey, 1), is(1));
 
         assertThat(logTester.logs(), hasItems("Running Cloverage"));
-        verify(commandRunner).run(300L, "lein", "cloverage", "--codecov");
+        verify(commandRunner).run(300L, LEIN_CMD, "cloverage", "--codecov");
     }
 
     @Test
@@ -95,7 +97,7 @@ public class CloverageSensorTest {
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("Cloverage is running just fine - please relax");
-        when(commandRunner.run(300L, "lein", "cloverage", "--codecov")).thenReturn(stdOut);
+        when(commandRunner.run(300L, LEIN_CMD, "cloverage", "--codecov")).thenReturn(stdOut);
         return context;
     }
 
