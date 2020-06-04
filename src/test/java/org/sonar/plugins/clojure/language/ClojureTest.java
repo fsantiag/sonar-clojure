@@ -8,15 +8,15 @@ import org.sonar.plugins.clojure.settings.Properties;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ClojureLanguageTest {
+public class ClojureTest {
 
     private MapSettings settings;
-    private ClojureLanguage language;
+    private Clojure language;
 
     @Before
     public void setUp() {
         settings = new MapSettings();
-        language = new ClojureLanguage(settings.asConfig());
+        language = new Clojure(settings.asConfig());
     }
 
     @Test

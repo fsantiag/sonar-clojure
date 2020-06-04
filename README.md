@@ -25,16 +25,19 @@ In order to install SonarClojure:
 1. Change your ***project.clj*** file and add the required plugins:
 
     ```clojure
-    :plugins [[jonase/eastwood "0.3.5"]
-              [lein-kibit "0.1.6"]
+    :plugins [[jonase/eastwood "0.3.6"]
+              [lein-kibit "0.1.8"]
               [lein-ancient "0.6.15"]
-              [lein-cloverage "1.1.1"]
-              [lein-nvd "1.0.0"]]
+              [lein-cloverage "1.1.2"]
+              [lein-nvd "1.4.0"]]
      ```
 
-> Note: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
+> Note 1: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
 execute each one of them individually on your project. Once they are running fine, SonarClojure should be able to
 parse their reports.
+>
+> Note 2: The lein plugin versions above are the ones we currently support. If you would like to test with a different
+version, keep in mind that it might cause errors on SonarClojure analysis. 
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
@@ -42,7 +45,7 @@ parse their reports.
     sonar.projectKey=your-project-key
     sonar.projectName=YourProjectName
     sonar.projectVersion=1.0
-    sonar.sources=src,project.clj
+    sonar.sources=.
     ```
 
 3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
@@ -88,11 +91,8 @@ then SonarClojure should be able to parse the results. The same idea applies to 
 Maven will generate a SNAPSHOT under the folder ***target***.
 
 ## Compatibility
-At the moment, SonarClojure was tested on SonarQube up to version 7.1.
+At the moment, SonarClojure supports SonarQube version 7.9.3+.
 
-We noticed that in later versions of SonarQube, the project overview might be empty.
-This normally suggests that SonarClojure was not able to detect analyzable files during
-the scanning.
 ## License
 
 SonarClojure is open-sourced software licensed under the [MIT license](https://github.com/fsantiag/sonar-clojure/blob/master/LICENSE).

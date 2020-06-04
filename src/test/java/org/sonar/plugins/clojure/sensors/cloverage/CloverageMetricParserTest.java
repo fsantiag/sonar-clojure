@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class CloverageMetricParserTest {
 
         File fooSource = new File(baseDir, "foo_in_src_clj.clj");
         DefaultInputFile fooFile = TestInputFileBuilder.create("", "src/clj/foo.clj")
-                .setLanguage(ClojureLanguage.KEY)
+                .setLanguage(Clojure.KEY)
                 .initMetadata(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
                 .setContents(new String(Files.readAllBytes(fooSource.toPath()), StandardCharsets.UTF_8))
                 .build();
@@ -39,7 +39,7 @@ public class CloverageMetricParserTest {
         File barSource = new File(baseDir, "bar_in_src_cljc.cljc");
 
         DefaultInputFile barFile = TestInputFileBuilder.create("", "src/cljc/bar.cljc")
-                .setLanguage(ClojureLanguage.KEY)
+                .setLanguage(Clojure.KEY)
                 .initMetadata(new String(Files.readAllBytes(barSource.toPath()), StandardCharsets.UTF_8))
                 .setContents(new String(Files.readAllBytes(barSource.toPath()), StandardCharsets.UTF_8))
                 .build();

@@ -2,7 +2,7 @@ package org.sonar.plugins.clojure.rules;
 
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinitionXmlLoader;
-import org.sonar.plugins.clojure.language.ClojureLanguage;
+import org.sonar.plugins.clojure.language.Clojure;
 
 import java.nio.charset.StandardCharsets;
 
@@ -20,7 +20,7 @@ public final class ClojureLintRulesDefinition implements RulesDefinition {
 
     @Override
     public void define(Context context) {
-        NewRepository repository = context.createRepository(REPOSITORY_KEY, ClojureLanguage.KEY).setName(REPOSITORY_NAME);
+        NewRepository repository = context.createRepository(REPOSITORY_KEY, Clojure.KEY).setName(REPOSITORY_NAME);
         xmlLoader.load(repository, getClass().getResourceAsStream(RULES_PATH), StandardCharsets.UTF_8.name());
         repository.done();
     }

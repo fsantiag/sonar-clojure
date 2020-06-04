@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.Gson;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
@@ -30,10 +31,12 @@ public class LeinNvdParser {
                 JsonArray dependencyVulnerabilities = dependency.get("vulnerabilities").getAsJsonArray();
                 for (JsonElement dependencyVulnerability: dependencyVulnerabilities) {
                     JsonObject dependencyVulnerabilityObject = dependencyVulnerability.getAsJsonObject();
+                    JsonArray cwesArray = dependencyVulnerabilityObject.getAsJsonArray("cwes");
+                    String[] cwes = new Gson().fromJson(cwesArray, String[].class);
                     Vulnerability v = new Vulnerability()
                             .setName(dependencyVulnerabilityObject.getAsJsonPrimitive("name").getAsString())
                             .setSeverity(dependencyVulnerabilityObject.getAsJsonPrimitive("severity").getAsString())
-                            .setCwe(dependencyVulnerabilityObject.getAsJsonPrimitive("cwe").getAsString())
+                            .setCwes(String.join(",", cwes))
                             .setDescription(dependencyVulnerabilityObject.getAsJsonPrimitive("description").getAsString())
                             .setFileName(dependency.getAsJsonPrimitive("fileName").getAsString());
                     vulnerabilities.add(v);
