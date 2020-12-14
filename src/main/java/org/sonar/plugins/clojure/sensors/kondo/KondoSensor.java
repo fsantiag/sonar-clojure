@@ -93,7 +93,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
             LOG.info("Running clj-kondo");
 
             String config = context.config().get(CONFIG).orElse(null);
-            String[] options = context.config().get(OPTIONS).orElse("").split("\\W+");
+            String[] options = context.config().get(OPTIONS).orElse("").split("\\s+");
             List<String> commandAsList = new ArrayList(Arrays.asList(COMMAND));
             commandAsList.addAll(Arrays.asList(options));
             if (config != null && !config.isEmpty()) {
