@@ -22,7 +22,7 @@ In order to install SonarClojure:
 3. Restart the SonarQube server.
 
 ## Usage
-1. Change your ***project.clj*** file and add the required plugins:
+1. Change your ***project.clj*** file and add the required plugins and/or dependencies:
 
     ```clojure
     :plugins [[jonase/eastwood "0.3.6"]
@@ -30,8 +30,9 @@ In order to install SonarClojure:
               [lein-ancient "0.6.15"]
               [lein-cloverage "1.1.2"]
               [lein-nvd "1.4.0"]]
+    :dependencies [[clj-kondo "RELEASE"]]
      ```
-
+   
 > Note 1: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
 execute each one of them individually on your project. Once they are running fine, SonarClojure should be able to
 parse their reports.
@@ -55,7 +56,7 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
 #### Disabling
 Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` in the sonar-project.properties or
 by using the command line argument `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
-Sensor names are `eastwood`, `kibit`, `ancient`, `nvd` and `cloverage`.
+Sensor names are `eastwood`, `kibit`, `clj-kondo`, `ancient`, `nvd` and `cloverage`.
 
 #### Report file location
 Some sensors use report files to parse the results. Both cloverage and lein-nvd use this report files.
