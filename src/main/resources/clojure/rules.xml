@@ -408,96 +408,84 @@
         <key>unused-binding</key>
         <name>unused-binding</name>
         <internalKey>unused-binding</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on unused binding</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>refer-all</key>
         <name>refer-all</name>
         <internalKey>refer-all</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warns when :refer :all is used</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>unresolved-symbol</key>
         <name>unresolved-symbol</name>
         <internalKey>unresolved-symbol</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on unresolved symbols</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>type-mismatch</key>
         <name>type-mismatch</name>
         <internalKey>type-mismatch</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on type mismatches, e.g. passing a keyword where a number is expected</description>
         <type>BUG</type>
     </rule>
     <rule>
         <key>unused-namespace</key>
         <name>unused-namespace</name>
         <internalKey>unused-namespace</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warns on required but unused namespace</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>invalid-arity</key>
         <name>invalid-arity</name>
         <internalKey>invalid-arity</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn when a function (or macro) is called with an invalid amount of arguments</description>
         <type>BUG</type>
     </rule>
     <rule>
         <key>not-a-function</key>
         <name>not-a-function</name>
         <internalKey>not-a-function</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>clj-kondo linting rule</description>
         <type>BUG</type>
     </rule>
     <rule>
         <key>private-call</key>
         <name>private-call</name>
         <internalKey>private-call</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn when private var is used. The name of this linter should be renamed to "private usage" since it will warn on usage of private vars and not only inside calls</description>
         <type>BUG</type>
     </rule>
     <rule>
         <key>inline-def</key>
         <name>inline-def</name>
         <internalKey>inline-def</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on non-toplevel usage of def (and defn, etc.)</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>redundant-do</key>
         <name>redundant-do</name>
         <internalKey>redundant-do</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on usage of do that is redundant. The warning usually arises because of an explicit or implicit do as the direct parent s-expression</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>cond-else</key>
         <name>cond-else</name>
         <internalKey>cond-else</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on cond with a different constant for the else branch than :else</description>
         <type>CODE_SMELL</type>
     </rule>
     <rule>
         <key>syntax</key>
         <name>syntax</name>
         <internalKey>syntax</internalKey>
-        <description>clj-kondo linting rule
-        </description>
+        <description>warn on invalid syntax</description>
         <type>BUG</type>
     </rule>
 
