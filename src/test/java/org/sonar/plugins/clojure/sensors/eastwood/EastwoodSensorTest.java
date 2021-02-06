@@ -63,9 +63,9 @@ public class EastwoodSensorTest {
 
         List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(2));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("issue-1"));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("eastwood"));
         assertThat(issuesList.get(0).primaryLocation().message(), is("description-1"));
-        assertThat(issuesList.get(1).ruleKey().rule(), is("issue-2"));
+        assertThat(issuesList.get(1).ruleKey().rule(), is("eastwood"));
         assertThat(issuesList.get(1).primaryLocation().message(), is("description-2"));
     }
 

@@ -13,6 +13,7 @@ import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.Issue;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.sonar.plugins.clojure.settings.EastwoodProperties.*;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
@@ -51,7 +52,6 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
             for (Issue issue : issues) {
                 saveIssue(issue, context);
             }
-
         }
     }
 }

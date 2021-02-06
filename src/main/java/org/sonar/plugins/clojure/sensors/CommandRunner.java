@@ -8,6 +8,7 @@ import org.sonar.api.utils.log.Loggers;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 @ScannerSide
 public class CommandRunner {

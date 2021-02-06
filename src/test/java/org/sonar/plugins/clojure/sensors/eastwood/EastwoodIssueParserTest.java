@@ -34,7 +34,7 @@ public class EastwoodIssueParserTest {
         assertThat(issues.get(0).getLine(), is(1));
         assertThat(issues.get(0).getFilePath(), is("path"));
         assertThat(issues.get(0).getDescription(), is("description"));
-        assertThat(issues.get(0).getExternalRuleId(), is("some-key"));
+        assertThat(issues.get(0).getExternalRuleId(), is("eastwood"));
     }
 
     @Test
