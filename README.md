@@ -92,7 +92,7 @@ then SonarClojure should be able to parse the results. The same idea applies to 
 Maven will generate a SNAPSHOT under the folder ***target***.
 
 ## Compatibility
-At the moment, SonarClojure supports SonarQube version 7.9.3+.
+At the moment, SonarClojure supports up to version 8.6.1 of SonarQube.
 
 ## License
 
