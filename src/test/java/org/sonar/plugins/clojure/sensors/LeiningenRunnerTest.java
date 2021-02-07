@@ -59,11 +59,11 @@ public class LeiningenRunnerTest {
         stderr.consumeLine("line in stderr");
 
         leiningenRunner.run(
-                "eastwood",
                 stdout,
                 stderr,
                 300L,
                 "Linux",
+                "eastwood",
                 "argument1",
                 "argument2"
         );
@@ -79,11 +79,11 @@ public class LeiningenRunnerTest {
         CommandStreamConsumer dummyStreamConsumer = new CommandStreamConsumer();
 
         leiningenRunner.run(
-                "eastwood",
                 dummyStreamConsumer,
                 dummyStreamConsumer,
                 300L,
                 "Linux",
+                "eastwood",
                 "argument1",
                 "argument2"
         );
@@ -98,7 +98,7 @@ public class LeiningenRunnerTest {
         CommandStreamConsumer stderr = new CommandStreamConsumer();
         when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(0);
 
-        leiningenRunner.run("eastwood", stdout, stderr, 300L, "windows");
+        leiningenRunner.run(stdout, stderr, 300L, "windows", "eastwood");
 
         ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
         verify(commandExecutor).execute(commandCaptor.capture(), any(CommandStreamConsumer.class), any(CommandStreamConsumer.class), anyLong());

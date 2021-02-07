@@ -31,8 +31,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
     private static final Logger LOG = Loggers.get(KondoSensor.class);
 
     private static final String PLUGIN_NAME = "clj-kondo";
-    private static final String COMMAND_RUN = "run";
-    private static final String[] COMMAND_OPTS = {"-m", "clj-kondo.main"};
+    private static final String[] KONDO_ARGS = {"run", "-m", "clj-kondo.main"};
 
     public KondoSensor(LeiningenRunner leiningenRunner) {
         super(leiningenRunner);
@@ -92,7 +91,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
 
             String config = context.config().get(CONFIG).orElse(DEFAULT_CONFIG);
             String[] options = context.config().get(OPTIONS).orElse(DEFAULT_OPTIONS).split("\\s+");
-            List<String> commandAsList = new ArrayList(Arrays.asList(COMMAND_OPTS));
+            List<String> commandAsList = new ArrayList(Arrays.asList(KONDO_ARGS));
             commandAsList.addAll(Arrays.asList(options));
             if (config != null && !config.isEmpty()) {
                 commandAsList.add("--config");
@@ -103,7 +102,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
 
-            CommandStreamConsumer stdOut = this.leiningenRunner.run(timeOut, COMMAND_RUN, command);
+            CommandStreamConsumer stdOut = this.leiningenRunner.run(timeOut, command);
 
             List<Finding> issues = KondoIssueParser.parse(stdOut);
             LOG.info("Saving issues " + issues.size());

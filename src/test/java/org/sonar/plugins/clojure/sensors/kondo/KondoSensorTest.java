@@ -2,7 +2,9 @@ package org.sonar.plugins.clojure.sensors.kondo;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
@@ -20,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.sonar.plugins.clojure.settings.KondoProperties.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class KondoSensorTest {
 
     @Mock
@@ -35,7 +37,6 @@ public class KondoSensorTest {
 
     @Before
     public void setUp() {
-        initMocks(this);
         kondoSensor = new KondoSensor(commandRunner);
     }
 
@@ -44,7 +45,7 @@ public class KondoSensorTest {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         kondoSensor.describe(descriptor);
         assertThat(descriptor.name(), is("clj-kondo"));
-        assertTrue(descriptor.languages().contains("clj"));
+        assertThat(descriptor.languages().contains("clj"), is(true));
         assertThat(descriptor.languages().size(), is(1));
     }
 

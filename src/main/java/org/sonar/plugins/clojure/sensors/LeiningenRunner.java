@@ -28,11 +28,10 @@ public class LeiningenRunner {
         this(LOG, CommandExecutor.create());
     }
 
-    CommandStreamConsumer run(String plugin, CommandStreamConsumer stdout,
-                              CommandStreamConsumer stderr, Long timeOut, String operatingSystem, String... options) {
+    CommandStreamConsumer run(CommandStreamConsumer stdout,
+                              CommandStreamConsumer stderr, Long timeOut, String operatingSystem, String... args) {
         Command cmd = Command.create(getCommand(operatingSystem));
-        cmd.addArgument(plugin);
-        Arrays.stream(options).filter(Objects::nonNull).forEach(cmd::addArgument);
+        Arrays.stream(args).filter(Objects::nonNull).forEach(cmd::addArgument);
 
         int returnCode = commandExecutor.execute(cmd, stdout, stderr, fromSecondsToMilliseconds(timeOut));
 
@@ -58,14 +57,13 @@ public class LeiningenRunner {
         return seconds * 1000;
     }
 
-    public CommandStreamConsumer run(Long timeOut, String command, String... pluginOptions) {
+    public CommandStreamConsumer run(Long timeOut, String... args) {
         return run(
-                command,
                 new CommandStreamConsumer(),
                 new CommandStreamConsumer(),
                 timeOut,
                 System.getProperty("os.name"),
-                pluginOptions
+                args
         );
     }
 }
