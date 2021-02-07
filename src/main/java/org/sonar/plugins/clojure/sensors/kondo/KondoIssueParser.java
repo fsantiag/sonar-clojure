@@ -35,7 +35,6 @@ public class KondoIssueParser {
     }
 
     private static Finding asFinding(Map<?, ?> finding) {
-        Keyword typeKw = (Keyword) finding.get(newKeyword("type"));
         String message = (String) finding.get(newKeyword("message"));
         String filename = (String) finding.get(newKeyword("filename"));
         String level = ((Keyword) finding.get(newKeyword("level"))).getName();
@@ -44,7 +43,7 @@ public class KondoIssueParser {
         Long endRow = (Long) finding.get(newKeyword("end-row"));
         Long endCol = (Long) finding.get(newKeyword("end-col"));
 
-        return new Finding(typeKw.getName(), message, filename, level,
+        return new Finding("kondo", message, filename, level,
                 row.intValue(), col.intValue(), endRow.intValue(), endCol.intValue());
     }
 }

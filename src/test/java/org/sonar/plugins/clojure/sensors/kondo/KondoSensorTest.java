@@ -63,7 +63,7 @@ public class KondoSensorTest {
 
         List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(1));
-        assertThat(issuesList.get(0).ruleKey().rule(), is("unused-binding"));
+        assertThat(issuesList.get(0).ruleKey().rule(), is("kondo"));
         assertThat(issuesList.get(0).primaryLocation().message(), is("unused binding args"));
     }
 

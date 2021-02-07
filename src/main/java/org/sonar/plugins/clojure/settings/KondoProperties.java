@@ -14,6 +14,8 @@ public class KondoProperties {
     public static final String OPTIONS = "sonar.clojure.kondo.options";
     public static final String CONFIG = "sonar.clojure.kondo.config";
     public static final boolean DISABLED_PROPERTY_DEFAULT = true;
+    public static final String DEFAULT_OPTIONS = "--lint src";
+    public static final String DEFAULT_CONFIG = "{:output {:format :edn}}";
 
     private KondoProperties() {
     }
@@ -32,7 +34,7 @@ public class KondoProperties {
         return PropertyDefinition.builder(OPTIONS)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue("--lint src")
+                .defaultValue(DEFAULT_OPTIONS)
                 .name("clj-kondo options")
                 .description("Provide options for clj-kondo plugin (e.g --lint src)")
                 .build();
@@ -42,7 +44,7 @@ public class KondoProperties {
         return PropertyDefinition.builder(CONFIG)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue("{:output {:format :edn}}")
+                .defaultValue(DEFAULT_CONFIG)
                 .name("clj-kondo config")
                 .description("Provide config for clj-kondo plugin (e.g {:output {:format :edn}})")
                 .build();

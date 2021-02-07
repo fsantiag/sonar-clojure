@@ -30,7 +30,7 @@ public class KondoIssueParserTest {
 
         assertThat(issues.size(), is(1));
         assertThat(issues.get(0).getMessage(), is("Redundant let expression."));
-        assertThat(issues.get(0).getType(), is("redundant-let"));
+        assertThat(issues.get(0).getType(), is("kondo"));
         assertThat(issues.get(0).getFilename(), is("src/example/init.clj"));
         assertThat(issues.get(0).getLevel(), is("warning"));
         assertThat(issues.get(0).getCol(), is(5));
