@@ -11,7 +11,7 @@ import org.sonar.api.utils.command.CommandExecutor;
 import org.sonar.api.utils.log.Logger;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -58,7 +58,15 @@ public class LeiningenRunnerTest {
         CommandStreamConsumer stderr = new CommandStreamConsumer();
         stderr.consumeLine("line in stderr");
 
-        leiningenRunner.run("eastwood", stdout, stderr, 300L, "argument1", "argument2");
+        leiningenRunner.run(
+                "eastwood",
+                stdout,
+                stderr,
+                300L,
+                "Linux",
+                "argument1",
+                "argument2"
+        );
 
         verify(logger, times(1)).debug("plugin: [eastwood, argument1, argument2]");
         verify(logger, times(1)).debug("stdout: line in stdout");
@@ -70,9 +78,32 @@ public class LeiningenRunnerTest {
         when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(1);
         CommandStreamConsumer dummyStreamConsumer = new CommandStreamConsumer();
 
-        leiningenRunner.run("eastwood", dummyStreamConsumer, dummyStreamConsumer, 300L, "argument1", "argument2");
-        verify(logger, times(1)).warn("Command: [eastwood, argument1, argument2] returned a non-zero " +
+        leiningenRunner.run(
+                "eastwood",
+                dummyStreamConsumer,
+                dummyStreamConsumer,
+                300L,
+                "Linux",
+                "argument1",
+                "argument2"
+        );
+        verify(logger, times(1)).warn(
+                "Command: [eastwood, argument1, argument2] returned a non-zero " +
                 "code. Please make sure plugin is working isolated before running sonar-scanner");
+    }
+
+    @Test
+    public void shouldUseBatFileWhenOperatingSystemIsWindows() {
+        CommandStreamConsumer stdout = new CommandStreamConsumer();
+        CommandStreamConsumer stderr = new CommandStreamConsumer();
+        when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(0);
+
+        leiningenRunner.run("eastwood", stdout, stderr, 300L, "windows");
+
+        ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
+        verify(commandExecutor).execute(commandCaptor.capture(), any(CommandStreamConsumer.class), any(CommandStreamConsumer.class), anyLong());
+        Command cmd = commandCaptor.getValue();
+        assertThat(cmd.getExecutable(), is("lein.bat"));
     }
 
 }

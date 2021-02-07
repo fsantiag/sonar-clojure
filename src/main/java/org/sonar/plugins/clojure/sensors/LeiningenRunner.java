@@ -14,7 +14,6 @@ public class LeiningenRunner {
 
     private static final Logger LOG = Loggers.get(LeiningenRunner.class);
     private static final String DELIMITER = "\n";
-    private static final String LEININGEN_COMMAND = "lein";
     private static final int SUCCESS_RETURN_CODE = 0;
 
     private final Logger logger;
@@ -30,8 +29,8 @@ public class LeiningenRunner {
     }
 
     CommandStreamConsumer run(String plugin, CommandStreamConsumer stdout,
-                              CommandStreamConsumer stderr, Long timeOut, String... options) {
-        Command cmd = Command.create(LEININGEN_COMMAND);
+                              CommandStreamConsumer stderr, Long timeOut, String operatingSystem, String... options) {
+        Command cmd = Command.create(getCommand(operatingSystem));
         cmd.addArgument(plugin);
         Arrays.stream(options).filter(Objects::nonNull).forEach(cmd::addArgument);
 
@@ -51,11 +50,22 @@ public class LeiningenRunner {
         return stdout;
     }
 
+    private String getCommand(String operatingSystem) {
+        return operatingSystem.toUpperCase().contains("WINDOWS") ? "lein.bat" : "lein";
+    }
+
     private Long fromSecondsToMilliseconds(long seconds) {
         return seconds * 1000;
     }
 
     public CommandStreamConsumer run(Long timeOut, String command, String... pluginOptions) {
-        return run(command, new CommandStreamConsumer(), new CommandStreamConsumer(), timeOut, pluginOptions);
+        return run(
+                command,
+                new CommandStreamConsumer(),
+                new CommandStreamConsumer(),
+                timeOut,
+                System.getProperty("os.name"),
+                pluginOptions
+        );
     }
 }
