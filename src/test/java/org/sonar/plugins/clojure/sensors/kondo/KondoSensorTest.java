@@ -9,8 +9,8 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,14 +24,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.sonar.plugins.clojure.settings.KondoProperties.OPTIONS;
-import static org.sonar.plugins.clojure.settings.KondoProperties.CONFIG;
-import static org.sonar.plugins.clojure.settings.KondoProperties.DISABLED_PROPERTY;
+import static org.sonar.plugins.clojure.settings.KondoProperties.*;
 
 public class KondoSensorTest {
 
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner commandRunner;
 
     private KondoSensor kondoSensor;
 
@@ -58,7 +56,7 @@ public class KondoSensorTest {
         stdOut.consumeLine("{:findings [{:type :unused-binding, :filename \"file.clj\", " +
                 ":message \"unused binding args\", :row 1, :col 16, :end-row 1, :end-col 20, :level :warning}], " +
                 ":summary {:error 0, :warning 1, :info 0, :type :summary, :duration 11, :files 1}}\n");
-        when(commandRunner.run(300L, "lein", "run", "-m", "clj-kondo.main", "--lint", "src", "--config", "{:output {:format :edn}}"))
+        when(commandRunner.run(300L, "run", "-m", "clj-kondo.main", "--lint", "src", "--config", "{:output {:format :edn}}"))
                 .thenReturn(stdOut);
 
         kondoSensor.execute(context);

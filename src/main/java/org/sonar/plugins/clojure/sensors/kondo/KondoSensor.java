@@ -14,18 +14,15 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.sonar.plugins.clojure.settings.KondoProperties.DISABLED_PROPERTY;
-import static org.sonar.plugins.clojure.settings.KondoProperties.OPTIONS;
-import static org.sonar.plugins.clojure.settings.KondoProperties.CONFIG;
-import static org.sonar.plugins.clojure.settings.KondoProperties.DISABLED_PROPERTY_DEFAULT;
+import static org.sonar.plugins.clojure.settings.KondoProperties.*;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
@@ -34,10 +31,11 @@ public class KondoSensor extends AbstractSensor implements Sensor {
     private static final Logger LOG = Loggers.get(KondoSensor.class);
 
     private static final String PLUGIN_NAME = "clj-kondo";
-    private static final String[] COMMAND = {"run", "-m", "clj-kondo.main"};
+    private static final String COMMAND_RUN = "run";
+    private static final String[] COMMAND_OPTS = {"-m", "clj-kondo.main"};
 
-    public KondoSensor(CommandRunner commandRunner) {
-        super(commandRunner);
+    public KondoSensor(LeiningenRunner leiningenRunner) {
+        super(leiningenRunner);
     }
 
     @Override
@@ -94,7 +92,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
 
             String config = context.config().get(CONFIG).orElse(null);
             String[] options = context.config().get(OPTIONS).orElse("").split("\\s+");
-            List<String> commandAsList = new ArrayList(Arrays.asList(COMMAND));
+            List<String> commandAsList = new ArrayList(Arrays.asList(COMMAND_OPTS));
             commandAsList.addAll(Arrays.asList(options));
             if (config != null && !config.isEmpty()) {
                 commandAsList.add("--config");
@@ -105,7 +103,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
 
-            CommandStreamConsumer stdOut = this.commandRunner.run(timeOut, LEIN_COMMAND, command);
+            CommandStreamConsumer stdOut = this.leiningenRunner.run(timeOut, COMMAND_RUN, command);
 
             List<Finding> issues = KondoIssueParser.parse(stdOut);
             LOG.info("Saving issues " + issues.size());
