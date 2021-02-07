@@ -7,6 +7,7 @@
     "nvd-high",
     "nvd-medium",
     "nvd-low",
-    "ancient-clj-dependency"
+    "ancient-clj-dependency",
+    "kondo"
   ]
 }

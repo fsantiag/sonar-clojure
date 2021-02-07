@@ -10,7 +10,7 @@
 ## Current State
 
 ### Features:
-* Static code analysis powered by [eastwood](https://github.com/jonase/eastwood) and [kibit](https://github.com/jonase/kibit).
+* Static code analysis powered by [eastwood](https://github.com/jonase/eastwood), [kibit](https://github.com/jonase/kibit) and [clj-kondo](https://github.com/clj-kondo/clj-kondo).
 * Detection of outdated dependencies/plugins powered by [lein-ancient](https://github.com/xsc/lein-ancient).
 * Coverage reports powered by [cloverage](https://github.com/cloverage/cloverage).
 * Detection of vulnerable dependencies powered by [lein-nvd](https://github.com/rm-hull/lein-nvd).
@@ -22,14 +22,15 @@ In order to install SonarClojure:
 3. Restart the SonarQube server.
 
 ## Usage
-1. Change your ***project.clj*** file and add the required plugins:
+1. Change your ***project.clj*** file and add the required plugins and/or dependencies:
 
     ```clojure
     :plugins [[jonase/eastwood "0.3.13"]
               [lein-kibit "0.1.8"]
-              [lein-ancient "0.7.0"]
-              [lein-cloverage "1.2.2"]
-              [lein-nvd "1.4.1"]]
+              [lein-ancient "0.6.15"]
+              [lein-cloverage "1.1.2"]
+              [lein-nvd "1.4.0"]]
+    :dependencies [[clj-kondo "RELEASE"]]
      ```
 
 > Note 1: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
@@ -53,9 +54,9 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
 ### Configuring Sensors
 
 #### Disabling
-Sensors can be disabled by setting `sonar.clojure.<sensorname>.enabled=false` in the sonar-project.properties or
-by using the command line argument `-Dsonar.clojure.<sensorname>.enabled` when running sonar-scanner.
-Sensor names are `eastwood`, `kibit`, `ancient`, `nvd` and `cloverage`.
+Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` in the sonar-project.properties or
+by using the command line argument `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
+Sensor names are `eastwood`, `kibit`, `clj-kondo`, `ancient`, `nvd` and `cloverage`.
 
 #### Report file location
 Some sensors use report files to parse the results. Both cloverage and lein-nvd use this report files.
@@ -91,7 +92,7 @@ then SonarClojure should be able to parse the results. The same idea applies to 
 Maven will generate a SNAPSHOT under the folder ***target***.
 
 ## Compatibility
-At the moment, SonarClojure supports SonarQube up to version 8.6.1.
+At the moment, SonarClojure supports SonarQube version 7.9.3+.
 
 ## License
 
