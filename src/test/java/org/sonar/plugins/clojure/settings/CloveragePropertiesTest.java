@@ -4,17 +4,17 @@ import org.junit.Test;
 import org.sonar.api.config.PropertyDefinition;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CloveragePropertiesTest {
     @Test
     public void shouldHaveCloverageDisabledProperty() {
-        PropertyDefinition cloverageDisabled = CloverageProperties.getDisabledProperty();
-        assertThat(cloverageDisabled.key(), is("sonar.clojure.cloverage.disabled"));
+        PropertyDefinition cloverageDisabled = CloverageProperties.getEnabledProperty();
+        assertThat(cloverageDisabled.key(), is("sonar.clojure.cloverage.enabled"));
         assertThat(cloverageDisabled.name(), is("Cloverage Disabled"));
         assertThat(cloverageDisabled.category(), is("SonarClojure"));
         assertThat(cloverageDisabled.subCategory(), is("Sensors"));
-        assertThat(cloverageDisabled.defaultValue(), is("false"));
+        assertThat(cloverageDisabled.defaultValue(), is("true"));
         assertThat(cloverageDisabled.description(), is("Indicates if cloverage sensor should be disabled"));
     }
 

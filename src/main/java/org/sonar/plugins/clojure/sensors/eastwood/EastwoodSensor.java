@@ -47,6 +47,8 @@ public class EastwoodSensor extends AbstractSensor implements Sensor {
 
             LOG.debug("Saving issues: " + issues.size());
             issues.forEach(issue -> saveIssue(issue, context));
+        } else {
+            LOG.info("Eastwood disabled");
         }
     }
     private boolean isSensorEnabled(SensorContext context) {

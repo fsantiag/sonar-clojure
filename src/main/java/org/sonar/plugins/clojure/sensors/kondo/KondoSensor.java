@@ -86,7 +86,7 @@ public class KondoSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
+        if (isPluginEnabled(context, PLUGIN_NAME, ENABLED_PROPERTY, ENABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running clj-kondo");
 
             String config = context.config().get(CONFIG).orElse(DEFAULT_CONFIG);

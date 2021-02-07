@@ -11,6 +11,7 @@ import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.AncientProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static org.sonar.plugins.clojure.settings.KondoProperties.ENABLED_PROPERTY;
 
 public class AncientSensorTest {
     @Mock
@@ -44,7 +45,7 @@ public class AncientSensorTest {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         ancientSensor.describe(descriptor);
         assertThat(descriptor.name(), is("Ancient"));
-        assertTrue(descriptor.languages().contains("clj"));
+        assertThat(descriptor.languages().contains("clj"), is(true));
         assertThat(descriptor.languages().size(), is(1));
     }
 
@@ -74,6 +75,8 @@ public class AncientSensorTest {
 
     private SensorContextTester prepareContext() throws IOException {
         SensorContextTester context = SensorContextTester.create(new File("/"));
+
+        context.settings().appendProperty(AncientProperties.ENABLED_PROPERTY, "true");
 
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "project.clj");

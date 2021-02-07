@@ -54,8 +54,8 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
 ### Configuring Sensors
 
 #### Disabling
-Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` in the sonar-project.properties or
-by using the command line argument `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
+Sensors can be disabled by setting `sonar.clojure.<sensorname>.enabled=false` in the sonar-project.properties or
+by using the command line argument `-Dsonar.clojure.<sensorname>.enabled` when running sonar-scanner.
 Sensor names are `eastwood`, `kibit`, `clj-kondo`, `ancient`, `nvd` and `cloverage`.
 
 #### Report file location

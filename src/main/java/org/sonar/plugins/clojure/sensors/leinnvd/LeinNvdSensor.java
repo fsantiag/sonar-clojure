@@ -43,7 +43,7 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
     @Override
     public void execute(SensorContext context) {
 
-        if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
+        if (isPluginEnabled(context, PLUGIN_NAME, ENABLED_PROPERTY, ENABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running Lein NVD");
             String reportPath = context.config().get(NvdProperties.REPORT_LOCATION_PROPERTY).orElse(REPORT_LOCATION_DEFAULT);
 

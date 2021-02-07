@@ -9,19 +9,19 @@ import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;
 
 public class CloverageProperties {
-    public static final String DISABLED_PROPERTY = "sonar.clojure.cloverage.disabled";
-    public static final boolean DISABLED_PROPERTY_DEFAULT = false;
+    public static final String ENABLED_PROPERTY = "sonar.clojure.cloverage.enabled";
+    public static final boolean ENABLED_PROPERTY_DEFAULT = true;
     public static final String REPORT_LOCATION_PROPERTY = "sonar.clojure.cloverage.reportPath";
     public static final String REPORT_LOCATION_DEFAULT = "target/coverage/codecov.json";
 
     private CloverageProperties() {
     }
 
-    static PropertyDefinition getDisabledProperty() {
-        return PropertyDefinition.builder(DISABLED_PROPERTY)
+    static PropertyDefinition getEnabledProperty() {
+        return PropertyDefinition.builder(ENABLED_PROPERTY)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue("false")
+                .defaultValue(String.valueOf(ENABLED_PROPERTY_DEFAULT))
                 .name("Cloverage Disabled")
                 .description("Indicates if cloverage sensor should be disabled")
                 .build();
@@ -38,6 +38,6 @@ public class CloverageProperties {
     }
 
     static List<PropertyDefinition> getProperties() {
-        return asList(getDisabledProperty(), getReportLocationProperty());
+        return asList(getEnabledProperty(), getReportLocationProperty());
     }
 }

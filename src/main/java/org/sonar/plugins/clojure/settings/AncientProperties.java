@@ -10,17 +10,17 @@ import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;
 
 public class AncientProperties {
-    public static final String DISABLED_PROPERTY = "sonar.clojure.ancient.disabled";
-    public static final boolean DISABLED_PROPERTY_DEFAULT = false;
+    public static final String ENABLED_PROPERTY = "sonar.clojure.ancient.enabled";
+    public static final boolean ENABLED_PROPERTY_DEFAULT = true;
 
     private AncientProperties() {
     }
 
     static PropertyDefinition getAncientDisabled() {
-        return PropertyDefinition.builder(DISABLED_PROPERTY)
+        return PropertyDefinition.builder(ENABLED_PROPERTY)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue(valueOf(DISABLED_PROPERTY_DEFAULT))
+                .defaultValue(valueOf(ENABLED_PROPERTY_DEFAULT))
                 .name("Ancient Disabled")
                 .description("Indicates the ancient sensor should be disabled")
                 .build();

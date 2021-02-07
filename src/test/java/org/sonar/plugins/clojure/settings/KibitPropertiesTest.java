@@ -9,12 +9,12 @@ import static org.junit.Assert.assertThat;
 public class KibitPropertiesTest {
     @Test
     public void shouldHaveKibitDisabledProperty() {
-        PropertyDefinition kibitDisabled = KibitProperties.getDisabledProperty();
-        assertThat(kibitDisabled.key(), is("sonar.clojure.kibit.disabled"));
+        PropertyDefinition kibitDisabled = KibitProperties.getEnabledProperty();
+        assertThat(kibitDisabled.key(), is("sonar.clojure.kibit.enabled"));
         assertThat(kibitDisabled.name(), is("Kibit Disabled"));
         assertThat(kibitDisabled.category(), is("SonarClojure"));
         assertThat(kibitDisabled.subCategory(), is("Sensors"));
-        assertThat(kibitDisabled.defaultValue(), is("false"));
+        assertThat(kibitDisabled.defaultValue(), is("true"));
         assertThat(kibitDisabled.description(), is("Indicates if kibit sensor should be disabled"));
     }
 

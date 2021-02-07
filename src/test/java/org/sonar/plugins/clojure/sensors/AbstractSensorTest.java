@@ -11,9 +11,10 @@ import org.sonar.api.utils.log.LogTester;
 
 import java.io.File;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractSensorTest {
@@ -34,11 +35,11 @@ public class AbstractSensorTest {
     @Test
     public void shouldDisablePluginWhenPropertyIsSet() {
         SensorContextTester context = SensorContextTester.create(new File("/"));
-        context.settings().appendProperty("property.foo", "true");
+        context.settings().appendProperty("property.enabled", "false");
 
-        boolean isDisabled = dummySensor.isPluginDisabled(context, "SOME_PLUGIN", "property.foo", false);
+        boolean isDisabled = dummySensor.isPluginEnabled(context, "SOME_PLUGIN", "property.enabled", true);
 
-        assertTrue(isDisabled);
+        assertThat(isDisabled, equalTo(false));
         assertThat(logTester.logs(), hasItem("SOME_PLUGIN disabled"));
     }
 

@@ -29,13 +29,13 @@ public abstract class AbstractSensor {
         this.leiningenRunner = leiningenRunner;
     }
 
-    protected boolean isPluginDisabled(SensorContext context, String pluginName, String propertyName, boolean defaultValue) {
-        Boolean pluginDisabled = context.config().getBoolean(propertyName).orElse(defaultValue);
-        LOG.debug(String.format("Property: %s Value: %s", propertyName, pluginDisabled));
-        if (pluginDisabled) {
+    protected boolean isPluginEnabled(SensorContext context, String pluginName, String propertyName, boolean defaultValue) {
+        Boolean pluginEnabled = context.config().getBoolean(propertyName).orElse(defaultValue);
+        LOG.debug(String.format("Property: %s Value: %s", propertyName, pluginEnabled));
+        if (!pluginEnabled) {
             LOG.info(pluginName + " disabled");
         }
-        return pluginDisabled;
+        return pluginEnabled;
     }
 
     protected Optional<InputFile> getFile(String filePath, FileSystem fileSystem) {

@@ -38,7 +38,7 @@ public class KibitSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!isPluginDisabled(context, PLUGIN_NAME, KibitProperties.DISABLED_PROPERTY, KibitProperties.DISABLED_PROPERTY_DEFAULT)) {
+        if (isPluginEnabled(context, PLUGIN_NAME, KibitProperties.ENABLED_PROPERTY, KibitProperties.ENABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running Kibit");
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));

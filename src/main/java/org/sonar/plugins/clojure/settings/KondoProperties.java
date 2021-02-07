@@ -10,21 +10,21 @@ import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;
 
 public class KondoProperties {
-    public static final String DISABLED_PROPERTY = "sonar.clojure.kondo.disabled";
+    public static final String ENABLED_PROPERTY = "sonar.clojure.kondo.enabled";
     public static final String OPTIONS = "sonar.clojure.kondo.options";
     public static final String CONFIG = "sonar.clojure.kondo.config";
-    public static final boolean DISABLED_PROPERTY_DEFAULT = true;
+    public static final boolean ENABLED_PROPERTY_DEFAULT = false;
     public static final String DEFAULT_OPTIONS = "--lint src";
     public static final String DEFAULT_CONFIG = "{:output {:format :edn}}";
 
     private KondoProperties() {
     }
 
-    static PropertyDefinition getDisabledProperty() {
-        return PropertyDefinition.builder(DISABLED_PROPERTY)
+    static PropertyDefinition getEnabledProperty() {
+        return PropertyDefinition.builder(ENABLED_PROPERTY)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue(valueOf(DISABLED_PROPERTY_DEFAULT))
+                .defaultValue(valueOf(ENABLED_PROPERTY_DEFAULT))
                 .name("clj-kondo disabled")
                 .description("Indicates if clj-kondo sensor should be disabled")
                 .build();
@@ -51,6 +51,6 @@ public class KondoProperties {
     }
 
     static List<PropertyDefinition> getProperties() {
-        return asList(getDisabledProperty(), getOptionsProperty(), getConfigProperty());
+        return asList(getEnabledProperty(), getOptionsProperty(), getConfigProperty());
     }
 }

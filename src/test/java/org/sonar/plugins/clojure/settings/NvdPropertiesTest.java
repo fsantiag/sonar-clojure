@@ -9,12 +9,12 @@ import static org.junit.Assert.assertThat;
 public class NvdPropertiesTest {
     @Test
     public void shouldHaveNvdDisabledProperty() {
-        PropertyDefinition nvdDisabled = NvdProperties.getDisabledProperty();
-        assertThat(nvdDisabled.key(), is("sonar.clojure.nvd.disabled"));
+        PropertyDefinition nvdDisabled = NvdProperties.getEnabledProperty();
+        assertThat(nvdDisabled.key(), is("sonar.clojure.nvd.enabled"));
         assertThat(nvdDisabled.name(), is("Lein NVD Disabled"));
         assertThat(nvdDisabled.category(), is("SonarClojure"));
         assertThat(nvdDisabled.subCategory(), is("Sensors"));
-        assertThat(nvdDisabled.defaultValue(), is("false"));
+        assertThat(nvdDisabled.defaultValue(), is("true"));
         assertThat(nvdDisabled.description(), is("Indicates if lein-nvd sensor should be disabled"));
     }
 

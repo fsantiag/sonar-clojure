@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -43,7 +42,7 @@ public class KibitSensorTest {
         DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
         kibitSensor.describe(descriptor);
         assertThat(descriptor.name(), is("Kibit"));
-        assertTrue(descriptor.languages().contains("clj"));
+        assertThat(descriptor.languages().contains("clj"), is(true));
         assertThat(descriptor.languages().size(), is(1));
     }
 

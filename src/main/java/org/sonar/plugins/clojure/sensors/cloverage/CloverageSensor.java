@@ -37,7 +37,7 @@ public class CloverageSensor extends AbstractSensor implements Sensor {
 
     @Override
     public void execute(SensorContext context) {
-        if (!isPluginDisabled(context, PLUGIN_NAME, DISABLED_PROPERTY, DISABLED_PROPERTY_DEFAULT)) {
+        if (isPluginEnabled(context, PLUGIN_NAME, ENABLED_PROPERTY, ENABLED_PROPERTY_DEFAULT)) {
             LOG.info("Running " + PLUGIN_NAME);
 
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)

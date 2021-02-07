@@ -24,7 +24,6 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static org.sonar.plugins.clojure.settings.KondoProperties.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -73,7 +72,7 @@ public class KondoSensorTest {
 
         context.settings().appendProperty(OPTIONS, "--lint src");
         context.settings().appendProperty(CONFIG, "{:output {:format :edn}}");
-        context.settings().appendProperty(DISABLED_PROPERTY, "false");
+        context.settings().appendProperty(ENABLED_PROPERTY, "true");
 
         File baseDir = new File("src/test/resources/");
         File file = new File(baseDir, "file.clj");

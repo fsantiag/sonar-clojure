@@ -14,6 +14,7 @@ import org.sonar.api.utils.log.LogTester;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.settings.CloverageProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.sonar.plugins.clojure.settings.CloverageProperties.REPORT_LOCATION_PROPERTY;
+import static org.sonar.plugins.clojure.settings.KondoProperties.ENABLED_PROPERTY;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CloverageSensorTest {
