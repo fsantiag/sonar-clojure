@@ -1,4 +1,4 @@
-package org.sonar.plugins.clojure.settings;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.sonar.api.config.PropertyDefinition;
 
@@ -10,24 +10,24 @@ import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;
 
 public class EastwoodProperties {
-    public static final String DISABLED_PROPERTY = "sonar.clojure.eastwood.disabled";
-    public static final boolean DISABLED_PROPERTY_DEFAULT = false;
+    public static final String ENABLED_PROPERTY = "sonar.clojure.eastwood.enabled";
+    public static final boolean ENABLED_PROPERTY_DEFAULT = true;
     public static final String EASTWOOD_OPTIONS = "sonar.clojure.eastwood.options";
 
     private EastwoodProperties() {
     }
 
-    static PropertyDefinition getDisabledProperty() {
-        return PropertyDefinition.builder(DISABLED_PROPERTY)
+    public static PropertyDefinition getEnabledProperty() {
+        return PropertyDefinition.builder(ENABLED_PROPERTY)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
-                .defaultValue(valueOf(DISABLED_PROPERTY_DEFAULT))
+                .defaultValue(valueOf(ENABLED_PROPERTY_DEFAULT))
                 .name("Eastwood Disabled")
                 .description("Indicates if eastwood sensor should be disabled")
                 .build();
     }
 
-    static PropertyDefinition getEastwoodOptions() {
+    public static PropertyDefinition getEastwoodOptions() {
         return PropertyDefinition.builder(EASTWOOD_OPTIONS)
                 .category(MAIN_CATEGORY)
                 .subCategory(SUB_CATEGORY)
@@ -37,7 +37,7 @@ public class EastwoodProperties {
                 .build();
     }
 
-    static List<PropertyDefinition> getProperties() {
-        return asList(getDisabledProperty(), getEastwoodOptions());
+    public static List<PropertyDefinition> getProperties() {
+        return asList(getEnabledProperty(), getEastwoodOptions());
     }
 }

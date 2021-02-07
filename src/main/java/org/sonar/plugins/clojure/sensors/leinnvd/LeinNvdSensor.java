@@ -12,7 +12,7 @@ import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.settings.NvdProperties;
 
 import java.util.List;
@@ -30,8 +30,8 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
     private static final String PLUGIN_NAME = "NVD";
 
     @SuppressWarnings("WeakerAccess")
-    public LeinNvdSensor(CommandRunner commandRunner) {
-        super(commandRunner);
+    public LeinNvdSensor(LeiningenRunner leiningenRunner) {
+        super(leiningenRunner);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
-            this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
+            this.leiningenRunner.run(timeOut, LEIN_ARGUMENTS[0], LEIN_ARGUMENTS[1]);
 
             Optional<String> vulnerabilityContext = readFromFileSystem(reportPath);
             if (vulnerabilityContext.isPresent()) {

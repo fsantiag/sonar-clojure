@@ -2,15 +2,17 @@ package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,20 +25,19 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.sonar.plugins.clojure.settings.EastwoodProperties.EASTWOOD_OPTIONS;
+import static org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties.EASTWOOD_OPTIONS;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EastwoodSensorTest {
 
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     private EastwoodSensor eastwoodSensor;
 
     @Before
     public void setUp() {
-        initMocks(this);
-        eastwoodSensor = new EastwoodSensor(commandRunner);
+        eastwoodSensor = new EastwoodSensor(leiningenRunner);
     }
 
     @Test
@@ -56,8 +57,7 @@ public class EastwoodSensorTest {
         stdOut.consumeLine("file.clj:1:0:issue-1:description-1");
         stdOut.consumeLine("file.clj:2:0:issue-2:description-2");
         String options = "eastwood-option";
-        when(commandRunner.run(300L, "lein", "eastwood", options))
-                .thenReturn(stdOut);
+        when(leiningenRunner.run(300L, "eastwood", options)).thenReturn(stdOut);
 
         eastwoodSensor.execute(context);
 

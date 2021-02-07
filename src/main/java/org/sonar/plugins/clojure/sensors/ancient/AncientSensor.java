@@ -14,7 +14,7 @@ import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.leiningen.ProjectFile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
 import java.io.IOException;
@@ -35,8 +35,8 @@ public class AncientSensor extends AbstractSensor implements Sensor {
     private static final String PLUGIN_NAME = "Ancient";
 
     @SuppressWarnings("WeakerAccess")
-    public AncientSensor(CommandRunner commandRunner) {
-        super(commandRunner);
+    public AncientSensor(LeiningenRunner leiningenRunner) {
+        super(leiningenRunner);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AncientSensor extends AbstractSensor implements Sensor {
             long timeOut = context.config().getLong(SENSORS_TIMEOUT_PROPERTY)
                     .orElse(Long.valueOf(SENSORS_TIMEOUT_PROPERTY_DEFAULT));
 
-            CommandStreamConsumer stdOut = this.commandRunner.run(timeOut, LEIN_COMMAND, LEIN_ARGUMENTS);
+            CommandStreamConsumer stdOut = this.leiningenRunner.run(timeOut, LEIN_ARGUMENTS);
 
             List<OutdatedDependency> outdatedDependencies = parse(stdOut.getData());
             LOG.debug("Parsed " + outdatedDependencies.size() + " dependencies");

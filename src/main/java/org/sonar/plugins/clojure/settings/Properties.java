@@ -1,6 +1,7 @@
 package org.sonar.plugins.clojure.settings;
 
 import org.sonar.api.config.PropertyDefinition;
+import org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,8 +16,8 @@ public class Properties {
     public static final String FILE_SUFFIXES_PROPERTY_DEFAULT = "clj,cljs,cljc";
     public static final String SENSORS_TIMEOUT_PROPERTY = "sonar.clojure.sensors.timeout";
     public static final String SENSORS_TIMEOUT_PROPERTY_DEFAULT = "300";
-    static final String MAIN_CATEGORY = "SonarClojure";
-    static final String SUB_CATEGORY = "Sensors";
+    public static final String MAIN_CATEGORY = "SonarClojure";
+    public static final String SUB_CATEGORY = "Sensors";
 
     private Properties() {
     }

@@ -25,11 +25,11 @@ In order to install SonarClojure:
 1. Change your ***project.clj*** file and add the required plugins:
 
     ```clojure
-    :plugins [[jonase/eastwood "0.3.6"]
+    :plugins [[jonase/eastwood "0.3.13"]
               [lein-kibit "0.1.8"]
-              [lein-ancient "0.6.15"]
-              [lein-cloverage "1.1.2"]
-              [lein-nvd "1.4.0"]]
+              [lein-ancient "0.7.0"]
+              [lein-cloverage "1.2.2"]
+              [lein-nvd "1.4.1"]]
      ```
 
 > Note 1: Please make sure the plugins above are setup correctly for your project. A good way to test this is to
@@ -53,8 +53,8 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
 ### Configuring Sensors
 
 #### Disabling
-Sensors can be disabled by setting `sonar.clojure.<sensorname>.disabled=true` in the sonar-project.properties or
-by using the command line argument `-Dsonar.clojure.<sensorname>.disabled` when running sonar-scanner.
+Sensors can be disabled by setting `sonar.clojure.<sensorname>.enabled=false` in the sonar-project.properties or
+by using the command line argument `-Dsonar.clojure.<sensorname>.enabled` when running sonar-scanner.
 Sensor names are `eastwood`, `kibit`, `ancient`, `nvd` and `cloverage`.
 
 #### Report file location

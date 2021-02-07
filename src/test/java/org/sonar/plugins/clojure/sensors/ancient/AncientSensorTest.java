@@ -9,7 +9,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
 import java.io.File;
@@ -29,14 +29,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class AncientSensorTest {
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     private AncientSensor ancientSensor;
 
     @Before
     public void setUp() {
         initMocks(this);
-        ancientSensor = new AncientSensor(commandRunner);
+        ancientSensor = new AncientSensor(leiningenRunner);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class AncientSensorTest {
         stdOut.consumeLine("This is some non related line which should not end to report");
         stdOut.consumeLine("[metosin/reitit \"0.2.10\"] is available but we use \"0.2.1\"");
         stdOut.consumeLine("[metosin/ring-http-response \"0.9.1\"] is available but we use \"0.9.0\"");
-        when(commandRunner.run(any(), eq("lein"), eq("ancient"))).thenReturn(stdOut);
+        when(leiningenRunner.run(any(), eq("ancient"))).thenReturn(stdOut);
 
         ancientSensor.execute(context);
 

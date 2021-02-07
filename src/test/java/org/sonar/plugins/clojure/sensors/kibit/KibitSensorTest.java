@@ -9,7 +9,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
 import java.io.File;
@@ -28,14 +28,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class KibitSensorTest {
 
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     private KibitSensor kibitSensor;
 
     @Before
     public void setUp() {
         initMocks(this);
-        kibitSensor = new KibitSensor(commandRunner);
+        kibitSensor = new KibitSensor(leiningenRunner);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class KibitSensorTest {
         stdOut.consumeLine("----");
         stdOut.consumeLine("At kibit.clj:5:");
         stdOut.consumeLine("Kibit will say that there is pos? function available");
-        when(commandRunner.run(300L, "lein", "kibit")).thenReturn(stdOut);
+        when(leiningenRunner.run(300L, "kibit")).thenReturn(stdOut);
 
         kibitSensor.execute(context);
 

@@ -12,7 +12,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.utils.log.LogTester;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class CloverageSensorTest {
     public static final String BAR_PATH = "src/cljc/bar.cljc";
 
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     @Rule
     public LogTester logTester = new LogTester();
@@ -44,7 +44,7 @@ public class CloverageSensorTest {
 
     @Before
     public void setUp() {
-        this.cloverageSensor = new CloverageSensor(commandRunner);
+        this.cloverageSensor = new CloverageSensor(leiningenRunner);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CloverageSensorTest {
         assertThat(context.lineHits(barKey, 1), is(1));
 
         assertThat(logTester.logs(), hasItems("Running Cloverage"));
-        verify(commandRunner).run(300L, "lein", "cloverage", "--codecov");
+        verify(leiningenRunner).run(300L, "cloverage", "--codecov");
     }
 
     @Test
@@ -95,7 +95,7 @@ public class CloverageSensorTest {
 
         CommandStreamConsumer stdOut = new CommandStreamConsumer();
         stdOut.consumeLine("Cloverage is running just fine - please relax");
-        when(commandRunner.run(300L, "lein", "cloverage", "--codecov")).thenReturn(stdOut);
+        when(leiningenRunner.run(300L, "cloverage", "--codecov")).thenReturn(stdOut);
         return context;
     }
 

@@ -9,7 +9,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.Issue;
 import org.sonar.plugins.clojure.language.Clojure;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.settings.NvdProperties;
 
@@ -27,14 +27,14 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class LeinNvdSensorTest {
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     private LeinNvdSensor leinNvdSensor;
 
     @Before
     public void setUp() {
         initMocks(this);
-        leinNvdSensor = new LeinNvdSensor(commandRunner);
+        leinNvdSensor = new LeinNvdSensor(leiningenRunner);
     }
 
     @Test

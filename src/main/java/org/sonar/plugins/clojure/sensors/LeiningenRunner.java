@@ -8,35 +8,36 @@ import org.sonar.api.utils.log.Loggers;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Optional;
 
 @ScannerSide
-public class CommandRunner {
+public class LeiningenRunner {
 
-    private static final Logger STATIC_LOGGER = Loggers.get(CommandRunner.class);
+    private static final Logger LOG = Loggers.get(LeiningenRunner.class);
     private static final String DELIMITER = "\n";
+    private static final String LEININGEN_COMMAND = "lein";
     private static final int SUCCESS_RETURN_CODE = 0;
 
     private final Logger logger;
     private final CommandExecutor commandExecutor;
 
-    public CommandRunner(Logger log, CommandExecutor commandExecutor) {
+    public LeiningenRunner(Logger log, CommandExecutor commandExecutor) {
         this.logger = log;
         this.commandExecutor = commandExecutor;
     }
 
-    public CommandRunner() {
-        this(STATIC_LOGGER, CommandExecutor.create());
+    public LeiningenRunner() {
+        this(LOG, CommandExecutor.create());
     }
 
-    CommandStreamConsumer run(String command, CommandStreamConsumer stdout,
-                              CommandStreamConsumer stderr, Long timeOut, String... arguments) {
-        Command cmd = Command.create(command);
-        Arrays.stream(arguments).filter(Objects::nonNull).forEach(cmd::addArgument);
+    CommandStreamConsumer run(String plugin, CommandStreamConsumer stdout,
+                              CommandStreamConsumer stderr, Long timeOut, String... options) {
+        Command cmd = Command.create(LEININGEN_COMMAND);
+        cmd.addArgument(plugin);
+        Arrays.stream(options).filter(Objects::nonNull).forEach(cmd::addArgument);
 
         int returnCode = commandExecutor.execute(cmd, stdout, stderr, fromSecondsToMilliseconds(timeOut));
 
-        logger.debug("command: " + cmd.getArguments());
+        logger.debug("plugin: " + cmd.getArguments());
         logger.debug("stdout: " + String.join(DELIMITER, stdout.getData()));
         logger.debug("stderr: " + String.join(DELIMITER, stderr.getData()));
 
@@ -54,7 +55,7 @@ public class CommandRunner {
         return seconds * 1000;
     }
 
-    public CommandStreamConsumer run(Long timeOut, String command, String... arguments) {
-        return run(command, new CommandStreamConsumer(), new CommandStreamConsumer(), timeOut, arguments);
+    public CommandStreamConsumer run(Long timeOut, String command, String... pluginOptions) {
+        return run(command, new CommandStreamConsumer(), new CommandStreamConsumer(), timeOut, pluginOptions);
     }
 }

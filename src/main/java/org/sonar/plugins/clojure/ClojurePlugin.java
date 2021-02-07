@@ -4,7 +4,7 @@ import org.sonar.api.Plugin;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.language.ClojureSonarWayProfile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
-import org.sonar.plugins.clojure.sensors.CommandRunner;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.ancient.AncientSensor;
 import org.sonar.plugins.clojure.sensors.clojure.ClojureSensor;
 import org.sonar.plugins.clojure.sensors.cloverage.CloverageSensor;
@@ -21,7 +21,7 @@ public class ClojurePlugin implements Plugin {
         context.addExtension(Clojure.class);
         context.addExtension(ClojureSonarWayProfile.class);
         context.addExtension(ClojureLintRulesDefinition.class);
-        context.addExtension(CommandRunner.class);
+        context.addExtension(LeiningenRunner.class);
         context.addExtension(EastwoodSensor.class);
         context.addExtension(KibitSensor.class);
         context.addExtension(AncientSensor.class);

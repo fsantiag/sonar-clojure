@@ -23,10 +23,10 @@ public abstract class AbstractSensor {
 
     protected static final String LEIN_COMMAND = "lein";
 
-    protected CommandRunner commandRunner;
+    protected LeiningenRunner leiningenRunner;
 
-    public AbstractSensor(CommandRunner commandRunner) {
-        this.commandRunner = commandRunner;
+    public AbstractSensor(LeiningenRunner leiningenRunner) {
+        this.leiningenRunner = leiningenRunner;
     }
 
     protected boolean isPluginDisabled(SensorContext context, String pluginName, String propertyName, boolean defaultValue) {

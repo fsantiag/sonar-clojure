@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CommandRunnerTest {
+public class LeiningenRunnerTest {
 
     @Mock
     private Logger logger;
@@ -24,16 +24,16 @@ public class CommandRunnerTest {
     @Mock
     private CommandExecutor commandExecutor;
 
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     @Before
     public void setUp() {
-        commandRunner = new CommandRunner(logger, commandExecutor);
+        leiningenRunner = new LeiningenRunner(logger, commandExecutor);
     }
 
     @Test
-    public void shouldTakeMultipleArgumentsForCommand() {
-        commandRunner.run(300L, "echo", "argument1", null, "argument2");
+    public void shouldTakeMultipleArgumentsForLeinPlugin() {
+        leiningenRunner.run(300L, "eastwood", "argument1", "argument2");
 
         ArgumentCaptor<Command> commandCaptor = ArgumentCaptor.forClass(Command.class);
         verify(commandExecutor, times(1))
@@ -44,9 +44,11 @@ public class CommandRunnerTest {
                         anyLong());
 
         Command cmd = commandCaptor.getValue();
-        assertThat(cmd.getArguments().size(), is(2));
-        assertThat(cmd.getArguments().get(0), is("argument1"));
-        assertThat(cmd.getArguments().get(1), is("argument2"));
+        assertThat(cmd.getExecutable(), is("lein"));
+        assertThat(cmd.getArguments().size(), is(3));
+        assertThat(cmd.getArguments().get(0), is("eastwood"));
+        assertThat(cmd.getArguments().get(1), is("argument1"));
+        assertThat(cmd.getArguments().get(2), is("argument2"));
     }
 
     @Test
@@ -56,9 +58,9 @@ public class CommandRunnerTest {
         CommandStreamConsumer stderr = new CommandStreamConsumer();
         stderr.consumeLine("line in stderr");
 
-        commandRunner.run("echo", stdout, stderr, 300L, "argument1", "argument2");
+        leiningenRunner.run("eastwood", stdout, stderr, 300L, "argument1", "argument2");
 
-        verify(logger, times(1)).debug("command: [argument1, argument2]");
+        verify(logger, times(1)).debug("plugin: [eastwood, argument1, argument2]");
         verify(logger, times(1)).debug("stdout: line in stdout");
         verify(logger, times(1)).debug("stderr: line in stderr");
     }
@@ -68,8 +70,8 @@ public class CommandRunnerTest {
         when(commandExecutor.execute(any(),any(),any(),anyLong())).thenReturn(1);
         CommandStreamConsumer dummyStreamConsumer = new CommandStreamConsumer();
 
-        commandRunner.run("echo", dummyStreamConsumer, dummyStreamConsumer, 300L, "argument1", "argument2");
-        verify(logger, times(1)).warn("Command: [argument1, argument2] returned a non-zero " +
+        leiningenRunner.run("eastwood", dummyStreamConsumer, dummyStreamConsumer, 300L, "argument1", "argument2");
+        verify(logger, times(1)).warn("Command: [eastwood, argument1, argument2] returned a non-zero " +
                 "code. Please make sure plugin is working isolated before running sonar-scanner");
     }
 

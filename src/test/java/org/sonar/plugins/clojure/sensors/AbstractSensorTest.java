@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class AbstractSensorTest {
 
     @Mock
-    private CommandRunner commandRunner;
+    private LeiningenRunner leiningenRunner;
 
     @Rule
     public LogTester logTester = new LogTester();
@@ -28,7 +28,7 @@ public class AbstractSensorTest {
 
     @Before
     public void setUp() {
-        this.dummySensor = new DummySensor(commandRunner);
+        this.dummySensor = new DummySensor(leiningenRunner);
     }
 
     @Test
@@ -43,8 +43,8 @@ public class AbstractSensorTest {
     }
 
     private class DummySensor extends AbstractSensor {
-        DummySensor(CommandRunner commandRunner) {
-            super(commandRunner);
+        DummySensor(LeiningenRunner leiningenRunner) {
+            super(leiningenRunner);
         }
     }
 }

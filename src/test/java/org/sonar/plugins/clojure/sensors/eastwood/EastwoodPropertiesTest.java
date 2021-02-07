@@ -1,7 +1,8 @@
-package org.sonar.plugins.clojure.settings;
+package org.sonar.plugins.clojure.sensors.eastwood;
 
 import org.junit.Test;
 import org.sonar.api.config.PropertyDefinition;
+import org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -9,12 +10,12 @@ import static org.junit.Assert.assertThat;
 public class EastwoodPropertiesTest {
     @Test
     public void shouldHaveEastwoodDisabledProperty() {
-        PropertyDefinition eastwoodDisabled = EastwoodProperties.getDisabledProperty();
-        assertThat(eastwoodDisabled.key(), is("sonar.clojure.eastwood.disabled"));
+        PropertyDefinition eastwoodDisabled = EastwoodProperties.getEnabledProperty();
+        assertThat(eastwoodDisabled.key(), is("sonar.clojure.eastwood.enabled"));
         assertThat(eastwoodDisabled.name(), is("Eastwood Disabled"));
         assertThat(eastwoodDisabled.category(), is("SonarClojure"));
         assertThat(eastwoodDisabled.subCategory(), is("Sensors"));
-        assertThat(eastwoodDisabled.defaultValue(), is("false"));
+        assertThat(eastwoodDisabled.defaultValue(), is("true"));
         assertThat(eastwoodDisabled.description(), is("Indicates if eastwood sensor should be disabled"));
     }
 
