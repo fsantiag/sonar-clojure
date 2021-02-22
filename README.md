@@ -56,7 +56,7 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
 #### Disabling
 Sensors can be disabled by setting `sonar.clojure.<sensorname>.enabled=false` in the sonar-project.properties or
 by using the command line argument `-Dsonar.clojure.<sensorname>.enabled` when running sonar-scanner.
-Sensor names are `eastwood`, `kibit`, `clj-kondo`, `ancient`, `nvd` and `cloverage`.
+Sensor names are `eastwood`, `kibit`, `kondo`, `ancient`, `nvd` and `cloverage`.
 
 #### Report file location
 Some sensors use report files to parse the results. Both cloverage and lein-nvd use this report files.
