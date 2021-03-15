@@ -5,7 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.sonar.api.batch.fs.TextRange;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.DefaultTextPointer;
+import org.sonar.api.batch.fs.internal.DefaultTextRange;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
@@ -61,10 +64,13 @@ public class KondoSensorTest {
 
         kondoSensor.execute(context);
 
+        TextRange expectedRange = new DefaultTextRange(new DefaultTextPointer(1, 15), new DefaultTextPointer(1, 19));
+
         List<Issue> issuesList = new ArrayList<>(context.allIssues());
         assertThat(issuesList.size(), is(1));
         assertThat(issuesList.get(0).ruleKey().rule(), is("kondo"));
         assertThat(issuesList.get(0).primaryLocation().message(), is("unused binding args"));
+        assertThat(issuesList.get(0).primaryLocation().textRange(), is(expectedRange));
     }
 
     private SensorContextTester prepareContext() throws IOException {
