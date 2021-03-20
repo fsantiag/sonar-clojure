@@ -60,8 +60,8 @@ public class KondoSensor extends AbstractSensor implements Sensor {
                         .on(file)
                         .message(finding.getMessage());
 
-                TextRange range = file.newRange(finding.getRow(), finding.getCol(),
-                        finding.getEndRow(), finding.getEndCol());
+                TextRange range = file.newRange(finding.getRow(), finding.getCol() - 1,
+                        finding.getEndRow(), finding.getEndCol() - 1);
                 primaryLocation.at(range);
 
                 newIssue.at(primaryLocation);
