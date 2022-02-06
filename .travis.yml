@@ -2,7 +2,7 @@ language: java
 
 # Disable shallow clone to prevent SonarCloud warning
 git:
-  depth: false
+  depth: 3
 
 cache:
   directories:
