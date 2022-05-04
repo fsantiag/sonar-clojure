@@ -38,7 +38,7 @@ execute each one of them individually on your project. Once they are running fin
 parse their reports.
 >
 > Note 2: The lein plugin versions above are the ones we currently support. If you would like to test with a different
-version, keep in mind that it might cause errors on SonarClojure analysis. 
+version, keep in mind that it might cause errors on SonarClojure analysis.
 
 2. Create a ***sonar-project.properties*** file in the root folder of your app:
 
@@ -49,7 +49,7 @@ version, keep in mind that it might cause errors on SonarClojure analysis.
     sonar.sources=.
     ```
 
-3. Run [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) on your project.
+3. Run [sonar-scanner](https://docs.sonarqube.org/latest/analysis/scan/sonarscanner/) on your project.
 
 ### Configuring Sensors
 
@@ -75,11 +75,11 @@ file.
 #### Debugging
 * SonarClojure is in its early days and therefore you might face problems when trying to run the plugin, especially because
  we rely on other plugins that are also in its early days. A nice way to try to debug
-a problem you might have is to make sure the particular plugin you are using is running fine before executing the 
+a problem you might have is to make sure the particular plugin you are using is running fine before executing the
 sonar-scanner. For instance, if you are trying to visualize the coverage data on SonarQube, make sure to run cloverage
 against your project using `lein cloverage --codecov` for instance. Once you fix the cloverage issue on your project,
 then SonarClojure should be able to parse the results. The same idea applies to all the plugins.
- 
+
 * In general, plugins should not stop execution in case of errors, unless an exception happens.
 
 * You can use `-X` or `--debug` when running sonar-scanner to get a detailed information of what SonarClojure is trying to do.
