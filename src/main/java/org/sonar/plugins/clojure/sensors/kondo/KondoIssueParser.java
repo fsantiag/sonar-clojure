@@ -1,6 +1,5 @@
 package org.sonar.plugins.clojure.sensors.kondo;
 
-import org.sonar.api.internal.google.common.collect.Lists;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import us.bpsm.edn.Keyword;
 import us.bpsm.edn.parser.Parseable;
