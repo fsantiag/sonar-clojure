@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CoverageReport {
 
-    private List<FileAnalysis> files = new ArrayList<>();
+    private final List<FileAnalysis> files = new ArrayList<>();
 
     public void addFile(FileAnalysis e){
         files.add(e);

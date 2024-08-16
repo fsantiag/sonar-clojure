@@ -1,23 +1,23 @@
 package org.sonar.plugins.clojure.sensors.kondo;
 
-import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-import us.bpsm.edn.Keyword;
-import us.bpsm.edn.parser.Parseable;
-import us.bpsm.edn.parser.Parser;
-import us.bpsm.edn.parser.Parsers;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
+
+import us.bpsm.edn.Keyword;
 import static us.bpsm.edn.Keyword.newKeyword;
+import us.bpsm.edn.parser.Parseable;
+import us.bpsm.edn.parser.Parser;
+import us.bpsm.edn.parser.Parsers;
 import static us.bpsm.edn.parser.Parsers.defaultConfiguration;
 
 public class KondoIssueParser {
     public static List<Finding> parse(CommandStreamConsumer stdOut) {
         if (stdOut == null){
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         String kondoOutput = String.join("", stdOut.getData());
 
@@ -26,7 +26,7 @@ public class KondoIssueParser {
 
         Map<?, ?> m = (Map<?, ?>) parser.nextValue(parseable);
 
-        List<Object> findings = (List<Object>) m.get(newKeyword("findings"));
+        List<?> findings = (List<?>) m.get(newKeyword("findings"));
 
         return findings.stream()
                 .map(f -> asFinding((Map<?, ?>) f))

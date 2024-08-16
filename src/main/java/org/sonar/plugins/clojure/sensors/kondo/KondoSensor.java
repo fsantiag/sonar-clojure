@@ -1,5 +1,12 @@
 package org.sonar.plugins.clojure.sensors.kondo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextRange;
 import org.sonar.api.batch.rule.Severity;
@@ -9,26 +16,23 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.LeiningenRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.sonar.plugins.clojure.settings.KondoProperties.*;
+import static org.sonar.plugins.clojure.settings.KondoProperties.CONFIG;
+import static org.sonar.plugins.clojure.settings.KondoProperties.DEFAULT_CONFIG;
+import static org.sonar.plugins.clojure.settings.KondoProperties.DEFAULT_OPTIONS;
+import static org.sonar.plugins.clojure.settings.KondoProperties.ENABLED_PROPERTY;
+import static org.sonar.plugins.clojure.settings.KondoProperties.ENABLED_PROPERTY_DEFAULT;
+import static org.sonar.plugins.clojure.settings.KondoProperties.OPTIONS;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class KondoSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(KondoSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KondoSensor.class);
 
     private static final String PLUGIN_NAME = "clj-kondo";
     private static final String[] KONDO_ARGS = {"run", "-m", "clj-kondo.main"};

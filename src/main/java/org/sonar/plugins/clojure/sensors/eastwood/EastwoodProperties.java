@@ -1,11 +1,10 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
-import org.sonar.api.config.PropertyDefinition;
-
-import java.util.List;
-
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import java.util.List;
+
+import org.sonar.api.config.PropertyDefinition;
 import static org.sonar.plugins.clojure.settings.Properties.MAIN_CATEGORY;
 import static org.sonar.plugins.clojure.settings.Properties.SUB_CATEGORY;
 

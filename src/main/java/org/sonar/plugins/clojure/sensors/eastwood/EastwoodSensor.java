@@ -1,26 +1,27 @@
 package org.sonar.plugins.clojure.sensors.eastwood;
 
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.Issue;
-
-import java.util.List;
-
-import static org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties.*;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
+import static org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties.EASTWOOD_OPTIONS;
+import static org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties.ENABLED_PROPERTY;
+import static org.sonar.plugins.clojure.sensors.eastwood.EastwoodProperties.ENABLED_PROPERTY_DEFAULT;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class EastwoodSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(EastwoodSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EastwoodSensor.class);
 
     private static final String EASTWOOD_COMMAND = "eastwood";
     private static final String SENSOR_NAME = "Eastwood";
