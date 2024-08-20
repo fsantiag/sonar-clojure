@@ -1,21 +1,22 @@
 package org.sonar.plugins.clojure.sensors.cloverage;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 
-import java.util.Map;
-import java.util.Optional;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class CloverageMetricParser {
 
-    private static final Logger LOG = Loggers.get(CloverageMetricParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CloverageMetricParser.class);
 
     private CloverageMetricParser() {
     }
@@ -38,8 +39,7 @@ public class CloverageMetricParser {
     public static CoverageReport parse(SensorContext context, String json) {
         LOG.debug("Running CoverageReport parser");
         CoverageReport report = new CoverageReport();
-        JsonParser parser = new JsonParser();
-        JsonElement jsonTree = parser.parse(json);
+        JsonElement jsonTree = JsonParser.parseString(json);
         JsonObject jsonObject = jsonTree.getAsJsonObject();
         JsonObject r = jsonObject.get("coverage").getAsJsonObject();
 

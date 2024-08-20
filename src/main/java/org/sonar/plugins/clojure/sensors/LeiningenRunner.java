@@ -1,18 +1,18 @@
 package org.sonar.plugins.clojure.sensors;
 
+import java.util.Arrays;
+import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.scanner.ScannerSide;
 import org.sonar.api.utils.command.Command;
 import org.sonar.api.utils.command.CommandExecutor;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 @ScannerSide
 public class LeiningenRunner {
 
-    private static final Logger LOG = Loggers.get(LeiningenRunner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LeiningenRunner.class);
     private static final String DELIMITER = "\n";
     private static final int SUCCESS_RETURN_CODE = 0;
 

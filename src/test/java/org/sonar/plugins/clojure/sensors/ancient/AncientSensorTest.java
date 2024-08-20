@@ -26,7 +26,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.sonar.plugins.clojure.settings.KondoProperties.ENABLED_PROPERTY;
 
 public class AncientSensorTest {
     @Mock

@@ -1,26 +1,28 @@
 package org.sonar.plugins.clojure.sensors.cloverage;
 
 
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.coverage.NewCoverage;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
 import org.sonar.plugins.clojure.sensors.LeiningenRunner;
-
-import java.util.Optional;
-
 import static org.sonar.plugins.clojure.sensors.cloverage.CloverageMetricParser.parse;
-import static org.sonar.plugins.clojure.settings.CloverageProperties.*;
+import static org.sonar.plugins.clojure.settings.CloverageProperties.ENABLED_PROPERTY;
+import static org.sonar.plugins.clojure.settings.CloverageProperties.ENABLED_PROPERTY_DEFAULT;
+import static org.sonar.plugins.clojure.settings.CloverageProperties.REPORT_LOCATION_DEFAULT;
+import static org.sonar.plugins.clojure.settings.CloverageProperties.REPORT_LOCATION_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class CloverageSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(CloverageSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CloverageSensor.class);
     private static final String PLUGIN_NAME = "Cloverage";
     private static final String[] LEIN_ARGUMENTS = {"cloverage", "--codecov"};
 

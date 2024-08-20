@@ -7,8 +7,8 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
@@ -24,7 +24,7 @@ import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROP
 
 public class LeinNvdSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(LeinNvdSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LeinNvdSensor.class);
 
     private static final String[] LEIN_ARGUMENTS = {"nvd", "check"};
     private static final String PLUGIN_NAME = "NVD";

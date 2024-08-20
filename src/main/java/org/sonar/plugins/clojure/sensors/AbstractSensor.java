@@ -1,25 +1,24 @@
 package org.sonar.plugins.clojure.sensors;
 
+import java.io.IOException;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Optional;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public abstract class AbstractSensor {
 
-    private static final Logger LOG = Loggers.get(AbstractSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractSensor.class);
 
     protected static final String LEIN_COMMAND = "lein";
 

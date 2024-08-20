@@ -1,26 +1,25 @@
 package org.sonar.plugins.clojure.sensors.kibit;
 
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
 import org.sonar.plugins.clojure.sensors.Issue;
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.settings.KibitProperties;
-
-import java.util.List;
-
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY;
 import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROPERTY_DEFAULT;
 
 public class KibitSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(KibitSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KibitSensor.class);
 
     private static final String KIBIT_COMMAND = "kibit";
     private static final String PLUGIN_NAME = "Kibit";

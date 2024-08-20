@@ -5,14 +5,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeinNvdParser {
-    private static final Logger LOG = Loggers.get(LeinNvdParser.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LeinNvdParser.class);
 
     private LeinNvdParser(){}
 

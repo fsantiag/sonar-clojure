@@ -1,6 +1,12 @@
 package org.sonar.plugins.clojure.sensors.ancient;
 
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -8,19 +14,12 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
 import org.sonar.plugins.clojure.language.Clojure;
 import org.sonar.plugins.clojure.leiningen.ProjectFile;
 import org.sonar.plugins.clojure.rules.ClojureLintRulesDefinition;
 import org.sonar.plugins.clojure.sensors.AbstractSensor;
-import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import org.sonar.plugins.clojure.sensors.CommandStreamConsumer;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-
+import org.sonar.plugins.clojure.sensors.LeiningenRunner;
 import static org.sonar.plugins.clojure.sensors.ancient.AncientOutputParser.parse;
 import static org.sonar.plugins.clojure.settings.AncientProperties.ENABLED_PROPERTY;
 import static org.sonar.plugins.clojure.settings.AncientProperties.ENABLED_PROPERTY_DEFAULT;
@@ -29,7 +28,7 @@ import static org.sonar.plugins.clojure.settings.Properties.SENSORS_TIMEOUT_PROP
 
 public class AncientSensor extends AbstractSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(AncientSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AncientSensor.class);
 
     private static final String LEIN_ARGUMENTS = "ancient";
     private static final String PLUGIN_NAME = "Ancient";

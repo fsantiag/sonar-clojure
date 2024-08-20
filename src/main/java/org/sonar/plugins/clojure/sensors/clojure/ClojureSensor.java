@@ -1,21 +1,20 @@
 package org.sonar.plugins.clojure.sensors.clojure;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.Loggers;
-import org.sonar.plugins.clojure.language.Clojure;
-
 import static org.sonar.api.measures.CoreMetrics.NCLOC;
+import org.sonar.plugins.clojure.language.Clojure;
 
 public class ClojureSensor implements Sensor {
 
-    private static final Logger LOG = Loggers.get(ClojureSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ClojureSensor.class);
     public static final String SENSOR_NAME = "ClojureSensor";
 
     @Override
